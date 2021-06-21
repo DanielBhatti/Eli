@@ -83,6 +83,28 @@ namespace Common.Wpf
             UpdatePlot();
         }
 
+        public void AddSeries(IList<DateTime> xData, IList<double> yData,
+            string name = "", Color color = Color.Black, double markerSize = 2, LineStyle lineStyle = LineStyle.Solid)
+        {
+            if (xData.Count != yData.Count) throw new ArgumentException($"Collections must be the same length, {nameof(xData)} was {xData.Count} and {nameof(yData)} was {yData.Count}.");
+
+            LineSeries lineSeries = new LineSeries()
+            {
+                Title = name,
+                Name = name,
+                Color = color.ToWindowsMediaColor(),
+                MarkerSize = markerSize,
+                LineStyle = lineStyle.ToOxyPlotLineStyle(),
+                MarkerType = OxyPlot.MarkerType.Circle,
+                MarkerFill = color.ToWindowsMediaColor(),
+                MarkerStroke = color.ToWindowsMediaColor()
+            };
+            lineSeries.ItemsSource = CollectionsToDataPoints(xData, yData);
+
+            Series.Add(lineSeries);
+            UpdatePlot();
+        }
+
         private void UpdatePlot()
         {
             InvalidatePlot(true);
@@ -91,9 +113,20 @@ namespace Common.Wpf
         private List<OxyPlot.DataPoint> CollectionsToDataPoints(IList<double> xData, IList<double> yData)
         {
             List<OxyPlot.DataPoint> dataPoints = new List<OxyPlot.DataPoint>();
-            for(int i = 0; i < xData.Count; i++)
+            for (int i = 0; i < xData.Count; i++)
             {
                 dataPoints.Add(new OxyPlot.DataPoint(xData[i], yData[i]));
+            }
+            return dataPoints;
+        }
+
+        private List<OxyPlot.DataPoint> CollectionsToDataPoints(IList<DateTime> xData, IList<double> yData)
+        {
+            List<OxyPlot.DataPoint> dataPoints = new List<OxyPlot.DataPoint>();
+            for (int i = 0; i < xData.Count; i++)
+            {
+                double dateTimeDouble = OxyPlot.Axes.DateTimeAxis.ToDouble(xData[i]);
+                dataPoints.Add(new OxyPlot.DataPoint(dateTimeDouble, yData[i]));
             }
             return dataPoints;
         }

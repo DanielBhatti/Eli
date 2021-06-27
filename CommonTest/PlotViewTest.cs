@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Collections.Generic;
 using Common.Wpf;
-using System.Windows;
 using System;
 
 namespace CommonTest
@@ -9,10 +8,12 @@ namespace CommonTest
     [TestFixture]
     public class PlotViewTest
     {
+        private StartUpManager csu;
+
         [SetUp]
         public void Setup()
         {
-
+            csu = new StartUpManager();
         }
 
         //[Test, Apartment(System.Threading.ApartmentState.STA)]
@@ -35,11 +36,7 @@ namespace CommonTest
             plotControl.AddAxis(Position.Left, "Left");
             plotControl.AddSeries(xData, yData, "TestName");
 
-            Window window = new Window();
-            window.Content = plotControl;
-
-            Application app = new Application();
-            app.Run(window);
+            csu.ShowControl(plotControl);
 
             Assert.AreEqual(true, true);
         }
@@ -64,11 +61,7 @@ namespace CommonTest
             plotControl.AddAxis(Position.Left, "Left");
             plotControl.AddSeries(xData, yData, "TestName");
 
-            Window window = new Window();
-            window.Content = plotControl;
-
-            Application app = new Application();
-            app.Run(window);
+            csu.ShowControl(plotControl);
 
             Assert.AreEqual(true, true);
         }

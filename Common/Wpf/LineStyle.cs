@@ -1,6 +1,4 @@
-﻿using OxyPlot.Wpf;
-
-namespace Common.Wpf
+﻿namespace Common.Wpf
 {
     public enum LineStyle
     {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
 using OxyPlot.Wpf;
 
 namespace Common.Wpf
@@ -9,14 +11,65 @@ namespace Common.Wpf
     /// </summary>
     public partial class PlotControl : OxyPlot.Wpf.Plot
     {
+        public static readonly DependencyProperty PlotAxesProperty = DependencyProperty.Register(
+            nameof(PlotAxes), typeof(ObservableCollection<Axis>), typeof(PlotControl));
+        public ObservableCollection<Axis> PlotAxes
+        {
+            get => (ObservableCollection<Axis>)GetValue(PlotAxesProperty);
+            set
+            {
+                SetValue(PlotAxesProperty, value);
+                UpdateAxes();
+            }
+        }
+
+        public static readonly DependencyProperty PlotDataProperty = DependencyProperty.Register(
+            nameof(PlotData), typeof(ObservableCollection<object>), typeof(PlotControl));
+        public ObservableCollection<object> PlotData
+        {
+            get => (ObservableCollection<object>)GetValue(PlotDataProperty);
+            set
+            {
+                SetValue(PlotDataProperty, value);
+                UpdateData();
+            }
+        }
+
         public PlotControl()
         {
             InitializeComponent();
         }
 
+        public void UpdateData()
+        {
+            foreach (object plotData in PlotData)
+            {
+                if (plotData.GetType() == typeof(PlotData<double, double>))
+                {
+                    PlotData<double, double> datum = (PlotData<double, double>)plotData;
+                    AddSeries(datum.XData, datum.YData, datum.Name, datum.Color, datum.MarkerSize, datum.LineStyle);
+                }
+                else if (plotData.GetType() == typeof(PlotData<DateTime, double>))
+                {
+                    PlotData<DateTime, double> datum = (PlotData<DateTime, double>)plotData;
+                    AddSeries(datum.XData, datum.YData, datum.Name, datum.Color, datum.MarkerSize, datum.LineStyle);
+                }
+            }
+            UpdatePlot();
+        }
+
+        public void UpdateAxes()
+        {
+            foreach (Axis axis in PlotAxes)
+            {
+                AddAxis(axis.Position, axis.Name, axis.AxisType);
+            }
+            UpdatePlot();
+        }
+
         public void AddAxis(Position position, string name, AxisType axisType = AxisType.Linear)
         {
-            Axis axis;
+            OxyPlot.Wpf.Axis axis;
             switch (axisType)
             {
                 case AxisType.Linear:
@@ -51,8 +104,8 @@ namespace Common.Wpf
             UpdatePlot();
         }
 
-        public void AddSeries(IList<double> xData, IList<double> yData,
-            string name = "", Color color = Color.Black, double markerSize = 2, LineStyle lineStyle = LineStyle.Solid)
+        public void AddSeries<T1, T2>(IList<T1> xData, IList<T2> yData,
+    string name = "", Color color = Color.Black, double markerSize = 2, LineStyle lineStyle = LineStyle.Solid)
         {
             if (xData.Count != yData.Count) throw new ArgumentException($"Collections must be the same length, {nameof(xData)} was {xData.Count} and {nameof(yData)} was {yData.Count}.");
 
@@ -67,29 +120,17 @@ namespace Common.Wpf
                 MarkerFill = color.ToWindowsMediaColor(),
                 MarkerStroke = color.ToWindowsMediaColor()
             };
-            lineSeries.ItemsSource = CollectionsToDataPoints(xData, yData);
 
-            Series.Add(lineSeries);
-            UpdatePlot();
-        }
-
-        public void AddSeries(IList<DateTime> xData, IList<double> yData,
-            string name = "", Color color = Color.Black, double markerSize = 2, LineStyle lineStyle = LineStyle.Solid)
-        {
-            if (xData.Count != yData.Count) throw new ArgumentException($"Collections must be the same length, {nameof(xData)} was {xData.Count} and {nameof(yData)} was {yData.Count}.");
-
-            LineSeries lineSeries = new LineSeries()
+            if (typeof(T1) == typeof(double) && typeof(T2) == typeof(double))
             {
-                Title = name,
-                Name = name,
-                Color = color.ToWindowsMediaColor(),
-                MarkerSize = markerSize,
-                LineStyle = lineStyle.ToOxyPlotLineStyle(),
-                MarkerType = OxyPlot.MarkerType.Circle,
-                MarkerFill = color.ToWindowsMediaColor(),
-                MarkerStroke = color.ToWindowsMediaColor()
-            };
-            lineSeries.ItemsSource = CollectionsToDataPoints(xData, yData);
+                lineSeries.ItemsSource = CollectionsToDataPoints((IList<double>)xData, (IList<double>)yData);
+            }
+            else if (typeof(T1) == typeof(DateTime) && typeof(T2) == typeof(double))
+            {
+                lineSeries.ItemsSource = CollectionsToDataPoints((IList<DateTime>)xData, (IList<double>)yData);
+            }
+            else throw new ArgumentException("Currently, only types T1 = double, DateTime and T2 = double are supported." +
+                $"Provided arguments were T1 = {typeof(T1)} and T2 = {typeof(T2)}");
 
             Series.Add(lineSeries);
             UpdatePlot();

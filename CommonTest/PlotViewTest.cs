@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Common.Wpf;
 using System;
+using System.Collections.ObjectModel;
 
 namespace CommonTest
 {
@@ -42,6 +43,34 @@ namespace CommonTest
         }
 
         [Test, Apartment(System.Threading.ApartmentState.STA)]
+        public void PlotDoubleDataThroughProperties()
+        {
+
+            List<double> xData = new List<double>();
+            List<double> yData = new List<double>();
+            for (int i = 0; i < 10; i++)
+            {
+                xData.Add(i);
+                yData.Add(Math.Pow(2, i));
+            }
+
+            string title = "Title";
+
+            PlotControl plotControl = new PlotControl();
+            plotControl.Title = title;
+
+            Axis bottomAxis = new Axis("Bottom", Position.Bottom, AxisType.Linear);
+            Axis leftAxis = new Axis("Left", Position.Left, AxisType.Linear);
+            PlotData<double, double> plotData = new PlotData<double, double>(xData, yData, "Data", Color.Black, LineStyle.Solid, 2.0);
+            plotControl.PlotAxes = new ObservableCollection<Axis>() { bottomAxis, leftAxis };
+            plotControl.PlotData = new ObservableCollection<object>() { plotData };
+
+            csu.ShowControl(plotControl);
+
+            Assert.AreEqual(true, true);
+        }
+
+        //[Test, Apartment(System.Threading.ApartmentState.STA)]
         public void PlotDateTimeDoubleData()
         {
 

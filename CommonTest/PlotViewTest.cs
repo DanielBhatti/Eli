@@ -39,7 +39,7 @@ namespace CommonTest
 
             csu.ShowControl(plotControl);
 
-            Assert.AreEqual(true, true);
+            Assert.Pass();
         }
 
         //[Test, Apartment(System.Threading.ApartmentState.STA)]
@@ -66,7 +66,7 @@ namespace CommonTest
 
             csu.ShowControl(plotControl);
 
-            Assert.AreEqual(true, true);
+            Assert.Pass();
         }
 
         //[Test, Apartment(System.Threading.ApartmentState.STA)]
@@ -91,7 +91,7 @@ namespace CommonTest
 
             csu.ShowControl(plotControl);
 
-            Assert.AreEqual(true, true);
+            Assert.Pass();
         }
 
         //[Test, Apartment(System.Threading.ApartmentState.STA)]
@@ -118,10 +118,10 @@ namespace CommonTest
 
             csu.ShowControl(plotControl);
 
-            Assert.AreEqual(true, true);
+            Assert.Pass();
         }
 
-        [Test, Apartment(System.Threading.ApartmentState.STA)]
+        //[Test, Apartment(System.Threading.ApartmentState.STA)]
         public void PlotMultipleSetsOfData()
         {
             List<DateTime> xData1 = new List<DateTime>();
@@ -165,7 +165,54 @@ namespace CommonTest
 
             csu.ShowControl(plotControl);
 
-            Assert.AreEqual(true, true);
+            Assert.Pass();
+        }
+
+        [Test, Apartment(System.Threading.ApartmentState.STA)]
+        public void PlotALotOfData()
+        {
+            int n = 10000;
+            int m = 10;
+
+            List<List<DateTime>> xDataLists = new List<List<DateTime>>();
+            List<List<double>> yDataLists = new List<List<double>>();
+
+            Random random = new Random();
+
+            for (int j = 1; j < m + 1; j++)
+            {
+                List<DateTime> x = new List<DateTime>();
+                List<double> y = new List<double>();
+                for (int i = 0; i < n; i++)
+                {
+                    x.Add(new DateTime(1, 1, 1).AddDays(i));
+                    y.Add(random.Next(0, 100));
+                }
+                xDataLists.Add(x);
+                yDataLists.Add(y);
+            }
+
+            string title = "Title";
+
+            PlotControl plotControl = new PlotControl();
+            plotControl.Title = title;
+
+            Axis bottomAxis = new Axis("Bottom", Position.Bottom, AxisType.DateTime);
+            Axis leftAxis = new Axis("Left", Position.Left, AxisType.Linear);
+
+            plotControl.PlotAxes = new ObservableCollection<Axis>() { bottomAxis, leftAxis };
+            plotControl.PlotData = new ObservableCollection<object>() { };
+
+            for (int i = 0; i < m; i++)
+            {
+                plotControl.PlotData.Add(new PlotData<DateTime, double>(xDataLists[i], yDataLists[i], "Data", Color.Black, LineStyle.Solid, 2.0));
+            }
+
+            csu.ShowControl(plotControl);
+
+            Assert.Pass();
+
+            Assert.Pass();
         }
     }
 }

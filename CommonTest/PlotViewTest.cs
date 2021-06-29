@@ -168,7 +168,8 @@ namespace CommonTest
             Assert.Pass();
         }
 
-        [Test, Apartment(System.Threading.ApartmentState.STA)]
+        // Takes about 20 seconds to run
+        //[Test, Apartment(System.Threading.ApartmentState.STA)]
         public void PlotALotOfData()
         {
             int n = 10000;
@@ -209,8 +210,6 @@ namespace CommonTest
             }
 
             csu.ShowControl(plotControl);
-
-            Assert.Pass();
 
             Assert.Pass();
         }

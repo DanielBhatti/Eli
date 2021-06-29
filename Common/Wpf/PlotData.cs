@@ -14,8 +14,11 @@ namespace Common.Wpf
         public Color Color { get; set; }
         public LineStyle LineStyle { get; set; }
         public double MarkerSize { get; set; }
+        public string XAxisKey { get; set; }
+        public string YAxisKey { get; set; }
 
-        public PlotData(IList<T1> xData, IList<T2> yData, string name, Color color, LineStyle lineStyle, double markerSize)
+        public PlotData(IList<T1> xData, IList<T2> yData, string name,
+            Color color, LineStyle lineStyle, double markerSize, string xAxisKey = null, string yAxisKey = null)
         {
             XData = xData;
             YData = yData;
@@ -23,6 +26,8 @@ namespace Common.Wpf
             Color = color;
             LineStyle = lineStyle;
             MarkerSize = markerSize;
+            XAxisKey = xAxisKey;
+            YAxisKey = yAxisKey;
         }
     }
 }

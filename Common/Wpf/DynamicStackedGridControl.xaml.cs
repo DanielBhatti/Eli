@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,12 +15,12 @@ namespace Common.Wpf
     {
         public static readonly DependencyProperty FrameworkElementCollectionProperty = DependencyProperty.Register(
             nameof(FrameworkElementCollection),
-            typeof(ObservableCollection<FrameworkElement>),
+            typeof(ObservableCollection<FrameworkElement[]>),
             typeof(DynamicStackedGridControl),
             new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCollectionChanged)));
-        public ObservableCollection<FrameworkElement> FrameworkElementCollection
+        public ObservableCollection<FrameworkElement[]> FrameworkElementCollection
         {
-            get => (ObservableCollection<FrameworkElement>)GetValue(FrameworkElementCollectionProperty);
+            get => (ObservableCollection<FrameworkElement[]>)GetValue(FrameworkElementCollectionProperty);
             set => SetValue(FrameworkElementCollectionProperty, value);
         }
 
@@ -50,8 +51,29 @@ namespace Common.Wpf
                     Grid.SetRow(fe, j);
                 }
             }
+
+            grid.ColumnDefinitions.Add(new ColumnDefinition());
+            Button button = new Button();
+            button.Content = "Remove Row";
+            button.Height = 30;
+            button.Width = 200;
+            button.Click += Button_RemoveStrategy;
+            Grid.SetColumn(button, numColumns);
+            Grid.SetRowSpan(button, numRows);
+            grid.Children.Add(button);
+
             Children.Add(grid);
             return grid;
+        }
+
+        private void Button_RemoveStrategy(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            Grid parentGrid = (Grid)button.Parent;
+
+            RemoveGrid(parentGrid);
+            FrameworkElement[] frameworkElements = FrameworkElementCollection.First(fes => fes[0].Parent == parentGrid);
+            FrameworkElementCollection.Remove(frameworkElements);
         }
 
         public void RemoveGrid(Grid grid)
@@ -71,7 +93,35 @@ namespace Common.Wpf
 
         private static void OnCollectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            var action = new NotifyCollectionChangedEventHandler(
+          (o, args) =>
+          {
+              var stack = d as DynamicStackedGridControl;
 
+              if (stack != null)
+              {
+                  ObservableCollection<FrameworkElement[]> frameworkElements = (ObservableCollection<FrameworkElement[]>)e.NewValue;
+
+                  foreach (FrameworkElement[] feArray in frameworkElements)
+                  {
+                      if (!stack.Children.Contains((Grid)feArray[0].Parent)) stack.AddGrid(1, feArray.Length, feArray);
+                  }
+              }
+          });
+
+            if (e.OldValue != null)
+            {
+                var coll = (INotifyCollectionChanged)e.OldValue;
+                // Unsubscribe from CollectionChanged on the old collection
+                coll.CollectionChanged -= action;
+            }
+
+            if (e.NewValue != null)
+            {
+                var coll = (ObservableCollection<FrameworkElement[]>)e.NewValue;
+                // Subscribe to CollectionChanged on the new collection
+                coll.CollectionChanged += action;
+            }
         }
     }
 }

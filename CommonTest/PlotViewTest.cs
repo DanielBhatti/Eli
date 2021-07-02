@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Common.Wpf;
 using System;
 using System.Collections.ObjectModel;
+using System.Windows.Data;
 
 namespace CommonTest
 {

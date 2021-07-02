@@ -18,7 +18,8 @@ namespace Common.Wpf
         public string YAxisKey { get; set; }
 
         public PlotData(IList<T1> xData, IList<T2> yData, string name,
-            Color color, LineStyle lineStyle, double markerSize, string xAxisKey = null, string yAxisKey = null)
+            Color color = Color.Black, LineStyle lineStyle = LineStyle.Solid,
+            double markerSize = 2, string xAxisKey = null, string yAxisKey = null)
         {
             XData = xData;
             YData = yData;

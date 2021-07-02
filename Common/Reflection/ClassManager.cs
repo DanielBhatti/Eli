@@ -8,10 +8,13 @@ namespace Common.Reflection
     {
         public static List<Type> GetDerivedClasses(Type type)
         {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetTypes())
-                .Where(t => t.IsSubclassOf(type.GetType()) && !t.IsAbstract)
-                .ToList();
+            return (from domainAssembly in AppDomain.CurrentDomain.GetAssemblies()
+                        // alternative: from domainAssembly in domainAssembly.GetExportedTypes()
+                    from assemblyType in domainAssembly.GetTypes()
+                    //where type.IsAssignableFrom(assemblyType)
+                    where assemblyType.IsSubclassOf(type)
+                    // alternative: && ! assemblyType.IsAbstract
+                    select assemblyType).ToList();
         }
     }
 }

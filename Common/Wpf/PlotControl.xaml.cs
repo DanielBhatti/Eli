@@ -93,7 +93,7 @@ namespace Common.Wpf
                         Name = name,
                         Key = name,
                         Position = position.ToOxyPlotAxisPosition(),
-                        StringFormat = "yyyy-mm-dd"
+                        StringFormat = "yyyy-MM-dd"
                     };
                     break;
                 case AxisType.Logarithmic:

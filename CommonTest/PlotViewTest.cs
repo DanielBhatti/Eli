@@ -70,7 +70,7 @@ namespace CommonTest
             Assert.Pass();
         }
 
-        //[Test, Apartment(System.Threading.ApartmentState.STA)]
+        [Test, Apartment(System.Threading.ApartmentState.STA)]
         public void PlotDateTimeDoubleData()
         {
 

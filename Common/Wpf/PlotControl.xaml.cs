@@ -113,7 +113,7 @@ namespace Common.Wpf
         }
 
         public void AddSeries<T1, T2>(IList<T1> xData, IList<T2> yData,
-            string name = "", Color color = Color.Black, double markerSize = 2, LineStyle lineStyle = LineStyle.Solid,
+            string name = "", Color color = Color.Black, double markerSize = 1, LineStyle lineStyle = LineStyle.Solid,
             string xAxisKey = null, string yAxisKey = null)
         {
             if (xData.Count != yData.Count) throw new ArgumentException($"Collections must be the same length, {nameof(xData)} was {xData.Count} and {nameof(yData)} was {yData.Count}.");

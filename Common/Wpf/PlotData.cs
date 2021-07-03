@@ -19,7 +19,7 @@ namespace Common.Wpf
 
         public PlotData(IList<T1> xData, IList<T2> yData, string name,
             Color color = Color.Black, LineStyle lineStyle = LineStyle.Solid,
-            double markerSize = 2, string xAxisKey = null, string yAxisKey = null)
+            double markerSize = 1, string xAxisKey = null, string yAxisKey = null)
         {
             XData = xData;
             YData = yData;

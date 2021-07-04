@@ -14,7 +14,7 @@ namespace Common.Wpf
     {
         public static readonly DependencyProperty PlotAxesProperty = DependencyProperty.Register(
             nameof(PlotAxes), typeof(ObservableCollection<Axis>), typeof(PlotControl),
-            new FrameworkPropertyMetadata(new PropertyChangedCallback(OnPlotAxisCollectionChanged)));
+            new PropertyMetadata(new PropertyChangedCallback(OnPlotAxisCollectionChanged)));
         public ObservableCollection<Axis> PlotAxes
         {
             get => (ObservableCollection<Axis>)GetValue(PlotAxesProperty);

@@ -70,7 +70,7 @@ namespace CommonTest
             Assert.Pass();
         }
 
-        [Test, Apartment(System.Threading.ApartmentState.STA)]
+        //[Test, Apartment(System.Threading.ApartmentState.STA)]
         public void PlotDateTimeDoubleData()
         {
 
@@ -209,6 +209,36 @@ namespace CommonTest
             {
                 plotControl.PlotData.Add(new PlotData<DateTime, double>(xDataLists[i], yDataLists[i], "Data", Color.Black, LineStyle.Solid, 2.0));
             }
+
+            csu.ShowControl(plotControl);
+
+            Assert.Pass();
+        }
+
+        [Test, Apartment(System.Threading.ApartmentState.STA)]
+        public void PlotAgainstBothYAxes()
+        {
+            List<double> xData = new List<double>();
+            List<double> yData = new List<double>();
+            List<double> xData2 = new List<double>();
+            List<double> yData2 = new List<double>();
+            for (int i = 0; i < 10; i++)
+            {
+                xData.Add(i);
+                yData.Add(Math.Pow(2, i));
+                xData2.Add(i);
+                yData2.Add(Math.Pow(2, 2*i));
+            }
+
+            string title = "Title";
+
+            PlotControl plotControl = new PlotControl();
+            plotControl.Title = title;
+            plotControl.AddAxis(Position.Bottom, "Bottom");
+            plotControl.AddAxis(Position.Left, "Left");
+            plotControl.AddAxis(Position.Right, "Right");
+            plotControl.AddSeries(xData, yData, "TestName", xAxisKey: "Bottom", yAxisKey: "Left");
+            plotControl.AddSeries(xData2, yData2, "TestName", xAxisKey: "Bottom", yAxisKey: "Right");
 
             csu.ShowControl(plotControl);
 

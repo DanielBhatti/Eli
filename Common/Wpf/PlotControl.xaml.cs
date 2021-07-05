@@ -51,12 +51,12 @@ namespace Common.Wpf
                 if (plotData.GetType() == typeof(PlotData<double, double>))
                 {
                     PlotData<double, double> datum = (PlotData<double, double>)plotData;
-                    AddSeries(datum.XData, datum.YData, datum.Name, datum.Color, datum.MarkerSize, datum.LineStyle);
+                    AddSeries(datum.XData, datum.YData, datum.Name, datum.Color, datum.MarkerSize, datum.LineStyle, datum.XAxisKey, datum.YAxisKey);
                 }
                 else if (plotData.GetType() == typeof(PlotData<DateTime, double>))
                 {
                     PlotData<DateTime, double> datum = (PlotData<DateTime, double>)plotData;
-                    AddSeries(datum.XData, datum.YData, datum.Name, datum.Color, datum.MarkerSize, datum.LineStyle);
+                    AddSeries(datum.XData, datum.YData, datum.Name, datum.Color, datum.MarkerSize, datum.LineStyle, datum.XAxisKey, datum.YAxisKey);
                 }
             }
             UpdatePlot();

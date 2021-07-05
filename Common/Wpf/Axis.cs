@@ -11,16 +11,12 @@ namespace Common.Wpf
         public string Name { get; set; }
         public Position Position { get; set; }
         public AxisType AxisType { get; set; }
-        public string XAxisKey { get; set; }
-        public string YAxisKey { get; set; }
 
-        public Axis(string name, Position position, AxisType axisType, string xAxisKey = null, string yAxisKey = null)
+        public Axis(string name, Position position, AxisType axisType)
         {
             Name = name;
             Position = position;
             AxisType = axisType;
-            XAxisKey = xAxisKey;
-            YAxisKey = yAxisKey;
         }
     }
 }

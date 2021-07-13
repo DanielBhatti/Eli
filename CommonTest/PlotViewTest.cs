@@ -10,12 +10,12 @@ namespace CommonTest
     [TestFixture]
     public class PlotViewTest
     {
-        private StartUpManager csu;
+        private StartUpManager _sum;
 
         [SetUp]
         public void Setup()
         {
-            csu = new StartUpManager();
+            _sum = new StartUpManager();
         }
 
         //[Test, Apartment(System.Threading.ApartmentState.STA)]
@@ -38,7 +38,7 @@ namespace CommonTest
             plotControl.AddAxis(Position.Left, "Left");
             plotControl.AddSeries(xData, yData, "TestName");
 
-            csu.ShowControl(plotControl);
+            _sum.ShowControl(plotControl);
 
             Assert.Pass();
         }
@@ -65,7 +65,7 @@ namespace CommonTest
             plotControl.PlotAxes = new ObservableCollection<Axis>() { bottomAxis, leftAxis };
             plotControl.PlotData = new ObservableCollection<object>() { plotData };
 
-            csu.ShowControl(plotControl);
+            _sum.ShowControl(plotControl);
 
             Assert.Pass();
         }
@@ -90,7 +90,7 @@ namespace CommonTest
             plotControl.AddAxis(Position.Left, "Left");
             plotControl.AddSeries(xData, yData, "TestName");
 
-            csu.ShowControl(plotControl);
+            _sum.ShowControl(plotControl);
 
             Assert.Pass();
         }
@@ -117,7 +117,7 @@ namespace CommonTest
             plotControl.PlotAxes = new ObservableCollection<Axis>() { bottomAxis, leftAxis };
             plotControl.PlotData = new ObservableCollection<object>() { plotData };
 
-            csu.ShowControl(plotControl);
+            _sum.ShowControl(plotControl);
 
             Assert.Pass();
         }
@@ -164,7 +164,7 @@ namespace CommonTest
             plotControl.PlotData.Add(plotData2);
             plotControl.PlotData.Add(plotData3);
 
-            csu.ShowControl(plotControl);
+            _sum.ShowControl(plotControl);
 
             Assert.Pass();
         }
@@ -210,7 +210,7 @@ namespace CommonTest
                 plotControl.PlotData.Add(new PlotData<DateTime, double>(xDataLists[i], yDataLists[i], "Data", Color.Black, LineStyle.Solid, 2.0));
             }
 
-            csu.ShowControl(plotControl);
+            _sum.ShowControl(plotControl);
 
             Assert.Pass();
         }
@@ -240,7 +240,7 @@ namespace CommonTest
             plotControl.AddSeries(xData, yData, "TestName", xAxisKey: "Bottom", yAxisKey: "Left");
             plotControl.AddSeries(xData2, yData2, "TestName", xAxisKey: "Bottom", yAxisKey: "Right");
 
-            csu.ShowControl(plotControl);
+            _sum.ShowControl(plotControl);
 
             Assert.Pass();
         }

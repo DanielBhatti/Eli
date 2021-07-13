@@ -38,11 +38,12 @@ namespace Common.IO
                 {
                     string line = reader.ReadLine();
                     object[] fields = line.Split(delimiter);
+                    object[] convertedFields = new object[fields.Length];
                     for (int i = 0; i < fields.Length; i++)
                     {
-                        fields[i] = Convert.ChangeType(fields[i], types[i]);
+                        convertedFields[i] = Convert.ChangeType(fields[i], types[i]);
                     }
-                    dataTable.Rows.Add(fields);
+                    dataTable.Rows.Add(convertedFields);
                 }
             }
             return dataTable;

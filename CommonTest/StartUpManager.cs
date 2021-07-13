@@ -15,5 +15,10 @@ namespace CommonTest
             Application app = new Application();
             app.Run(window);
         }
+
+        public string GetResourcesDirectory()
+        {
+            return @"C:\Users\bhatt\Programming\Common\CommonTest\Resources\";
+        }
     }
 }

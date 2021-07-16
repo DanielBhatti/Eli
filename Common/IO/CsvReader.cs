@@ -49,7 +49,7 @@ namespace Common.IO
             return dataTable;
         }
 
-        private static void ToStart(StreamReader reader)
+        private void ToStart(StreamReader reader)
         {
             reader.DiscardBufferedData();
             reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);

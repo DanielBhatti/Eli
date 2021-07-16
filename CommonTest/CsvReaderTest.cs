@@ -21,7 +21,7 @@ namespace CommonTest
         [Test]
         public void ReadCsv()
         {
-            string filePath = System.IO.Path.Combine(_sum.GetResourcesDirectory(), "SampleCsv.csv");
+            string filePath = System.IO.Path.Combine(StartUpManager.ResourcesDirectory, "SampleCsv.csv");
             Type[] types = new Type[7];
             for (int i = 0; i < 7; i++) types[i] = typeof(int);
 

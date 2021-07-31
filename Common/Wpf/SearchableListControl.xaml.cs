@@ -8,7 +8,7 @@ namespace Common.Wpf
     /// <summary>
     /// Interaction logic for SearchableListControl.xaml
     /// </summary>
-    public partial class SearchableListControl : ListView
+    public partial class SearchableListControl : UserControl
     {
         public DependencyProperty DisplayTextProperty = DependencyProperty.Register(
             nameof(DisplayText), typeof(string), typeof(SearchableListControl), new PropertyMetadata());
@@ -16,6 +16,15 @@ namespace Common.Wpf
         {
             get => (string)GetValue(DisplayTextProperty);
             set => SetValue(DisplayTextProperty, value);
+        }
+
+        public DependencyProperty SearchableListItemSourceProperty = DependencyProperty.Register(
+            nameof(SearchableListItemSource), typeof(ItemCollection), typeof(SearchableListControl), new PropertyMetadata());
+
+        public ItemCollection SearchableListItemSource
+        {
+            get => (ItemCollection)GetValue(SearchableListItemSourceProperty);
+            set => SetValue(SearchableListItemSourceProperty, value);
         }
 
         public ICommand DeleteItemCommand;

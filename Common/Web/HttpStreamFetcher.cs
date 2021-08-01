@@ -6,19 +6,12 @@ namespace Common.Web
 {
     public class HttpStreamFetcher
     {
-        public Stream GetResponseStream(string url, int timeout = 300000)
+        public Stream GetResponseStream(string url, int timeout = 3000)
         {
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.CreateDefault(new Uri(url));
-                request.Timeout = timeout;
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                return response.GetResponseStream();
-            }
-            catch
-            {
-                throw;
-            }
+            HttpWebRequest request = (HttpWebRequest)WebRequest.CreateDefault(new Uri(url));
+            request.Timeout = timeout;
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            return response.GetResponseStream();
         }
     }
 }

@@ -11,5 +11,6 @@
     <PackageReference Include="Avalonia" Version="0.10.3" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.3" />
     <PackageReference Include="Avalonia.Diagnostics" Version="0.10.3" />
+    <PackageReference Include="ReactiveUI" Version="16.2.6" />
    </ItemGroup>
 </Project>

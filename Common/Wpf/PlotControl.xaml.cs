@@ -118,6 +118,10 @@ namespace Common.Wpf
         {
             if (xData.Count != yData.Count) throw new ArgumentException($"Collections must be the same length, {nameof(xData)} was {xData.Count} and {nameof(yData)} was {yData.Count}.");
 
+            // remove invalid characters
+            // LineSeries only accepts alphanumeric, it seems
+            name = name.Replace("-", "");
+
             LineSeries lineSeries = new LineSeries()
             {
                 Title = name,

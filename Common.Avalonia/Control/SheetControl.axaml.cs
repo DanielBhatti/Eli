@@ -1,6 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using ReactiveUI;
+using System.Reactive;
 
 namespace Common.Avalonia.Control
 {
@@ -22,16 +24,21 @@ namespace Common.Avalonia.Control
             set => SetValue(ColumnCountProperty, value);
         }
 
+        public ReactiveCommand<Unit, Unit> DownRowCommand { get; }
+
+        public CellControl SelectedCellControl { get => _mainGrid.}
+
         public SheetControl()
         {
             InitializeComponent();
             _mainGrid = this.FindControl<Grid>("MainGrid");
+            DownRowCommand = ReactiveCommand.Create(DownRow);
 
-            int n = 10;
+            int n = 100;
             int m = 10;
 
-            for (int i = 0; i < n; i++) AddRow();
             for (int j = 0; j < m; j++) AddColumn();
+            for (int i = 0; i < n; i++) AddRow();
         }
 
         private void InitializeComponent()
@@ -65,6 +72,17 @@ namespace Common.Avalonia.Control
                 _mainGrid.Children.Add(cell);
             }
             ColumnCount += 1;
+        }
+
+        public void DownRow()
+        {
+            foreach(Controls child in _mainGrid.Children)
+            {
+                foreach(var control in child)
+                {
+                    control.
+                }
+            }
         }
     }
 }

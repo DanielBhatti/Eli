@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Common.Avalonia.Text;
-using System;
 
 namespace Common.Avalonia.Control
 {

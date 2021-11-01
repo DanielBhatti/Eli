@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using ReactiveUI;
+using System.Linq;
 using System.Reactive;
 
 namespace Common.Avalonia.Control
@@ -24,15 +25,12 @@ namespace Common.Avalonia.Control
             set => SetValue(ColumnCountProperty, value);
         }
 
-        public ReactiveCommand<Unit, Unit> DownRowCommand { get; }
-
-        public CellControl SelectedCellControl { get => _mainGrid.}
+        //public CellControl SelectedCellControl { get => _mainGrid}
 
         public SheetControl()
         {
             InitializeComponent();
             _mainGrid = this.FindControl<Grid>("MainGrid");
-            DownRowCommand = ReactiveCommand.Create(DownRow);
 
             int n = 100;
             int m = 10;
@@ -76,11 +74,22 @@ namespace Common.Avalonia.Control
 
         public void DownRow()
         {
-            foreach(Controls child in _mainGrid.Children)
+            foreach (CellControl control in _mainGrid.Children)
             {
-                foreach(var control in child)
+                if (control.IsKeyboardFocusWithin)
                 {
-                    control.
+                    int rowIndex = Grid.GetRow(control);
+                    int columnIndex = Grid.GetColumn(control);
+                    CellControl focusNext =
+                        _mainGrid.Children.OfType<CellControl>()
+                        .FirstOrDefault(c => Grid.GetRow(control) == rowIndex + 1
+                                                && Grid.GetColumn(control) == columnIndex);
+
+                    if (focusNext is not null)
+                    {
+                        // to do
+                        return;
+                    }
                 }
             }
         }

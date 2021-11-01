@@ -6,7 +6,7 @@
              x:Class="Common.Avalonia.Control.SheetControl"
 			 x:Name="MainControl">
 	<UserControl.KeyBindings>
-		<KeyBinding Gesture="Space" Command="{Binding DownRowCommand, ElementName=MainControl}"/>
+		<KeyBinding Gesture="Enter" Command="{Binding DownRow, ElementName=MainControl}"/>
 	</UserControl.KeyBindings>
 	<ScrollViewer
 		HorizontalScrollBarVisibility="Auto"

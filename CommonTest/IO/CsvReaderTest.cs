@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Data;
 
-namespace CommonTest
+namespace Common.Test
 {
     [TestFixture]
     public class CsvReaderTest

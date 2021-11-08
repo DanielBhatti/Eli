@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CommonTest {
+namespace Common.Test {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace CommonTest {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CommonTest.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Common.Test.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,18 @@ namespace CommonTest {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to a,b,c,d,e,f,g
+        ///0,1,2,4,8,16,32
+        ///0,2,4,6,8,10,12
+        ///1,1,1,1,1,1,1.
+        /// </summary>
+        internal static string SampleCsv {
+            get {
+                return ResourceManager.GetString("SampleCsv", resourceCulture);
             }
         }
     }

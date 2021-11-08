@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace CommonTest
+namespace Common.Test
 {
     public abstract class Command : ICommand
     {

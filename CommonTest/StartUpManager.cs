@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System.IO;
 
-namespace CommonTest
+namespace Common.Test
 {
     [Apartment(System.Threading.ApartmentState.STA)]
     public class StartUpManager

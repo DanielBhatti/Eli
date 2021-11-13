@@ -6,15 +6,15 @@ namespace Common.Avalonia.Mvvm
 {
     public class Notifyable<T> : ReactiveObject
     {
-        public Type Type { get => Value is not null ? Value.GetType() : null; }
-        private T _value = default(T);
+        public Type Type { get => Value is not null ? Value.GetType() : null!; }
+        private T _value = default(T)!;
         public T Value
         {
             get => _value;
             set => this.RaiseAndSetIfChanged(ref _value, value);
         }
 
-        public Notifyable() => Value = default(T);
+        public Notifyable() => Value = default(T)!;
 
         public Notifyable(T value) => Value = value;
 
@@ -32,7 +32,7 @@ namespace Common.Avalonia.Mvvm
 
         public override string ToString()
         {
-            return Value is not null ? Value.ToString() : "";
+            return Value is not null ? Value.ToString()! : ""!;
         }
     }
 

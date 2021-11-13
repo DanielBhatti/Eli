@@ -83,7 +83,7 @@ namespace Common.Avalonia.Control
                     CellControl focusNext =
                         _mainGrid.Children.OfType<CellControl>()
                         .FirstOrDefault(c => Grid.GetRow(control) == rowIndex + 1
-                                                && Grid.GetColumn(control) == columnIndex);
+                                                && Grid.GetColumn(control) == columnIndex)!;
 
                     if (focusNext is not null)
                     {

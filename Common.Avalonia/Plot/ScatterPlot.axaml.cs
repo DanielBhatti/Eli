@@ -7,7 +7,8 @@ namespace Common.Avalonia.Plot
 {
     public partial class ScatterPlot : UserControl
     {
-        private AvaPlot _scatterPlot;
+        private AvaPlot _avaPlot;
+        private ScottPlot.Plottable.ScatterPlot? _scatterPlot;
 
         public static readonly StyledProperty<string> TitleProperty = AvaloniaProperty.Register<ScatterPlot, string>(nameof(Title));
         public string Title
@@ -62,7 +63,7 @@ namespace Common.Avalonia.Plot
         public ScatterPlot()
         {
             InitializeComponent();
-            _scatterPlot = this.Find<AvaPlot>("ScatterPlot");
+            _avaPlot = this.Find<AvaPlot>("AvaScatterPlot");
         }
 
         private void InitializeComponent()
@@ -70,7 +71,12 @@ namespace Common.Avalonia.Plot
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void PlotData() => _scatterPlot.Plot.AddScatter(XData, YData);
+        private void PlotData()
+        {
+            if (_scatterPlot is not null) _avaPlot.Plot.Remove(_scatterPlot);
+            _scatterPlot = _avaPlot.Plot.AddScatter(XData, YData);
+            _avaPlot.Refresh();
+        }
         
         private void AddAxis(AxisType axisType)
         {
@@ -78,13 +84,13 @@ namespace Common.Avalonia.Plot
             switch(axisType)
             {
                 case AxisType.XPrimary:
-                    _scatterPlot.Plot.AddAxis(ScottPlot.Renderable.Edge.Left, 0, XAxis);
+                    _avaPlot.Plot.AddAxis(ScottPlot.Renderable.Edge.Left, 0, XAxis);
                     break;
                 case AxisType.YPrimary:
-                    _scatterPlot.Plot.AddAxis(ScottPlot.Renderable.Edge.Bottom, 0, YAxis);
+                    _avaPlot.Plot.AddAxis(ScottPlot.Renderable.Edge.Bottom, 0, YAxis);
                     break;
                 case AxisType.Title:
-                    _scatterPlot.Plot.Title(Title, true);
+                    _avaPlot.Plot.Title(Title, true);
                     break;
                 default:
                     ErrorText = "Failed to add axis.  Support axis types are XPrimary, YPrimary, and Title.";

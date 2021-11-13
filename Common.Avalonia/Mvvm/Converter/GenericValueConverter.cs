@@ -16,7 +16,7 @@ namespace Common.Avalonia.Mvvm.Converter
             if (parameter != null && !(parameter is TParameter))
                 throw new InvalidCastException(string.Format("In order to use the generic IValueConverter you have to use the correct type as ConvertParameter. The passing type was {0} but the expected is {1}", parameter.GetType(), typeof(TParameter)));
 
-            return Convert((TSource)value, targetType, (TParameter)parameter, culture);
+            return Convert((TSource)value!, targetType, (TParameter)parameter!, culture)!;
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -26,7 +26,7 @@ namespace Common.Avalonia.Mvvm.Converter
             if (parameter != null && !(parameter is TParameter))
                 throw new InvalidCastException(string.Format("In order to use the generic IValueConverter you have to use the correct type as ConvertParameter. The passing type was {0} but the expected is {1}", parameter.GetType(), typeof(TParameter)));
 
-            return ConvertBack((TTarget)value, targetType, (TParameter)parameter, culture);
+            return ConvertBack((TTarget)value!, targetType, (TParameter)parameter!, culture)!;
         }
     }
 

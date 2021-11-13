@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Common.Avalonia\Common.Avalonia.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Plot\" />
+  </ItemGroup>
+
 </Project>

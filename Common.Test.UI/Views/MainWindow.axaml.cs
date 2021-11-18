@@ -2,13 +2,16 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Common.Avalonia.Control
+namespace Common.Test.UI.Views
 {
-    public partial class MultiSelectControl : UserControl
+    public partial class MainWindow : Window
     {
-        public MultiSelectControl()
+        public MainWindow()
         {
             InitializeComponent();
+#if DEBUG
+            this.AttachDevTools();
+#endif
         }
 
         private void InitializeComponent()

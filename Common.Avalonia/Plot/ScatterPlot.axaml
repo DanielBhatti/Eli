@@ -4,9 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:sp="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Common.Avalonia.Plot.ScatterPlot">
-	<StackPanel>
-		<sp:AvaPlot x:Name="AvaScatterPlot"/>
-		<TextBlock Text="{Binding ErrorText}" Foreground="Red"/>
-	</StackPanel>
+             x:Class="Common.Avalonia.Plot.ScatterPlot"
+			 x:Name="ScatterPlot">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<sp:AvaPlot x:Name="AvaScatterPlot" Grid.Row="0"/>
+		<TextBlock DataContext="{Binding ElementName=ScatterPlot}" Text="{Binding ErrorText}" Foreground="Red" Grid.Row="1"/>
+	</Grid>
 </UserControl>

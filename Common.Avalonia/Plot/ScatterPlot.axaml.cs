@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
+using System.Windows.Input;
 
 namespace Common.Avalonia.Plot
 {
@@ -60,6 +61,16 @@ namespace Common.Avalonia.Plot
             private set => SetValue(ErrorTextProperty, value);
         }
 
+        //public static readonly StyledProperty<bool> IsRefreshingPlotProperty = AvaloniaProperty.Register<ScatterPlot, bool>(nameof(IsRefreshingPlot));
+        //public bool IsRefreshingPlot
+        //{
+        //    get => GetValue(IsRefreshingPlotProperty);
+        //    set
+        //    {
+        //        if (value == true) PlotData();
+        //    }
+        //}
+
         public ScatterPlot()
         {
             InitializeComponent();
@@ -77,11 +88,11 @@ namespace Common.Avalonia.Plot
             _scatterPlot = _avaPlot.Plot.AddScatter(XData, YData);
             _avaPlot.Refresh();
         }
-        
+
         private void AddAxis(AxisType axisType)
         {
             ErrorText = "";
-            switch(axisType)
+            switch (axisType)
             {
                 case AxisType.XPrimary:
                     _avaPlot.Plot.AddAxis(ScottPlot.Renderable.Edge.Left, 0, XAxis);

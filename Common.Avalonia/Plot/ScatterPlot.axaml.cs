@@ -1,80 +1,48 @@
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
-using System.Windows.Input;
+using ScottPlot.Renderable;
+using Avalonia.Data;
 
 namespace Common.Avalonia.Plot
 {
-    public partial class ScatterPlot : UserControl
+    public partial class ScatterPlot : AvaPlot
     {
-        private AvaPlot _avaPlot;
         private ScottPlot.Plottable.ScatterPlot? _scatterPlot;
 
-        public static readonly StyledProperty<string> TitleProperty = AvaloniaProperty.Register<ScatterPlot, string>(nameof(Title));
-        public string Title
-        {
-            get => GetValue(TitleProperty);
-            set => SetValue(TitleProperty, value);
-        }
+        public string Title { get; set; } = "";
+        public static readonly DirectProperty<ScatterPlot, string> TitleProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, string>(
+            nameof(Title),
+            o => o.Title,
+            (o, v) => { o.Title = v; o.Plot.Title(v, true); });
 
-        public static readonly StyledProperty<string> XAxisProperty = AvaloniaProperty.Register<ScatterPlot, string>(nameof(XAxis));
-        public string XAxis
-        {
-            get => GetValue(XAxisProperty);
-            set => SetValue(XAxisProperty, value);
-        }
+        public string XAxis { get; set; } = "";
+        public static readonly DirectProperty<ScatterPlot, string> XAxisProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, string>(
+            nameof(XAxis),
+            o => o.XAxis,
+            (o, v) => { o.XAxis = v; o.Plot.XAxis.Label(v); });
 
-        public static readonly StyledProperty<string> YAxisProperty = AvaloniaProperty.Register<ScatterPlot, string>(nameof(YAxis));
-        public string YAxis
-        {
-            get => GetValue(YAxisProperty);
-            set => SetValue(YAxisProperty, value);
-        }
+        public string YAxis { get; set; } = "";
+        public static readonly DirectProperty<ScatterPlot, string> YAxisProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, string>(
+            nameof(YAxis),
+            o => o.YAxis,
+            (o, v) => { o.YAxis = v; o.Plot.YAxis.Label(v); });
 
-        public static readonly StyledProperty<double[]> XDataProperty = AvaloniaProperty.Register<ScatterPlot, double[]>(nameof(XData));
-        public double[] XData
-        {
-            get => GetValue(XDataProperty);
-            set
-            {
-                SetValue(XDataProperty, value);
-                PlotData();
-            }
-        }
+        public double[] XData { get; set; } = new double[0];
+        public static readonly DirectProperty<ScatterPlot, double[]> XDataProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, double[]>(
+            nameof(XData),
+            o => o.XData,
+            (o, v) => { o.XData = v; o.PlotData(); });
 
-        public static readonly StyledProperty<double[]> YDataProperty = AvaloniaProperty.Register<ScatterPlot, double[]>(nameof(YData));
-        public double[] YData
-        {
-            get => GetValue(YDataProperty);
-            set
-            {
-                SetValue(YDataProperty, value);
-                PlotData();
-            }
-        }
+        public double[] YData { get; set; } = new double[0];
+        public static readonly DirectProperty<ScatterPlot, double[]> YDataProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, double[]>(
+            nameof(YData),
+            o => o.YData,
+            (o, v) => { o.YData = v; o.PlotData(); });
 
-        public static readonly StyledProperty<string> ErrorTextProperty = AvaloniaProperty.Register<ScatterPlot, string>(nameof(ErrorText));
-        public string ErrorText
-        {
-            get => GetValue(ErrorTextProperty);
-            private set => SetValue(ErrorTextProperty, value);
-        }
-
-        //public static readonly StyledProperty<bool> IsRefreshingPlotProperty = AvaloniaProperty.Register<ScatterPlot, bool>(nameof(IsRefreshingPlot));
-        //public bool IsRefreshingPlot
-        //{
-        //    get => GetValue(IsRefreshingPlotProperty);
-        //    set
-        //    {
-        //        if (value == true) PlotData();
-        //    }
-        //}
-
-        public ScatterPlot()
+        public ScatterPlot() : base()
         {
             InitializeComponent();
-            _avaPlot = this.Find<AvaPlot>("AvaScatterPlot");
         }
 
         private void InitializeComponent()
@@ -84,29 +52,9 @@ namespace Common.Avalonia.Plot
 
         private void PlotData()
         {
-            if (_scatterPlot is not null) _avaPlot.Plot.Remove(_scatterPlot);
-            _scatterPlot = _avaPlot.Plot.AddScatter(XData, YData);
-            _avaPlot.Refresh();
-        }
-
-        private void AddAxis(AxisType axisType)
-        {
-            ErrorText = "";
-            switch (axisType)
-            {
-                case AxisType.XPrimary:
-                    _avaPlot.Plot.AddAxis(ScottPlot.Renderable.Edge.Left, 0, XAxis);
-                    break;
-                case AxisType.YPrimary:
-                    _avaPlot.Plot.AddAxis(ScottPlot.Renderable.Edge.Bottom, 0, YAxis);
-                    break;
-                case AxisType.Title:
-                    _avaPlot.Plot.Title(Title, true);
-                    break;
-                default:
-                    ErrorText = "Failed to add axis.  Support axis types are XPrimary, YPrimary, and Title.";
-                    break;
-            }
+            if (_scatterPlot is not null) this.Plot.Remove(_scatterPlot);
+            if (XData is not null && YData is not null && XData.Length == YData.Length) _scatterPlot = this.Plot.AddScatter(XData, YData);
+            this.Refresh();
         }
     }
 }

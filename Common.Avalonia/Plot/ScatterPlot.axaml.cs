@@ -25,20 +25,20 @@ namespace Common.Avalonia.Plot
         public string YAxis { get; set; } = "";
         public static readonly DirectProperty<ScatterPlot, string> YAxisProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, string>(
             nameof(YAxis),
-            o => null,
-            (o, v) => { o.Plot.YAxis.Label(v); });
+            o => o.YAxis,
+            (o, v) => { o.YAxis = v; o.Plot.YAxis.Label(v); });
 
         public double[] XData { get; set; } = new double[0];
         public static readonly DirectProperty<ScatterPlot, double[]> XDataProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, double[]>(
             nameof(XData),
-            o => null,
-            (o, v) => { o.PlotData(); });
+            o => o.XData,
+            (o, v) => { o.XData = v; o.PlotData(); });
 
         public double[] YData { get; set; } = new double[0];
         public static readonly DirectProperty<ScatterPlot, double[]> YDataProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, double[]>(
             nameof(YData),
-            o => null,
-            (o, v) => { o.PlotData(); });
+            o => o.YData,
+            (o, v) => { o.YData = v; o.PlotData(); });
 
         public ScatterPlot() : base()
         {
@@ -53,11 +53,7 @@ namespace Common.Avalonia.Plot
         private void PlotData()
         {
             if (_scatterPlot is not null) this.Plot.Remove(_scatterPlot);
-            if (XData is not null && YData is not null && XData.Length == YData.Length)
-            {
-                if (XData.Length <= 1000) _scatterPlot = this.Plot.AddScatter(XData, YData);
-                else _scatterPlot = this.Plot.AddScatter(XData, YData, markerSize: 0);
-            }
+            if (XData is not null && YData is not null && XData.Length == YData.Length) _scatterPlot = this.Plot.AddScatter(XData, YData);
             this.Refresh();
         }
     }

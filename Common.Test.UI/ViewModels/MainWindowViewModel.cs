@@ -8,6 +8,7 @@ namespace Common.Test.UI.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         public ScatterPlotViewModel ScatterPlotViewModel { get; } = new ScatterPlotViewModel();
+        public MultiScatterPlotViewModel MultiScatterPlotViewModel { get; } = new MultiScatterPlotViewModel();
 
         public void TestLargeDataSet(int n)
         {
@@ -18,7 +19,7 @@ namespace Common.Test.UI.ViewModels
 
         public MainWindowViewModel()
         {
-            //TestLargeDataSet(100);
+            TestLargeDataSet(100000);
         }
     }
 }

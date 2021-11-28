@@ -13,6 +13,7 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-	<c:ScatterPlot DataContext="{Binding ScatterPlotViewModel}" XData="{Binding XData}" YData="{Binding YData}" Title="{Binding Title}" XAxis="{Binding XAxis}" YAxis="{Binding YAxis}"/>
+	<!--<c:ScatterPlot DataContext="{Binding ScatterPlotViewModel}" XData="{Binding XData}" YData="{Binding YData}" Title="{Binding Title}" XAxis="{Binding XAxis}" YAxis="{Binding YAxis}"/>-->
+	<c:MultiScatterPlot DataContext="{Binding MultiScatterPlotViewModel}" XData="{Binding XData}" YData="{Binding YData}" Title="{Binding Title}" BottomAxis="{Binding XAxis}" LeftAxis="{Binding YAxis}" RefreshDataToggle="{Binding RefreshDataToggle}"/>
 
 </Window>

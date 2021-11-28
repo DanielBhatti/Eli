@@ -53,7 +53,11 @@ namespace Common.Avalonia.Plot
         private void PlotData()
         {
             if (_scatterPlot is not null) this.Plot.Remove(_scatterPlot);
-            if (XData is not null && YData is not null && XData.Length == YData.Length) _scatterPlot = this.Plot.AddScatter(XData, YData);
+            if (XData is not null && YData is not null && XData.Length == YData.Length)
+            {
+                if (XData.Length <= 1000) _scatterPlot = this.Plot.AddScatter(XData, YData);
+                else _scatterPlot = this.Plot.AddScatter(XData, YData, markerSize: 0);
+            }
             this.Refresh();
         }
     }

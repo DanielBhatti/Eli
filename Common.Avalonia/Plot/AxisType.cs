@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Common.Avalonia.Plot
 {
-    public enum AxisType
+    public enum AxisPosition
     {
-        XPrimary,
-        XSecondary,
-        YPrimary,
-        YSecondary,
+        Bottom,
+        Left,
+        Right,
         Title
     }
 }

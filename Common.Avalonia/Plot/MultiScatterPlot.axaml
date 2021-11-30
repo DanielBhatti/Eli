@@ -5,5 +5,4 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 		 	xmlns:sp="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
              x:Class="Common.Avalonia.Plot.MultiScatterPlot"
-		     ToolTip.Tip="This is temp text, to be filled later.">
-</AvaPlot>
+		     ToolTip.Tip="Left click and drag mouse to pan.  Right click and drag mouse to zoom.  Right click to see miscellaneous options."/>

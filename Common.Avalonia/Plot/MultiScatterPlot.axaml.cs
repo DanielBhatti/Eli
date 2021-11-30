@@ -33,17 +33,22 @@ namespace Common.Avalonia.Plot
             o => o.RightAxis,
             (o, v) => { o.RightAxis = v; o.Plot.YAxis.Label(v); });
 
-        public ICollection<double[]> XData { get; set; } = new List<double[]>();
-        public static readonly DirectProperty<MultiScatterPlot, ICollection<double[]>> XDataProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, ICollection<double[]>>(
-            nameof(XData),
-            o => o.XData,
-            (o, v) => o.XData = v);
+        public ICollection<ScatterData> ScatterDataCollection { get; set; } = new List<ScatterData>();
+        public static readonly DirectProperty<MultiScatterPlot, ICollection<ScatterData>> ScatterDataCollectionProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, ICollection<ScatterData>>(
+            nameof(ScatterDataCollection),
+            o => o.ScatterDataCollection,
+            (o, v) => o.ScatterDataCollection = v);
 
-        public ICollection<double[]> YData { get; set; } = new List<double[]>();
-        public static readonly DirectProperty<MultiScatterPlot, ICollection<double[]>> YDataProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, ICollection<double[]>>(
-            nameof(YData),
-            o => o.YData,
-            (o, v) => o.YData = v);
+        private bool _isXDateTime = false;
+        public bool IsXDateTime
+        {
+            get => _isXDateTime;
+            set { this.Plot.XAxis.DateTimeFormat(value); _isXDateTime = value; }
+        }
+        public static readonly DirectProperty<MultiScatterPlot, bool> IsXDateTimeProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, bool>(
+            nameof(IsXDateTime),
+            o => o.IsXDateTime,
+            (o, v) => o.IsXDateTime = v);
 
         public bool RefreshDataToggle { get; set; } = false;
         public static readonly DirectProperty<MultiScatterPlot, bool> RefreshDataToggleProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, bool>(
@@ -82,11 +87,12 @@ namespace Common.Avalonia.Plot
         {
             this.Plot.Clear();
             ErrorText = "";
-            for (int i = 0; i < XData.Count; i++)
+            for (int i = 0; i < ScatterDataCollection.Count; i++)
             {
+                ScatterData scatterData = ScatterDataCollection.ElementAt(i);
                 try
                 {
-                    this.Plot.AddScatter(XData.ElementAt(i), YData.ElementAt(i), Colors[i % Colors.Length]);
+                    this.Plot.AddScatter(scatterData.XData, scatterData.YData, Colors[i % Colors.Length]);
                 }
                 catch
                 {

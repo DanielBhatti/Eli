@@ -54,7 +54,7 @@ namespace Common.Avalonia.Plot
         public static readonly DirectProperty<MultiScatterPlot, bool> RefreshDataToggleProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, bool>(
             nameof(RefreshDataToggle),
             o => o.RefreshDataToggle,
-            (o, v) => { if (v == true) o.RefreshData(); });
+            (o, v) => { if (v == true) o.RefreshData(); o.RefreshDataToggle = false; });
 
         public string ErrorText { get; private set; } = "";
         public static readonly DirectProperty<MultiScatterPlot, string> ErrorTextProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, string>(

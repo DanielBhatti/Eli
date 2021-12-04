@@ -32,6 +32,10 @@ namespace Common.Test.UI.ViewModels
             IsXDateTime = true;
 
             RefreshDataToggle = true;
+
+            //ScatterDataCollection.Clear();
+            //ScatterDataCollection.Add(new ScatterData(new double[] { 1, 2 }, new double[] { 3, 4 }));
+            //RefreshDataToggle = true;
         }
     }
 }

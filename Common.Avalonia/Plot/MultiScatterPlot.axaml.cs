@@ -31,7 +31,7 @@ namespace Common.Avalonia.Plot
         public static readonly DirectProperty<MultiScatterPlot, string> RightAxisProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, string>(
             nameof(RightAxis),
             o => o.RightAxis,
-            (o, v) => { o.RightAxis = v; o.Plot.YAxis.Label(v); });
+            (o, v) => { o.RightAxis = v; o.Plot.YAxis2.Label(v); });
 
         public ICollection<ScatterData> ScatterDataCollection { get; set; } = new List<ScatterData>();
         public static readonly DirectProperty<MultiScatterPlot, ICollection<ScatterData>> ScatterDataCollectionProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, ICollection<ScatterData>>(
@@ -54,7 +54,7 @@ namespace Common.Avalonia.Plot
         public static readonly DirectProperty<MultiScatterPlot, bool> RefreshDataToggleProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, bool>(
             nameof(RefreshDataToggle),
             o => o.RefreshDataToggle,
-            (o, v) => { if (v == true) o.RefreshData(); o.RefreshDataToggle = false; });
+            (o, v) => { if (v == true) o.RefreshData();  o.RefreshDataToggle = false; });
 
         public string ErrorText { get; private set; } = "";
         public static readonly DirectProperty<MultiScatterPlot, string> ErrorTextProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, string>(
@@ -76,6 +76,9 @@ namespace Common.Avalonia.Plot
         public MultiScatterPlot()
         {
             InitializeComponent();
+            this.Plot.YAxis2.IsVisible = true;
+            this.Plot.YAxis2.Ticks(true);
+            RefreshData();
         }
 
         private void InitializeComponent()
@@ -86,19 +89,31 @@ namespace Common.Avalonia.Plot
         public void RefreshData()
         {
             this.Plot.Clear();
+
+            this.Plot.Style(ScottPlot.Style.Gray1);
+            var darkBackground = System.Drawing.ColorTranslator.FromHtml("#2e3440");
+            this.Plot.Style(figureBackground: darkBackground, dataBackground: darkBackground);
+
             ErrorText = "";
             for (int i = 0; i < ScatterDataCollection.Count; i++)
             {
                 ScatterData scatterData = ScatterDataCollection.ElementAt(i);
                 try
                 {
-                    this.Plot.AddScatter(scatterData.XData, scatterData.YData, Colors[i % Colors.Length]);
+                    if (scatterData.XData.Length > 0)
+                    {
+                        ScottPlot.Plottable.ScatterPlot plot = this.Plot.AddScatter(scatterData.XData, scatterData.YData, Colors[i % Colors.Length], label: scatterData.Label, markerSize: scatterData.MarkerSize);
+                        plot.XAxisIndex = scatterData.XAxisIndex;
+                        plot.YAxisIndex = scatterData.YAxisIndex;
+                    }
                 }
                 catch
                 {
                     ErrorText = $"Failed to plot item {i}.\n";
                 }
             }
+            this.Plot.Legend();
+            this.Refresh();
         }
     }
 }

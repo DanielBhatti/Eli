@@ -29,12 +29,26 @@ namespace Common.Avalonia.Plot
             o => o.YData,
             (o, v) => o.YData = v);
 
-        public ScatterData(double[] xData, double[] yData, int xAxisIndex = 0, int yAxisIndex = 0)
+        public string Label { get; set; }
+        public static readonly DirectProperty<ScatterData, string> LabelProperty = AvaloniaProperty.RegisterDirect<ScatterData, string>(
+            nameof(Label),
+            o => o.Label,
+            (o, v) => o.Label = v);
+
+        public float MarkerSize { get; set; }
+        public static readonly DirectProperty<ScatterData, float> MarkerSizeProperty = AvaloniaProperty.RegisterDirect<ScatterData, float>(
+            nameof(MarkerSize),
+            o => o.MarkerSize,
+            (o, v) => o.MarkerSize = v);
+
+        public ScatterData(double[] xData, double[] yData, int xAxisIndex = 0, int yAxisIndex = 0, string label = "", float markerSize = 3)
         {
             XData = xData;
             YData = yData;
             XAxisIndex = xAxisIndex;
             YAxisIndex = yAxisIndex;
+            Label = label;
+            MarkerSize = markerSize;
         }
     }
 }

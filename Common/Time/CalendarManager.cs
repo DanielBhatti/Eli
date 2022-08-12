@@ -79,6 +79,11 @@ namespace Common.Time
             // Memorial Day (Last Monday in May)
             if (date.Month == 5 && isMonday && date.AddDays(7).Month == 6) return true;
 
+            // Juneteenth (June 19, or preceding Friday/following Monday if weekend)
+            if ((date.Month == 6 && date.Day == 18 && isFriday) ||
+                (date.Month == 6 && date.Day == 19 && !isWeekend) ||
+                (date.Month == 6 && date.Day == 20 && isMonday)) return true;
+
             // Independence Day (July 4, or preceding Friday/following Monday if weekend)
             if ((date.Month == 7 && date.Day == 3 && isFriday) ||
                 (date.Month == 7 && date.Day == 4 && !isWeekend) ||

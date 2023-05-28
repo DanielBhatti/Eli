@@ -1,95 +1,96 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using ReactiveUI;
 using System.Linq;
-using System.Reactive;
 
-namespace Common.Avalonia.Control
+namespace Common.Avalonia.Control;
+
+public partial class SheetControl : UserControl
 {
-    public partial class SheetControl : UserControl
+    private readonly Grid _mainGrid;
+
+    public StyledProperty<int> RowCountProperty = AvaloniaProperty.Register<SheetControl, int>(nameof(RowCount));
+    public int RowCount
     {
-        private Grid _mainGrid;
+        get => GetValue(RowCountProperty);
+        set => SetValue(RowCountProperty, value);
+    }
 
-        public StyledProperty<int> RowCountProperty = AvaloniaProperty.Register<SheetControl, int>(nameof(RowCount));
-        public int RowCount
+    public StyledProperty<int> ColumnCountProperty = AvaloniaProperty.Register<SheetControl, int>(nameof(ColumnCount));
+    public int ColumnCount
+    {
+        get => GetValue(ColumnCountProperty);
+        set => SetValue(ColumnCountProperty, value);
+    }
+
+    //public CellControl SelectedCellControl { get => _mainGrid}
+
+    public SheetControl()
+    {
+        InitializeComponent();
+        _mainGrid = this.FindControl<Grid>("MainGrid");
+
+        var n = 100;
+        var m = 10;
+
+        for(var j = 0; j < m; j++)
         {
-            get => GetValue(RowCountProperty);
-            set => SetValue(RowCountProperty, value);
+            AddColumn();
         }
 
-        public StyledProperty<int> ColumnCountProperty = AvaloniaProperty.Register<SheetControl, int>(nameof(ColumnCount));
-        public int ColumnCount
+        for(var i = 0; i < n; i++)
         {
-            get => GetValue(ColumnCountProperty);
-            set => SetValue(ColumnCountProperty, value);
+            AddRow();
         }
+    }
 
-        //public CellControl SelectedCellControl { get => _mainGrid}
+    private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        public SheetControl()
+    public void AddRow()
+    {
+        RowDefinition row = new();
+        _mainGrid.RowDefinitions.Add(row);
+        for(var i = 0; i < ColumnCount; i++)
         {
-            InitializeComponent();
-            _mainGrid = this.FindControl<Grid>("MainGrid");
-
-            int n = 100;
-            int m = 10;
-
-            for (int j = 0; j < m; j++) AddColumn();
-            for (int i = 0; i < n; i++) AddRow();
+            CellControl cell = new();
+            Grid.SetRow(cell, RowCount);
+            Grid.SetColumn(cell, i);
+            _mainGrid.Children.Add(cell);
         }
+        RowCount += 1;
+    }
 
-        private void InitializeComponent()
+    public void AddColumn()
+    {
+        ColumnDefinition column = new();
+        _mainGrid.ColumnDefinitions.Add(column);
+        for(var i = 0; i < RowCount; i++)
         {
-            AvaloniaXamlLoader.Load(this);
+            CellControl cell = new();
+            Grid.SetColumn(cell, ColumnCount);
+            Grid.SetRow(cell, i);
+            _mainGrid.Children.Add(cell);
         }
+        ColumnCount += 1;
+    }
 
-        public void AddRow()
+    public void DownRow()
+    {
+        foreach(CellControl control in _mainGrid.Children)
         {
-            RowDefinition row = new RowDefinition();
-            _mainGrid.RowDefinitions.Add(row);
-            for (int i = 0; i < ColumnCount; i++)
+            if(control.IsKeyboardFocusWithin)
             {
-                CellControl cell = new CellControl();
-                Grid.SetRow(cell, RowCount);
-                Grid.SetColumn(cell, i);
-                _mainGrid.Children.Add(cell);
-            }
-            RowCount += 1;
-        }
+                var rowIndex = Grid.GetRow(control);
+                var columnIndex = Grid.GetColumn(control);
+                var focusNext =
+                    _mainGrid.Children.OfType<CellControl>()
+                    .FirstOrDefault(c => Grid.GetRow(control) == rowIndex + 1
+                                            && Grid.GetColumn(control) == columnIndex)!;
 
-        public void AddColumn()
-        {
-            ColumnDefinition column = new ColumnDefinition();
-            _mainGrid.ColumnDefinitions.Add(column);
-            for (int i = 0; i < RowCount; i++)
-            {
-                CellControl cell = new CellControl();
-                Grid.SetColumn(cell, ColumnCount);
-                Grid.SetRow(cell, i);
-                _mainGrid.Children.Add(cell);
-            }
-            ColumnCount += 1;
-        }
-
-        public void DownRow()
-        {
-            foreach (CellControl control in _mainGrid.Children)
-            {
-                if (control.IsKeyboardFocusWithin)
+                if(focusNext is not null)
                 {
-                    int rowIndex = Grid.GetRow(control);
-                    int columnIndex = Grid.GetColumn(control);
-                    CellControl focusNext =
-                        _mainGrid.Children.OfType<CellControl>()
-                        .FirstOrDefault(c => Grid.GetRow(control) == rowIndex + 1
-                                                && Grid.GetColumn(control) == columnIndex)!;
-
-                    if (focusNext is not null)
-                    {
-                        // to do
-                        return;
-                    }
+                    // to do
+                    return;
                 }
             }
         }

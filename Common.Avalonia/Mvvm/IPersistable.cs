@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace Common.Avalonia.Mvvm
+namespace Common.Avalonia.Mvvm;
+
+public interface IPersistable
 {
-    public interface IPersistable
-    {
-        string Serialize(object o, Type type);
+    string Serialize(object o, Type type);
 
-        object Deserialize(string s, Type type);
+    object Deserialize(string s, Type type);
 
-        void Save();
+    void Save();
 
-        void Load();
-    }
+    void Load();
 }

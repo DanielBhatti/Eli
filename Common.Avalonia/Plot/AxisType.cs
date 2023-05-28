@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Common.Avalonia.Plot;
 
-namespace Common.Avalonia.Plot
+public enum AxisPosition
 {
-    public enum AxisPosition
-    {
-        Bottom,
-        Left,
-        Right,
-        Title
-    }
+    Bottom,
+    Left,
+    Right,
+    Title
 }

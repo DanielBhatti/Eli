@@ -1,58 +1,53 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 
-namespace Common.Avalonia.Text
+namespace Common.Avalonia.Text;
+
+public class ValueString : IValueContainer
 {
-    public class ValueString : IValueContainer
+    public string TextValue { get; private set; }
+    public object? Value { get; private set; }
+    public Type? Type { get; private set; }
+
+    public ValueString(string textValue, Type type)
     {
-        public string TextValue { get; private set; }
-        public object? Value { get; private set; }
-        public Type? Type { get; private set; }
+        TextValue = textValue;
+        SetType(type);
+        SetValue(textValue);
+    }
 
-        public ValueString(string textValue, Type type)
+    public void SetValue(string textValue) => Update(textValue, Type);
+
+    public void SetType(Type type) => Update(TextValue, type);
+
+    public void Update(string textValue, Type? type)
+    {
+        TextValue = textValue;
+        if(type is null)
         {
-            TextValue = textValue;
-            SetType(type);
-            SetValue(textValue);
+            return;
         }
 
-        public void SetValue(string textValue)
+        var parseMethod = type.GetMethod("Parse");
+        if(parseMethod is not null
+            && parseMethod.GetParameters().Count() == 1
+            && parseMethod.GetParameters().First().ParameterType == typeof(string))
         {
-            Update(textValue, Type);
-        }
-
-        public void SetType(Type type)
-        {
-            Update(TextValue, type);
-        }
-
-        public void Update(string textValue, Type? type)
-        {
-            TextValue = textValue;
-            if (type is null) return;
-
-            MethodInfo? parseMethod = type.GetMethod("Parse");
-            if (parseMethod is not null
-                && parseMethod.GetParameters().Count() == 1
-                && parseMethod.GetParameters().First().ParameterType == typeof(string))
+            try
             {
-                try
-                {
-                    Value = parseMethod.Invoke(type, new object[] { textValue });
-                    Type = type;
-                }
-                catch
-                {
-                    Value = null;
-                    Type = null;
-                }
+                Value = parseMethod.Invoke(type, new object[] { textValue });
+                Type = type;
             }
-            else if (type == typeof(string))
+            catch
             {
-                Value = textValue;
-                Type = typeof(string);
+                Value = null;
+                Type = null;
             }
+        }
+        else if(type == typeof(string))
+        {
+            Value = textValue;
+            Type = typeof(string);
         }
     }
 }

@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace Common.Avalonia.Text
+namespace Common.Avalonia.Text;
+
+public interface IValueContainer
 {
-    public interface IValueContainer
-    {
-        string TextValue { get; }
-        object? Value { get; }
-        Type? Type { get; }
+    string TextValue { get; }
+    object? Value { get; }
+    Type? Type { get; }
 
-        void SetValue(string value);
+    void SetValue(string value);
 
-        void SetType(Type type);
-    }
+    void SetType(Type type);
 }

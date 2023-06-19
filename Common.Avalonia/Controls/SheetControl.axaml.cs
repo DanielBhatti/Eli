@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using System.Linq;
 
-namespace Common.Avalonia.Control;
+namespace Common.Avalonia.Controls;
 
 public partial class SheetControl : UserControl
 {
@@ -76,7 +76,7 @@ public partial class SheetControl : UserControl
 
     public void DownRow()
     {
-        foreach(CellControl control in _mainGrid.Children)
+        foreach(CellControl control in _mainGrid.Children.Cast<CellControl>())
         {
             if(control.IsKeyboardFocusWithin)
             {

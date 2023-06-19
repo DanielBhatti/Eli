@@ -8,12 +8,12 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.10" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.10" />
-    <PackageReference Include="ReactiveUI" Version="16.3.10" />
-    <PackageReference Include="ScottPlot" Version="4.1.27" />
-    <PackageReference Include="ScottPlot.Avalonia" Version="4.1.27" />
+    <PackageReference Include="Avalonia" Version="0.10.21" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.21" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.21" />
+    <PackageReference Include="ReactiveUI" Version="19.2.1" />
+    <PackageReference Include="ScottPlot" Version="4.1.64" />
+    <PackageReference Include="ScottPlot.Avalonia" Version="4.1.64" />
    </ItemGroup>
   <ItemGroup>
     <Compile Update="Control\.axaml.cs">

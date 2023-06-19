@@ -22,10 +22,7 @@ public class BoolToBoolValueConverter : AvaloniaObject, IValueConverter
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if(value.GetType() != typeof(bool))
-        {
-            return false;
-        }
+        if(value.GetType() != typeof(bool)) return false;
 
         var v = (bool)value;
         return IsNegated ? !v : (object)v;

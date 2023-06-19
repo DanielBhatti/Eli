@@ -15,7 +15,7 @@ public abstract class GenericValueConverter<TSource, TTarget, TParameter> : IVal
             ? throw new InvalidCastException(string.Format("In order to use the generic IValueConverter you have to use the correct type. The passing type was {0} but the expected is {1}", value.GetType(), typeof(TSource)))
             : parameter is not null and not TParameter
             ? throw new InvalidCastException(string.Format("In order to use the generic IValueConverter you have to use the correct type as ConvertParameter. The passing type was {0} but the expected is {1}", parameter.GetType(), typeof(TParameter)))
-            : (object)Convert((TSource)value!, targetType, (TParameter)parameter!, culture);
+            : Convert((TSource)value!, targetType, (TParameter)parameter!, culture) as object;
     }
 
     object? IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -24,7 +24,7 @@ public abstract class GenericValueConverter<TSource, TTarget, TParameter> : IVal
             ? throw new InvalidCastException(string.Format("In order to use the generic IValueConverter you have to use the correct type. The passing type was {0} but the expected is {1}", value.GetType(), typeof(TTarget)))
             : parameter is not null and not TParameter
             ? throw new InvalidCastException(string.Format("In order to use the generic IValueConverter you have to use the correct type as ConvertParameter. The passing type was {0} but the expected is {1}", parameter.GetType(), typeof(TParameter)))
-            : (object)ConvertBack((TTarget)value!, targetType, (TParameter)parameter!, culture);
+            : ConvertBack((TTarget)value!, targetType, (TParameter)parameter!, culture) as object;
     }
 }
 

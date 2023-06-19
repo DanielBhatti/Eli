@@ -3,14 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Common.Avalonia.Control.SheetControl"
-			 x:Name="MainControl">
-	<UserControl.KeyBindings>
-		<KeyBinding Gesture="Enter" Command="{Binding DownRow, ElementName=MainControl}"/>
-	</UserControl.KeyBindings>
-	<ScrollViewer
-		HorizontalScrollBarVisibility="Auto"
-		VerticalScrollBarVisibility="Auto">
-		<Grid x:Name="MainGrid"/>
-	</ScrollViewer>
+             x:Class="Common.Avalonia.Controls.SetValueControl">
+	<ContentPresenter x:Name="PART_ContentPresenter" Content="{Binding Value}"/>
 </UserControl>

@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Common.Avalonia.Text;
 
-namespace Common.Avalonia.Control;
+namespace Common.Avalonia.Controls;
 
 public partial class CellControl : UserControl
 {

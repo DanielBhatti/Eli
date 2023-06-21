@@ -76,7 +76,7 @@ public partial class SheetControl : UserControl
 
     public void DownRow()
     {
-        foreach(CellControl control in _mainGrid.Children.Cast<CellControl>())
+        foreach(var control in _mainGrid.Children.Cast<CellControl>())
         {
             if(control.IsKeyboardFocusWithin)
             {

@@ -1,81 +1,78 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Markup.Xaml;
-using System;
 using Common.Avalonia.Converters;
-using Avalonia;
+using System;
 
-namespace Common.Avalonia.Controls
+namespace Common.Avalonia.Controls;
+
+public class SetValueControl : UserControl
 {
-    public class SetValueControl : UserControl
+    public static readonly StyledProperty<object> ValueProperty = AvaloniaProperty.Register<SetValueControl, object>(nameof(Value));
+
+    public SetValueControl()
     {
-        public static readonly StyledProperty<object> ValueProperty = AvaloniaProperty.Register<SetValueControl, object>(nameof(Value));
+        InitializeComponent();
+        _ = this.GetObservable(ValueProperty).Subscribe(_ => UpdateControl());
+    }
 
-        public SetValueControl()
+    public object Value
+    {
+        get => GetValue(ValueProperty);
+        set => SetValue(ValueProperty, value);
+    }
+
+    private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
+
+    private void UpdateControl()
+    {
+        if(Value is null) return;
+        if(Value is string)
         {
-            InitializeComponent();
-            this.GetObservable(ValueProperty).Subscribe(_ => UpdateControl());
+            var textBox = new TextBox();
+            _ = textBox.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this });
+            Content = textBox;
         }
-
-        public object Value
+        else if(Value is DateTime)
         {
-            get => GetValue(ValueProperty);
-            set => SetValue(ValueProperty, value);
+            var datePicker = new DatePicker();
+            _ = datePicker.Bind(DatePicker.SelectedDateProperty, new Binding(nameof(Value)) { Source = this });
+            Content = datePicker;
         }
-
-        private void InitializeComponent()
+        else if(Value is bool)
         {
-            AvaloniaXamlLoader.Load(this);
+            var checkBox = new CheckBox();
+            _ = checkBox.Bind(CheckBox.IsCheckedProperty, new Binding(nameof(Value)) { Source = this });
+            Content = checkBox;
         }
-
-        private void UpdateControl()
+        else if(Value is char)
         {
-            if(Value is null) return;
-
-            if(Value is string s)
+            var textBox = new TextBox();
+            _ = textBox.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this, Converter = new CharToStringConverter() });
+            Content = textBox;
+        }
+        else if(Value is int or byte or short or ushort or uint or long or ulong or float or double or decimal)
+        {
+            var numericUpDown = new NumericUpDown();
+            _ = numericUpDown.Bind(NumericUpDown.ValueProperty, new Binding(nameof(Value)) { Source = this, Converter = new NumericToDoubleConverter() });
+            Content = numericUpDown;
+        }
+        else if(Value is Enum enumValue)
+        {
+            var comboBox = new ComboBox
             {
-                var textBox = new TextBox();
-                textBox.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this });
-                this.Content = textBox;
-            }
-            else if(Value is DateTime dt)
-            {
-                var datePicker = new DatePicker();
-                datePicker.Bind(DatePicker.SelectedDateProperty, new Binding(nameof(Value)) { Source = this });
-                this.Content = datePicker;
-            }
-            else if(Value is bool b)
-            {
-                var checkBox = new CheckBox();
-                checkBox.Bind(CheckBox.IsCheckedProperty, new Binding(nameof(Value)) { Source = this });
-                this.Content = checkBox;
-            }
-            else if(Value is char c)
-            {
-                var textBox = new TextBox();
-                textBox.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this, Converter = new CharToStringConverter() });
-                this.Content = textBox;
-            }
-            else if(Value is int || Value is byte || Value is short || Value is ushort || Value is uint || Value is long || Value is ulong || Value is float || Value is double || Value is decimal)
-            {
-                var numericUpDown = new NumericUpDown();
-                numericUpDown.Bind(NumericUpDown.ValueProperty, new Binding(nameof(Value)) { Source = this, Converter = new NumericToDoubleConverter() });
-                this.Content = numericUpDown;
-            }
-            else if(Value is Enum enumValue)
-            {
-                var comboBox = new ComboBox();
-                comboBox.Items = Enum.GetValues(enumValue.GetType());
-                comboBox.SelectedItem = enumValue;
-                comboBox.Bind(ComboBox.SelectedItemProperty, new Binding(nameof(Value)) { Source = this });
-                this.Content = comboBox;
-            }
-            else
-            {
-                var textBox = new TextBox();
-                textBox.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this });
-                this.Content = textBox;
-            }
+                Items = Enum.GetValues(enumValue.GetType()),
+                SelectedItem = enumValue
+            };
+            _ = comboBox.Bind(ComboBox.SelectedItemProperty, new Binding(nameof(Value)) { Source = this });
+            Content = comboBox;
+        }
+        else
+        {
+            var textBox = new TextBox();
+            _ = textBox.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this });
+            Content = textBox;
         }
     }
 }

@@ -8,7 +8,7 @@ public class NumericToDoubleConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if(!String.IsNullOrEmpty(value as string))
+        if(!string.IsNullOrEmpty(value as string))
         {
             return System.Convert.ToDouble(value);
         }

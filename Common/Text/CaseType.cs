@@ -6,6 +6,7 @@ public enum CaseType
     SnakeCase,
     CamelCase,
     SpacedPascalCase,
+    SpacedLowerCase,
     Unknown
 }
 

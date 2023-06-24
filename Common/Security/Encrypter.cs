@@ -24,9 +24,9 @@ public class Encrypter
         var saltStringBytes = Generate128BitsOfRandomEntropy();
         var ivStringBytes = Generate128BitsOfRandomEntropy();
         var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-        using Rfc2898DeriveBytes password = new(passPhrase, saltStringBytes, DerivationIterations);
+        using Rfc2898DeriveBytes password = new(passPhrase, saltStringBytes, DerivationIterations, HashAlgorithmName.MD5);
         var keyBytes = password.GetBytes(Keysize / 8);
-        using RijndaelManaged symmetricKey = new();
+        using var symmetricKey = Aes.Create();
         symmetricKey.BlockSize = 128;
         symmetricKey.Mode = CipherMode.CBC;
         symmetricKey.Padding = PaddingMode.PKCS7;
@@ -56,9 +56,9 @@ public class Encrypter
         // Get the actual cipher text bytes by removing the first 32 bytes from the cipherText string.
         var cipherTextBytes = cipherTextBytesWithSaltAndIv.Skip(Keysize / 8 * 2).Take(cipherTextBytesWithSaltAndIv.Length - Keysize / 8 * 2).ToArray();
 
-        using Rfc2898DeriveBytes password = new(passPhrase, saltStringBytes, DerivationIterations);
+        using Rfc2898DeriveBytes password = new(passPhrase, saltStringBytes, DerivationIterations, HashAlgorithmName.MD5);
         var keyBytes = password.GetBytes(Keysize / 8);
-        using RijndaelManaged symmetricKey = new();
+        using var symmetricKey = Aes.Create();
         symmetricKey.BlockSize = 128;
         symmetricKey.Mode = CipherMode.CBC;
         symmetricKey.Padding = PaddingMode.PKCS7;
@@ -76,11 +76,8 @@ public class Encrypter
     private byte[] Generate128BitsOfRandomEntropy()
     {
         var randomBytes = new byte[16]; // 16 Bytes will give us 128 bits.
-        using(RNGCryptoServiceProvider rngCsp = new())
-        {
-            // Fill the array with cryptographically secure random bytes.
-            rngCsp.GetBytes(randomBytes);
-        }
+        using var rngCsp = RandomNumberGenerator.Create();
+        rngCsp.GetBytes(randomBytes);
         return randomBytes;
     }
 

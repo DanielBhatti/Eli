@@ -1,42 +1,37 @@
 ﻿using Common.IO;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
-namespace Common.Test
+namespace Common.Test;
+
+[TestFixture]
+public class CsvReaderTest
 {
-    [TestFixture]
-    public class CsvReaderTest
+    private CsvReader _csvReader;
+
+    [SetUp]
+    public void SetUp() => _csvReader = new CsvReader();
+
+    [Test]
+    public void ReadCsv()
     {
-        private CsvReader _csvReader;
-        private StartUpManager _sum;
+        // change filepath logic later
+        var filePath = System.IO.Path.Combine(@"C:\Users\bhatt\repos\Common\Common.Test\Resources", "SampleCsv.csv");
+        var types = new Type[7];
+        for(var i = 0; i < 7; i++) types[i] = typeof(int);
 
-        [SetUp]
-        public void SetUp()
-        {
-            _csvReader = new CsvReader();
-            _sum = new StartUpManager();
-        }
+        var dataTable = _csvReader.FileToDataTable(filePath, true, types: types);
 
-        [Test]
-        public void ReadCsv()
-        {
-            string filePath = System.IO.Path.Combine(StartUpManager.ResourcesDirectory, "SampleCsv.csv");
-            Type[] types = new Type[7];
-            for (int i = 0; i < 7; i++) types[i] = typeof(int);
-
-            DataTable dataTable = _csvReader.FileToDataTable(filePath, true, types: types);
-
-            foreach(DataColumn dataColumn in dataTable.Columns)
-            {
-                for (int i = 0; i < dataTable.Rows.Count; i++)
-                {
-                    object val = dataTable.Rows[i][dataColumn];
-                    if (i == 0) Assert.AreEqual((int)Math.Pow(i, 2), val);
-                    if (i == 1) Assert.AreEqual(2 * i, val);
-                    if (i == 2) Assert.AreEqual(1, val);
-                }
-            }
-        }
+        Assert.AreEqual("0", dataTable.Rows[0]["a"]);
+        Assert.AreEqual("1", dataTable.Rows[0]["b"]);
+        Assert.AreEqual("2", dataTable.Rows[0]["c"]);
+        Assert.AreEqual("0", dataTable.Rows[1]["a"]);
+        Assert.AreEqual("2", dataTable.Rows[1]["b"]);
+        Assert.AreEqual("4", dataTable.Rows[1]["c"]);
+        Assert.AreEqual("1", dataTable.Rows[2]["a"]);
+        Assert.AreEqual("1", dataTable.Rows[2]["b"]);
+        Assert.AreEqual("1", dataTable.Rows[2]["c"]);
     }
 }

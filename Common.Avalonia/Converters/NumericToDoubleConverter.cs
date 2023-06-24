@@ -6,21 +6,17 @@ namespace Common.Avalonia.Converters;
 
 public class NumericToDoubleConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if(!string.IsNullOrEmpty(value as string))
-        {
-            return System.Convert.ToDouble(value);
-        }
+        if(value == null) return "";
+        if(!string.IsNullOrEmpty(value as string)) return System.Convert.ToDouble(value);
         return value;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if(value is double d)
-        {
-            return System.Convert.ChangeType(d, targetType);
-        }
+        if(value == null) return "";
+        if(value is double d) return System.Convert.ChangeType(d, targetType);
         return value;
     }
 }

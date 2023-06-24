@@ -1,62 +1,50 @@
-﻿using System;
+﻿using CsvHelper.Configuration;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Common.IO;
 
 public class CsvReader
 {
-    public DataTable FileToDataTable(string filePath, bool hasHeader = false,
-        string delimiter = ",", Type[] types = null)
+    public DataTable FileToDataTable(string filePath, bool hasHeader = false, string delimiter = ",", Type[] types = null)
     {
-        DataTable dataTable = new();
-        using(StreamReader reader = new(filePath))
+        var dt = new DataTable();
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            var firstLine = reader.ReadLine();
-            var numFields = firstLine.Split(delimiter).Length;
-            ToStart(reader);
-
-            if(types is null)
+            HasHeaderRecord = hasHeader,
+            Delimiter = delimiter,
+        };
+        using(var reader = new StreamReader(filePath, Encoding.Default))
+        using(var csv = new CsvHelper.CsvReader(reader, config))
+        {
+            var records = csv.GetRecords<dynamic>().ToList();
+            if(records.Count == 0)
             {
-                types = new Type[numFields];
-                for(var i = 0; i < types.Length; i++)
-                {
-                    types[i] = typeof(string);
-                }
-            }
-            else if(types.Length != numFields)
-            {
-                throw new ArgumentException("Number of types provided must equal number of fields in the file.");
+                return dt;
             }
 
-            if(hasHeader)
+            if(records[0] is not IDictionary<string, object> firstRecord)
             {
-                var line = reader.ReadLine();
-                var headerFields = line.Split(delimiter);
-                foreach(var field in headerFields)
-                {
-                    _ = dataTable.Columns.Add(field);
-                }
+                throw new Exception("Failed to read the CSV file.");
             }
 
-            while(!reader.EndOfStream)
+            foreach(var key in firstRecord.Keys) _ = dt.Columns.Add(key);
+
+            if(types != null && types.Length == dt.Columns.Count) for(var i = 0; i < types.Length; i++) dt.Columns[i].DataType = types[i];
+
+            foreach(var record in records)
             {
-                var line = reader.ReadLine();
-                object[] fields = line.Split(delimiter);
-                var convertedFields = new object[fields.Length];
-                for(var i = 0; i < fields.Length; i++)
-                {
-                    convertedFields[i] = Convert.ChangeType(fields[i], types[i]);
-                }
-                _ = dataTable.Rows.Add(convertedFields);
+                var row = dt.NewRow();
+                var dict = record as IDictionary<string, object>;
+                foreach(DataColumn column in dt.Columns) row[column.ColumnName] = dict[column.ColumnName];
+                dt.Rows.Add(row);
             }
         }
-        return dataTable;
-    }
-
-    private void ToStart(StreamReader reader)
-    {
-        reader.DiscardBufferedData();
-        _ = reader.BaseStream.Seek(0, System.IO.SeekOrigin.Begin);
+        return dt;
     }
 }

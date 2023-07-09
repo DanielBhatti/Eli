@@ -54,6 +54,6 @@ public class CaseConverterTest
     [TestCase("HelloWorldIsGood", ExpectedResult = CaseType.PascalCase)]
     [TestCase("hello_world_is_good", ExpectedResult = CaseType.SnakeCase)]
     [TestCase("Hello World Is Good", ExpectedResult = CaseType.SpacedPascalCase)]
-    [TestCase("HelloWorldIs Good", ExpectedResult = CaseType.Unknown)]
+    [TestCase("HelloWorldIs Good", ExpectedResult = CaseType.SpacedCase)]
     public CaseType DetermineCaseTest(string input) => input.DetermineCase();
 }

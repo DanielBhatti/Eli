@@ -1,4 +1,4 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
 using System.Collections.Generic;
@@ -7,34 +7,34 @@ using System.Linq;
 
 namespace Common.Avalonia.Plot;
 
-public partial class MultiScatterPlot : AvaPlot
+public partial class BindableMultiScatterPlot : AvaPlot
 {
     public string Title { get; set; } = "";
-    public static readonly DirectProperty<MultiScatterPlot, string> TitleProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, string>(
+    public static readonly DirectProperty<BindableMultiScatterPlot, string> TitleProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, string>(
         nameof(Title),
         o => o.Title,
         (o, v) => { o.Title = v; o.Plot.Title(v, true); });
 
     public string BottomAxis { get; set; } = "";
-    public static readonly DirectProperty<MultiScatterPlot, string> BottomAxisProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, string>(
+    public static readonly DirectProperty<BindableMultiScatterPlot, string> BottomAxisProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, string>(
         nameof(BottomAxis),
         o => o.BottomAxis,
         (o, v) => { o.BottomAxis = v; _ = o.Plot.XAxis.Label(v); });
 
     public string LeftAxis { get; set; } = "";
-    public static readonly DirectProperty<MultiScatterPlot, string> LeftAxisProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, string>(
+    public static readonly DirectProperty<BindableMultiScatterPlot, string> LeftAxisProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, string>(
         nameof(LeftAxis),
         o => o.LeftAxis,
         (o, v) => { o.LeftAxis = v; _ = o.Plot.YAxis.Label(v); });
 
     public string RightAxis { get; set; } = "";
-    public static readonly DirectProperty<MultiScatterPlot, string> RightAxisProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, string>(
+    public static readonly DirectProperty<BindableMultiScatterPlot, string> RightAxisProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, string>(
         nameof(RightAxis),
         o => o.RightAxis,
         (o, v) => { o.RightAxis = v; _ = o.Plot.YAxis2.Label(v); });
 
     public ICollection<ScatterData> ScatterDataCollection { get; set; } = new List<ScatterData>();
-    public static readonly DirectProperty<MultiScatterPlot, ICollection<ScatterData>> ScatterDataCollectionProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, ICollection<ScatterData>>(
+    public static readonly DirectProperty<BindableMultiScatterPlot, ICollection<ScatterData>> ScatterDataCollectionProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, ICollection<ScatterData>>(
         nameof(ScatterDataCollection),
         o => o.ScatterDataCollection,
         (o, v) => o.ScatterDataCollection = v);
@@ -45,19 +45,19 @@ public partial class MultiScatterPlot : AvaPlot
         get => _isXDateTime;
         set { Plot.XAxis.DateTimeFormat(value); _isXDateTime = value; }
     }
-    public static readonly DirectProperty<MultiScatterPlot, bool> IsXDateTimeProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, bool>(
+    public static readonly DirectProperty<BindableMultiScatterPlot, bool> IsXDateTimeProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, bool>(
         nameof(IsXDateTime),
         o => o.IsXDateTime,
         (o, v) => o.IsXDateTime = v);
 
     public bool RefreshDataToggle { get; set; } = false;
-    public static readonly DirectProperty<MultiScatterPlot, bool> RefreshDataToggleProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, bool>(
+    public static readonly DirectProperty<BindableMultiScatterPlot, bool> RefreshDataToggleProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, bool>(
         nameof(RefreshDataToggle),
         o => o.RefreshDataToggle,
         (o, v) => { if(v == true) { o.RefreshData(); } o.RefreshDataToggle = false; });
 
     public string ErrorText { get; private set; } = "";
-    public static readonly DirectProperty<MultiScatterPlot, string> ErrorTextProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, string>(
+    public static readonly DirectProperty<BindableMultiScatterPlot, string> ErrorTextProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, string>(
         nameof(ErrorText),
         o => o.ErrorText);
 
@@ -73,15 +73,12 @@ public partial class MultiScatterPlot : AvaPlot
         Color.Brown
     };
 
-    public MultiScatterPlot()
+    public BindableMultiScatterPlot() : base()
     {
-        InitializeComponent();
         Plot.YAxis2.IsVisible = true;
         Plot.YAxis2.Ticks(true);
         RefreshData();
     }
-
-    private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
     public void RefreshData()
     {

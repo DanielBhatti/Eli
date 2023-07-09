@@ -9,14 +9,14 @@ public partial class SheetControl : UserControl
 {
     private readonly Grid _mainGrid;
 
-    public StyledProperty<int> RowCountProperty = AvaloniaProperty.Register<SheetControl, int>(nameof(RowCount));
+    public static readonly StyledProperty<int> RowCountProperty = AvaloniaProperty.Register<SheetControl, int>(nameof(RowCount));
     public int RowCount
     {
         get => GetValue(RowCountProperty);
         set => SetValue(RowCountProperty, value);
     }
 
-    public StyledProperty<int> ColumnCountProperty = AvaloniaProperty.Register<SheetControl, int>(nameof(ColumnCount));
+    public static readonly StyledProperty<int> ColumnCountProperty = AvaloniaProperty.Register<SheetControl, int>(nameof(ColumnCount));
     public int ColumnCount
     {
         get => GetValue(ColumnCountProperty);
@@ -28,7 +28,7 @@ public partial class SheetControl : UserControl
     public SheetControl()
     {
         InitializeComponent();
-        _mainGrid = this.FindControl<Grid>("MainGrid");
+        _mainGrid = this.FindControl<Grid>(nameof(MainGrid))!;
 
         var n = 100;
         var m = 10;

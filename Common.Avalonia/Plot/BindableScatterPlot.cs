@@ -1,39 +1,39 @@
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
 
 namespace Common.Avalonia.Plot;
 
-public partial class ScatterPlot : AvaPlot
+public partial class BindableScatterPlot : AvaPlot
 {
     private ScottPlot.Plottable.ScatterPlot? _scatterPlot;
 
     public string Title { get; set; } = "";
-    public static readonly DirectProperty<ScatterPlot, string> TitleProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, string>(
+    public static readonly DirectProperty<BindableScatterPlot, string> TitleProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, string>(
         nameof(Title),
         o => o.Title,
         (o, v) => { o.Title = v; o.Plot.Title(v, true); });
 
     public string XAxis { get; set; } = "";
-    public static readonly DirectProperty<ScatterPlot, string> XAxisProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, string>(
+    public static readonly DirectProperty<BindableScatterPlot, string> XAxisProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, string>(
         nameof(XAxis),
         o => o.XAxis,
         (o, v) => { o.XAxis = v; _ = o.Plot.XAxis.Label(v); });
 
     public string YAxis { get; set; } = "";
-    public static readonly DirectProperty<ScatterPlot, string> YAxisProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, string>(
+    public static readonly DirectProperty<BindableScatterPlot, string> YAxisProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, string>(
         nameof(YAxis),
         o => o.YAxis,
         (o, v) => { o.YAxis = v; _ = o.Plot.YAxis.Label(v); });
 
     public double[] XData { get; set; } = System.Array.Empty<double>();
-    public static readonly DirectProperty<ScatterPlot, double[]> XDataProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, double[]>(
+    public static readonly DirectProperty<BindableScatterPlot, double[]> XDataProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, double[]>(
         nameof(XData),
         o => o.XData,
         (o, v) => { o.XData = v; o.PlotData(); });
 
     public double[] YData { get; set; } = System.Array.Empty<double>();
-    public static readonly DirectProperty<ScatterPlot, double[]> YDataProperty = AvaloniaProperty.RegisterDirect<ScatterPlot, double[]>(
+    public static readonly DirectProperty<BindableScatterPlot, double[]> YDataProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, double[]>(
         nameof(YData),
         o => o.YData,
         (o, v) => { o.YData = v; o.PlotData(); });
@@ -44,14 +44,12 @@ public partial class ScatterPlot : AvaPlot
         get => _isXDateTime;
         set { Plot.XAxis.DateTimeFormat(value); _isXDateTime = value; }
     }
-    public static readonly DirectProperty<MultiScatterPlot, bool> IsXDateTimeProperty = AvaloniaProperty.RegisterDirect<MultiScatterPlot, bool>(
+    public static readonly DirectProperty<BindableScatterPlot, bool> IsXDateTimeProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, bool>(
         nameof(IsXDateTime),
         o => o.IsXDateTime,
         (o, v) => o.IsXDateTime = v);
 
-    public ScatterPlot() : base() => InitializeComponent();
-
-    private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
+    public BindableScatterPlot() : base() { }
 
     private void PlotData()
     {

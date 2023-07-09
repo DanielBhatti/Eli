@@ -7,7 +7,7 @@ using System;
 
 namespace Common.Avalonia.Controls;
 
-public class SetValueControl : UserControl
+public partial class SetValueControl : UserControl
 {
     public static readonly StyledProperty<object> ValueProperty = AvaloniaProperty.Register<SetValueControl, object>(nameof(Value));
 
@@ -54,15 +54,15 @@ public class SetValueControl : UserControl
         }
         else if(Value is int or byte or short or ushort or uint or long or ulong or float or double or decimal)
         {
-            var numericUpDown = new NumericUpDown();
-            _ = numericUpDown.Bind(NumericUpDown.ValueProperty, new Binding(nameof(Value)) { Source = this, Converter = new NumericToDoubleConverter() });
+            var numericUpDown = new TextBox();
+            _ = numericUpDown.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this, Converter = new NumericToDoubleConverter() });
             Content = numericUpDown;
         }
         else if(Value is Enum enumValue)
         {
             var comboBox = new ComboBox
             {
-                Items = Enum.GetValues(enumValue.GetType()),
+                ItemsSource = Enum.GetValues(enumValue.GetType()),
                 SelectedItem = enumValue
             };
             _ = comboBox.Bind(ComboBox.SelectedItemProperty, new Binding(nameof(Value)) { Source = this });

@@ -14,17 +14,19 @@ public static partial class CaseConverter
             CaseType.CamelCase => ToCamelCase(input),
             CaseType.SpacedPascalCase => ToSpacedPascalCase(input),
             CaseType.SpacedLowerCase => ToSpacedLowerCase(input),
+            CaseType.SpacedCase => ToSpacedCase(input),
             _ => throw new ArgumentException($"Converstion to {nameof(CaseType)} {caseType} not currently supported."),
         };
 
     public static CaseType DetermineCase(this string input)
     {
         if(input.IsPascalCase()) return CaseType.PascalCase;
-        if(input.IsSnakeCase()) return CaseType.SnakeCase;
-        if(input.IsCamelCase()) return CaseType.CamelCase;
-        if(input.IsSpacedPascalCase()) return CaseType.SpacedPascalCase;
-        if(input.IsSpacedLowerCase()) return CaseType.SpacedLowerCase;
-        return CaseType.Unknown;
+        else if(input.IsSnakeCase()) return CaseType.SnakeCase;
+        else if(input.IsCamelCase()) return CaseType.CamelCase;
+        else if(input.IsSpacedPascalCase()) return CaseType.SpacedPascalCase;
+        else if(input.IsSpacedLowerCase()) return CaseType.SpacedLowerCase;
+        else if(input.IsSpacedCase()) return CaseType.SpacedCase;
+        else return CaseType.Unknown;
     }
 
     public static CaseType GetCaseType(this string input)
@@ -34,6 +36,7 @@ public static partial class CaseConverter
         else if(IsCamelCase(input)) return CaseType.CamelCase;
         else if(IsSpacedPascalCase(input)) return CaseType.SpacedPascalCase;
         else if(IsSpacedLowerCase(input)) return CaseType.SpacedLowerCase;
+        else if(IsSpacedCase(input)) return CaseType.SpacedCase;
         else return CaseType.Unknown;
     }
 
@@ -47,6 +50,8 @@ public static partial class CaseConverter
 
     public static string ToSpacedLowerCase(this string input) => string.Join(" ", input.GetWordParts()).ToLower();
 
+    public static string ToSpacedCase(this string input) => string.Join(" ", input.GetWordParts());
+
     public static bool IsPascalCase(this string input) => PascalCaseRegex().IsMatch(input);
 
     public static bool IsSnakeCase(this string input) => SnakeCaseRegex().IsMatch(input);
@@ -57,16 +62,19 @@ public static partial class CaseConverter
 
     public static bool IsSpacedLowerCase(this string input) => SpacedLowerCaseRegex().IsMatch(input);
 
+    public static bool IsSpacedCase(this string input) => SpacedCaseRegex().IsMatch(input);
+
     public static string[] GetWordParts(this string input) => input.GetCaseType() switch
         {
             CaseType.PascalCase or CaseType.CamelCase => SplitPascalOrCamelCaseRegex().Split(input),
             CaseType.SnakeCase => input.Split('_'),
             CaseType.SpacedPascalCase => input.Split(' '),
             CaseType.SpacedLowerCase => input.Split(' '),
-            _ => throw new ArgumentException($"Unknown case type for input: {input}", nameof(input)),
+            CaseType.SpacedCase => input.Split(' '),
+            _ => new string[] { input },
         };
 
-    [GeneratedRegex("^[A-Z][a-zA-Z0-9]*$")]
+    [GeneratedRegex("^([A-Z][a-z0-9]+)*$")]
     private static partial Regex PascalCaseRegex();
 
     [GeneratedRegex("^[a-z0-9_]+$")]
@@ -80,7 +88,10 @@ public static partial class CaseConverter
 
     [GeneratedRegex(@"^[a-z0-9]*(?:\s[a-z0-9]*)*$")]
     private static partial Regex SpacedLowerCaseRegex();
- 
+
+    [GeneratedRegex(@"^[A-Za-z0-9]*(?:\s[A-Za-z0-9]*)*$")]
+    private static partial Regex SpacedCaseRegex();
+
     [GeneratedRegex("(?<!^)(?=[A-Z])")]
     private static partial Regex SplitPascalOrCamelCaseRegex();
 }

@@ -9,10 +9,8 @@ namespace Common.Test;
 [TestFixture]
 public class CsvReaderTest
 {
-    private CsvReader _csvReader;
-
     [SetUp]
-    public void SetUp() => _csvReader = new CsvReader();
+    public void SetUp() { }
 
     [Test]
     public void ReadCsv()
@@ -22,7 +20,7 @@ public class CsvReaderTest
         var types = new Type[7];
         for(var i = 0; i < 7; i++) types[i] = typeof(int);
 
-        var dataTable = _csvReader.FileToDataTable(filePath, true, types: types);
+        var dataTable = CsvReader.FileToDataTable(filePath, true, types: types);
 
         Assert.AreEqual("0", dataTable.Rows[0]["a"]);
         Assert.AreEqual("1", dataTable.Rows[0]["b"]);

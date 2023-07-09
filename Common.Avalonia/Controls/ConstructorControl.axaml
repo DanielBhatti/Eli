@@ -5,16 +5,14 @@
 			 xmlns:local="clr-namespace:Common.Avalonia.Controls;assembly=Common.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Common.Avalonia.Controls.ConstructorControl">
-	<Grid>
-		<ListBox x:Name="ParameterList">
+		<ListBox>
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<StackPanel Orientation="Horizontal">
 						<TextBlock Text="{Binding Name}" />
-						<TextBox Text="{Binding Value}" />
+						<local:SetValueControl Value="{Binding Value}" />
 					</StackPanel>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
-	</Grid>
 </UserControl>

@@ -11,7 +11,7 @@ namespace Common.IO;
 
 public class CsvReader
 {
-    public DataTable FileToDataTable(string filePath, bool hasHeader = false, string delimiter = ",", Type[] types = null)
+    public static DataTable FileToDataTable(string filePath, bool hasHeader = false, string delimiter = ",", Type[] types = null)
     {
         var dt = new DataTable();
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)

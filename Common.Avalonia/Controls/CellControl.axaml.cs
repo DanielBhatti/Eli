@@ -7,14 +7,14 @@ namespace Common.Avalonia.Controls;
 
 public partial class CellControl : UserControl
 {
-    public static StyledProperty<string> TextProperty = AvaloniaProperty.Register<CellControl, string>(nameof(Text));
+    public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<CellControl, string>(nameof(Text));
     public string Text
     {
         get => GetValue(TextProperty);
         set => SetValue(TextProperty, value);
     }
 
-    public static StyledProperty<ValueString> ValueStringProperty = AvaloniaProperty.Register<CellControl, ValueString>(nameof(ValueString));
+    public static readonly StyledProperty<ValueString> ValueStringProperty = AvaloniaProperty.Register<CellControl, ValueString>(nameof(ValueString));
     public ValueString ValueString
     {
         get => GetValue(ValueStringProperty);

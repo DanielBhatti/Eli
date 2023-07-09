@@ -31,7 +31,7 @@ public class CsvDataValidator
 
             }
         }
-        _dataTable = _csvReader.FileToDataTable(filePath, hasHeader, delimiter, types);
+        _dataTable = CsvReader.FileToDataTable(filePath, hasHeader, delimiter, types);
         Headers = _dataTable.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray();
     }
 }

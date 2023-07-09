@@ -8,16 +8,18 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.21" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.21" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.21" />
-    <PackageReference Include="ReactiveUI" Version="19.2.1" />
-    <PackageReference Include="ScottPlot" Version="4.1.64" />
-    <PackageReference Include="ScottPlot.Avalonia" Version="4.1.64" />
+    <PackageReference Include="Avalonia" Version="11.0.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.0" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.0.0" />
+    <PackageReference Include="ReactiveUI" Version="19.3.3" />
+    <PackageReference Include="ScottPlot.Avalonia" Version="4.1.65" />
    </ItemGroup>
   <ItemGroup>
     <Compile Update="Control\.axaml.cs">
       <DependentUpon>.axaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Plot\BindableScatterPlot.axaml" />
   </ItemGroup>
 </Project>

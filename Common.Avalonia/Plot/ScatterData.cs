@@ -1,4 +1,8 @@
 ﻿using Avalonia;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Common.Avalonia.Plot;
 
@@ -40,10 +44,12 @@ public class ScatterData : AvaloniaObject
         o => o.MarkerSize,
         (o, v) => o.MarkerSize = v);
 
-    public ScatterData(double[] xData, double[] yData, int xAxisIndex = 0, int yAxisIndex = 0, string label = "", float markerSize = 3)
+
+    public ScatterData(IEnumerable<decimal> xData, IEnumerable<decimal> yData, int xAxisIndex = 0, int yAxisIndex = 0, string label = "", float markerSize = 3) : this(xData.Select(Convert.ToDouble), yData.Select(Convert.ToDouble), xAxisIndex, yAxisIndex, label, markerSize) { }
+    public ScatterData(IEnumerable<double> xData, IEnumerable<double> yData, int xAxisIndex = 0, int yAxisIndex = 0, string label = "", float markerSize = 3)
     {
-        XData = xData;
-        YData = yData;
+        XData = xData.ToArray();
+        YData = yData.ToArray();
         XAxisIndex = xAxisIndex;
         YAxisIndex = yAxisIndex;
         Label = label;

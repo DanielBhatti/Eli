@@ -23,15 +23,8 @@ public class CsvReader
         using(var csv = new CsvHelper.CsvReader(reader, config))
         {
             var records = csv.GetRecords<dynamic>().ToList();
-            if(records.Count == 0)
-            {
-                return dt;
-            }
-
-            if(records[0] is not IDictionary<string, object> firstRecord)
-            {
-                throw new Exception("Failed to read the CSV file.");
-            }
+            if(records.Count == 0) return dt;
+            if(records[0] is not IDictionary<string, object> firstRecord) throw new Exception("Failed to read the CSV file.");
 
             foreach(var key in firstRecord.Keys) _ = dt.Columns.Add(key);
 
@@ -46,5 +39,18 @@ public class CsvReader
             }
         }
         return dt;
+    }
+
+    public static IList<T> FileToEntityList<T>(string filePath, bool hasHeader = false, string delimiter = ",")
+    {
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            HasHeaderRecord = hasHeader,
+            Delimiter = delimiter,
+        };
+        using var reader = new StreamReader(filePath);
+        using var csv = new CsvHelper.CsvReader(reader, config);
+        var records = csv.GetRecords<T>();
+        return new List<T>(records);
     }
 }

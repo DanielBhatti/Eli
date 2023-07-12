@@ -1,10 +1,14 @@
 ﻿using Avalonia.Platform.Storage;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Common.Avalonia.Services;
 
-public interface IFilesService
+public interface FileDialogService
 {
-    public Task<IStorageFile?> OpenFileAsync();
-    public Task<IStorageFile?> SaveFileAsync();
+    Task<IStorageFile?> OpenFileAsync();
+
+    Task<ICollection<IStorageFile>?> OpenMultipeFilesAsync();
+
+    Task<IStorageFile?> SaveFileAsync();
 }

@@ -2,8 +2,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Common.Text;
+using DynamicData;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 
@@ -11,13 +13,14 @@ namespace Common.Avalonia.Controls;
 
 public partial class ConstructorControl : UserControl
 {
-    public ConstructorInfo Constructor
+    private ConstructorInfo? _constructorInfo;
+    public ConstructorInfo? ConstructorInfo
     {
-        get => GetValue(ConstructorProperty);
-        set => SetValue(ConstructorProperty, value);
+        get => _constructorInfo;
+        set => SetAndRaise(ConstructorInfoProperty, ref _constructorInfo, value);
     }
-    public static readonly DirectProperty<ConstructorControl, ConstructorInfo> ConstructorProperty =
-        AvaloniaProperty.RegisterDirect<ConstructorControl, ConstructorInfo>(nameof(Constructor), o => o.Constructor, (o, v) => { o.Constructor = v; OnConstructorChanged(o, v); });
+    public static readonly DirectProperty<ConstructorControl, ConstructorInfo?> ConstructorInfoProperty =
+        AvaloniaProperty.RegisterDirect<ConstructorControl, ConstructorInfo?>(nameof(ConstructorInfo), o => o.ConstructorInfo, (o, v) => { o.ConstructorInfo = v; OnConstructorChanged(o, v); });
 
     public object? ConstructedObject
     {
@@ -27,13 +30,15 @@ public partial class ConstructorControl : UserControl
     public static readonly DirectProperty<ConstructorControl, object?> ConstructedObjectProperty =
         AvaloniaProperty.RegisterDirect<ConstructorControl, object?>(nameof(ConstructedObject), o => o.ConstructedObject, (o, v) => o.ConstructedObject = v);
 
-    public List<ParameterViewModel> ParameterList { get; set; } = new();
+    public ObservableCollection<ParameterViewModel> Parameters { get; } = new();
 
-    private static void OnConstructorChanged(object o, object v)
+    public static void OnConstructorChanged(object o, object? v)
     {
         var value = v as ConstructorInfo;
         if(o is not ConstructorControl control || value == null) return;
-        control.ParameterList = control.Constructor.GetParameters().Select(p => new ParameterViewModel { Name = p.Name ?? "N/A" }).ToList();
+        if(control.ConstructorInfo == null) return;
+        control.Parameters.Clear();
+        control.Parameters.AddRange(control.ConstructorInfo.GetParameters().Select(p => new ParameterViewModel { Name = p.Name ?? "Name Not Found" }));
     }
 
     public ConstructorControl() => InitializeComponent();
@@ -42,11 +47,11 @@ public partial class ConstructorControl : UserControl
 
     private void InstantiateClick(object sender, RoutedEventArgs e)
     {
-        var parameterValues = ParameterList.Select(p => Convert.ChangeType(p.Value, typeof(string))).ToArray();
+        var parameterValues = Parameters?.Select(p => Convert.ChangeType(p.Value, typeof(object))).ToArray();
 
         try
         {
-            ConstructedObject = Constructor.Invoke(parameterValues);
+            ConstructedObject = ConstructorInfo?.Invoke(parameterValues);
         }
         catch
         {
@@ -58,5 +63,6 @@ public partial class ConstructorControl : UserControl
 public class ParameterViewModel
 {
     public required string Name { get; init; }
+    public string DisplayName => CaseConverter.ToSpacedPascalCase(Name);
     public object Value { get; init; } = "";
 }

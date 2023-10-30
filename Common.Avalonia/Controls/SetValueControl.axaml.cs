@@ -11,11 +11,11 @@ public partial class SetValueControl : UserControl
 {
     public static readonly StyledProperty<object> ValueProperty = AvaloniaProperty.Register<SetValueControl, object>(nameof(Value));
 
-    public SetValueControl()
-    {
-        InitializeComponent();
-        _ = this.GetObservable(ValueProperty).Subscribe(_ => UpdateControl());
-    }
+    private bool IsBinded { get; set; } = false;
+    private readonly TextBox _textBox = new();
+    private readonly DatePicker _datePicker = new();
+    private readonly CheckBox _checkBox = new();
+    private readonly ComboBox _comboBox = new();
 
     public object Value
     {
@@ -23,56 +23,64 @@ public partial class SetValueControl : UserControl
         set => SetValue(ValueProperty, value);
     }
 
+    public SetValueControl()
+    {
+        InitializeComponent();
+        _ = this.GetObservable(ValueProperty).Subscribe(_ => UpdateControl());
+    }
+
+    private void InstantiateBinding()
+    {
+        var v = Value; // bindings seem to sometimes null out the current value, we're storing it to set it back after the binding
+        if(Value is null || IsBinded) return;
+        else if(Value is Enum enumValue)
+        {
+            _comboBox.ItemsSource = Enum.GetValues(enumValue.GetType());
+            _comboBox.SelectedItem = enumValue;
+            _ = _comboBox.Bind(ComboBox.SelectedItemProperty, new Binding(nameof(Value)) { Source = this });
+            Content = _comboBox;
+        }
+        else if(Value is DateTime)
+        {
+            _ = _datePicker.Bind(DatePicker.SelectedDateProperty, new Binding(nameof(Value)) { Source = this });
+            Content = _datePicker;
+        }
+        else if(Value is bool)
+        {
+            _ = _checkBox.Bind(CheckBox.IsCheckedProperty, new Binding(nameof(Value)) { Source = this });
+            Content = _checkBox;
+        }
+        else if(Value is char)
+        {
+            _ = _textBox.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this, Converter = new CharToStringConverter() });
+            _textBox.Text = v?.ToString();
+            Content = _textBox;
+        }
+        else if(Value is int or byte or short or ushort or uint or long or ulong or float or double or decimal)
+        {
+            _ = _textBox.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this });
+            _textBox.Text = v?.ToString();
+            Content = _textBox;
+        }
+        else
+        {
+            _ = _textBox.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this });
+            Content = _textBox;
+        }
+        IsBinded = true;
+    }
+
     private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
     private void UpdateControl()
     {
+        if(!IsBinded) InstantiateBinding();
         if(Value is null) return;
-        if(Value is string)
-        {
-            var textBox = new TextBox();
-            _ = textBox.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this });
-            Content = textBox;
-        }
-        else if(Value is DateTime)
-        {
-            var datePicker = new DatePicker();
-            _ = datePicker.Bind(DatePicker.SelectedDateProperty, new Binding(nameof(Value)) { Source = this });
-            Content = datePicker;
-        }
-        else if(Value is bool)
-        {
-            var checkBox = new CheckBox();
-            _ = checkBox.Bind(CheckBox.IsCheckedProperty, new Binding(nameof(Value)) { Source = this });
-            Content = checkBox;
-        }
-        else if(Value is char)
-        {
-            var textBox = new TextBox();
-            _ = textBox.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this, Converter = new CharToStringConverter() });
-            Content = textBox;
-        }
-        else if(Value is int or byte or short or ushort or uint or long or ulong or float or double or decimal)
-        {
-            var numericUpDown = new TextBox();
-            _ = numericUpDown.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this, Converter = new NumericToDoubleConverter() });
-            Content = numericUpDown;
-        }
-        else if(Value is Enum enumValue)
-        {
-            var comboBox = new ComboBox
-            {
-                ItemsSource = Enum.GetValues(enumValue.GetType()),
-                SelectedItem = enumValue
-            };
-            _ = comboBox.Bind(ComboBox.SelectedItemProperty, new Binding(nameof(Value)) { Source = this });
-            Content = comboBox;
-        }
-        else
-        {
-            var textBox = new TextBox();
-            _ = textBox.Bind(TextBox.TextProperty, new Binding(nameof(Value)) { Source = this });
-            Content = textBox;
-        }
+        else if(Value is Enum) Content = _comboBox;
+        else if(Value is DateTime) Content = _datePicker;
+        else if(Value is bool) Content = _checkBox;
+        else if(Value is char) Content = _textBox;
+        else if(Value is int or byte or short or ushort or uint or long or ulong or float or double or decimal) Content = _textBox;
+        else Content = _textBox;
     }
 }

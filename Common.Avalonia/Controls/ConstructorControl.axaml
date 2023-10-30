@@ -5,14 +5,20 @@
 			 xmlns:local="clr-namespace:Common.Avalonia.Controls;assembly=Common.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Common.Avalonia.Controls.ConstructorControl">
-		<ListBox>
+	<Grid Grid.IsSharedSizeScope="True">
+		<ListBox x:Name="MainListBox" Grid.Row="1" ItemsSource="{Binding Parameters, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ConstructorControl}}">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="{Binding Name}" />
-						<local:SetValueControl Value="{Binding Value}" />
-					</StackPanel>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" SharedSizeGroup="A"/>
+							<ColumnDefinition Width="*" SharedSizeGroup="B"/>
+						</Grid.ColumnDefinitions>
+						<TextBlock Grid.Column="0" Text="{Binding DisplayName}" Margin="5"/>
+						<local:SetValueControl Grid.Column="1" Value="{Binding Value}"/>
+					</Grid>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
+	</Grid>
 </UserControl>

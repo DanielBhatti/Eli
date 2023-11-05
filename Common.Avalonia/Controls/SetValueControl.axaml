@@ -1,7 +1,16 @@
-<Control xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+			 xmlns:dts="using:Common.Avalonia.DataTemplateSelectors"
+             xmlns:local="using:Common.Avalonia.Controls"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Common.Avalonia.Controls.SetValueControl">
-</Control>
+             x:Class="Common.Avalonia.Controls.SetValueControl"
+			 x:Name="MainSetValueControl">
+	<ContentControl Content="{Binding Value, ElementName=MainSetValueControl, Mode=TwoWay}">
+		<ContentControl.ContentTemplate>
+			<dts:BuiltInTypeTemplate/>
+		</ContentControl.ContentTemplate>
+	</ContentControl>
+</UserControl>

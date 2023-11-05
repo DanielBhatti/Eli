@@ -17,12 +17,19 @@ public class HttpStreamFetcher
         _client = clientFactory == null ? new HttpClient() : null;
     }
 
-    public Stream GetResponseStream(string url, int timeout = 300)
+    public Stream GetResponseStream(string url, int timeoutMilliseconds = 3000)
     {
         var request = (HttpWebRequest)WebRequest.CreateDefault(new Uri(url));
-        request.Timeout = timeout;
-        var response = (HttpWebResponse)request.GetResponse();
-        return response.GetResponseStream();
+        request.Timeout = timeoutMilliseconds;
+        try
+        {
+            var response = (HttpWebResponse)request.GetResponse();
+            return response.GetResponseStream();
+        }
+        catch
+        {
+            return Stream.Null;
+        }
     }
 
     public async Task<Stream> GetResponseStreamAsync(string url, int timeout = 300)

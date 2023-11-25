@@ -10,4 +10,3 @@ public enum CaseType
     SpacedLowerCase,
     Unknown
 }
-

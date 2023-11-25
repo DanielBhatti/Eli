@@ -26,7 +26,7 @@ public class BuiltInTypeTemplate : IDataTemplate
 
     Control? ITemplate<object?, Control?>.Build(object? data)
     {
-        if(data is Enum en) return new ComboBox { ItemsSource = Enum.GetValues(en.GetType()), SelectedItem = en };
+        if(data is Enum en) return new ComboBox { SelectedItem = en.ToString(), ItemsSource = Enum.GetNames(en.GetType()) };
         else if(data is DateTime dt) return new DatePicker { SelectedDate = dt };
         else if(data is bool b) return new CheckBox { IsChecked = b };
         else if(data is int or byte or short or ushort or ushort or uint or long or ulong or float or double or decimal) return new NumericUpDown { Value = Convert.ToDecimal(data) };

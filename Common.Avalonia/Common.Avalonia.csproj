@@ -18,6 +18,9 @@
     <PackageReference Include="ScottPlot.Avalonia" Version="4.1.68" />
    </ItemGroup>
   <ItemGroup>
+    <Compile Update="Controls\EnumComboBoxControl.axaml.cs">
+      <DependentUpon>EnumComboBoxControl.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Control\.axaml.cs">
       <DependentUpon>.axaml</DependentUpon>
     </Compile>

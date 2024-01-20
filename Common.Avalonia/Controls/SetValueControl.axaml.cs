@@ -2,6 +2,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Markup.Xaml;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Common.Avalonia.Controls;
 
@@ -15,6 +18,14 @@ public partial class SetValueControl : UserControl
     {
         get => GetValue(ValueProperty);
         set => SetValue(ValueProperty, value);
+    }
+
+    public static readonly StyledProperty<bool> UseReflectionProperty = AvaloniaProperty.Register<SetValueControl, bool>(nameof(UseReflection), defaultBindingMode: BindingMode.TwoWay);
+
+    public bool UseReflection
+    {
+        get => GetValue(UseReflectionProperty);
+        set => SetValue(UseReflectionProperty, value);
     }
 
     public SetValueControl() => InitializeComponent();

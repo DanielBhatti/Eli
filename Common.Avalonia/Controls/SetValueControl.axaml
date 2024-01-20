@@ -14,84 +14,72 @@
 	</UserControl.Resources>
 	<ContentControl x:Name="MainContentControl" Content="{Binding Value}">
 		<ContentControl.DataTemplates>
-			<!--<dts:BuiltInTypeTemplate/>-->
-			<!-- DataTemplate for Enum -->
-			<dts:EnumTemplate/>
-			<!--<DataTemplate DataType="{x:Type sys:Enum}">
-				<ComboBox SelectedItem="{Binding}" ItemsSource="{Binding DataContext.Value, ElementName=MainContentControl, Converter={StaticResource EnumToNamesConverter}}" />
-			</DataTemplate>-->
+			<DataTemplate DataType="{x:Type sys:Enum}">
+				<local:EnumComboBoxControl SelectedValue="{Binding DataContext.Value, ElementName=MainContentControl, Mode=TwoWay}">
+					<local:EnumComboBoxControl.DataTemplates>
+						<DataTemplate DataType="{x:Type sys:Enum}">
+							<TextBlock Text="{Binding}"/>
+						</DataTemplate>
+					</local:EnumComboBoxControl.DataTemplates>
+				</local:EnumComboBoxControl>
+			</DataTemplate>
 
-			<!-- DataTemplate for DateTime -->
 			<DataTemplate DataType="{x:Type sys:DateTime}">
 				<DatePicker SelectedDate="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for Boolean -->
 			<DataTemplate DataType="{x:Type sys:Boolean}">
 				<CheckBox IsChecked="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for Numeric Types -->
 			<DataTemplate DataType="{x:Type sys:Int32}">
 				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for Byte -->
 			<DataTemplate DataType="{x:Type sys:Byte}">
 				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for Short -->
 			<DataTemplate DataType="{x:Type sys:Int16}">
 				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for UShort -->
 			<DataTemplate DataType="{x:Type sys:UInt16}">
 				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for Int -->
 			<DataTemplate DataType="{x:Type sys:Int32}">
 				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for UInt -->
 			<DataTemplate DataType="{x:Type sys:UInt32}">
 				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for Long -->
 			<DataTemplate DataType="{x:Type sys:Int64}">
 				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for ULong -->
 			<DataTemplate DataType="{x:Type sys:UInt64}">
 				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for Float -->
 			<DataTemplate DataType="{x:Type sys:Single}">
 				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for Double -->
 			<DataTemplate DataType="{x:Type sys:Double}">
 				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for Decimal -->
 			<DataTemplate DataType="{x:Type sys:Decimal}">
 				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for Char -->
 			<DataTemplate DataType="{x:Type sys:Char}">
 				<TextBox Text="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
-			<!-- DataTemplate for String -->
 			<DataTemplate DataType="{x:Type sys:String}">
 				<TextBox Text="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>

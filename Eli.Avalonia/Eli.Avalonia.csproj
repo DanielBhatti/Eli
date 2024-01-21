@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+	<WarningsAsErrors>NU1605;CS8625;CS8618</WarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.0.5" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.5" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.0.5" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.5" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.5" />
+    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.2" />
+    <PackageReference Include="ReactiveUI" Version="19.5.1" />
+    <PackageReference Include="ScottPlot.Avalonia" Version="4.1.68" />
+   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Controls\EnumComboBoxControl.axaml.cs">
+      <DependentUpon>EnumComboBoxControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Control\.axaml.cs">
+      <DependentUpon>.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Plot\BindableScatterPlot.axaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Eli\Eli.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+			 xmlns:dts="using:Eli.Avalonia.DataTemplateSelectors"
+             xmlns:local="using:Eli.Avalonia.Controls"
+			 xmlns:converters="clr-namespace:Eli.Avalonia.Mvvm.Converter;assembly=Eli.Avalonia"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Eli.Avalonia.Controls.SetValueControl"
+			 >
+	<UserControl.Resources>
+		<converters:EnumToNamesConverter x:Key="EnumToNamesConverter"/>
+	</UserControl.Resources>
+	<ContentControl x:Name="MainContentControl" Content="{Binding Value}">
+		<ContentControl.DataTemplates>
+			<DataTemplate DataType="{x:Type sys:Enum}">
+				<local:EnumComboBoxControl SelectedValue="{Binding DataContext.Value, ElementName=MainContentControl, Mode=TwoWay}">
+					<local:EnumComboBoxControl.DataTemplates>
+						<DataTemplate DataType="{x:Type sys:Enum}">
+							<TextBlock Text="{Binding}"/>
+						</DataTemplate>
+					</local:EnumComboBoxControl.DataTemplates>
+				</local:EnumComboBoxControl>
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:DateTime}">
+				<DatePicker SelectedDate="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:Boolean}">
+				<CheckBox IsChecked="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:Int32}">
+				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:Byte}">
+				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:Int16}">
+				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:UInt16}">
+				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:Int32}">
+				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:UInt32}">
+				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:Int64}">
+				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:UInt64}">
+				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:Single}">
+				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:Double}">
+				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:Decimal}">
+				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:Char}">
+				<TextBox Text="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type sys:String}">
+				<TextBox Text="{Binding DataContext.Value, ElementName=MainContentControl}" />
+			</DataTemplate>
+		</ContentControl.DataTemplates>
+	</ContentControl>
+</UserControl>

@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using Avalonia.Markup.Xaml;
 using ScottPlot.Avalonia;
 using System.Collections.Generic;
 using System.Drawing;

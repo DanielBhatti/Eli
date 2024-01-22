@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
 	<WarningsAsErrors>NU1605;CS8625;CS8618</WarningsAsErrors>
     <Nullable>enable</Nullable>
     <ApplicationIcon />

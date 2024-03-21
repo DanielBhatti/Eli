@@ -1,0 +1,12 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Eli.Avalonia.Controls.RangeSlider"
+            x:Name="MainUserControl">
+    <Grid>
+        <Slider x:Name="LowerSlider" Minimum="{Binding Minimum, ElementName=MainUserControl}" Maximum="{Binding Maximum, ElementName=MainUserControl}" PropertyChanged="LowerSlider_ValueChanged"/>
+        <Slider x:Name="UpperSlider" Minimum="{Binding Minimum, ElementName=MainUserControl}" Maximum="{Binding Maximum, ElementName=MainUserControl}" PropertyChanged="UpperSlider_ValueChanged"/>
+    </Grid>
+</UserControl>

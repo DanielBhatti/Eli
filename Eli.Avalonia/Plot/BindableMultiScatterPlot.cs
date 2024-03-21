@@ -1,37 +1,12 @@
 ﻿using Avalonia;
-using ScottPlot.Avalonia;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
 namespace Eli.Avalonia.Plot;
 
-public partial class BindableMultiScatterPlot : AvaPlot
+public partial class BindableMultiScatterPlot : BindablePlot
 {
-    public string Title { get; set; } = "";
-    public static readonly DirectProperty<BindableMultiScatterPlot, string> TitleProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, string>(
-        nameof(Title),
-        o => o.Title,
-        (o, v) => { o.Title = v; o.Plot.Title(v, true); });
-
-    public string BottomAxis { get; set; } = "";
-    public static readonly DirectProperty<BindableMultiScatterPlot, string> BottomAxisProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, string>(
-        nameof(BottomAxis),
-        o => o.BottomAxis,
-        (o, v) => { o.BottomAxis = v; _ = o.Plot.XAxis.Label(v); });
-
-    public string LeftAxis { get; set; } = "";
-    public static readonly DirectProperty<BindableMultiScatterPlot, string> LeftAxisProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, string>(
-        nameof(LeftAxis),
-        o => o.LeftAxis,
-        (o, v) => { o.LeftAxis = v; _ = o.Plot.YAxis.Label(v); });
-
-    public string RightAxis { get; set; } = "";
-    public static readonly DirectProperty<BindableMultiScatterPlot, string> RightAxisProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, string>(
-        nameof(RightAxis),
-        o => o.RightAxis,
-        (o, v) => { o.RightAxis = v; _ = o.Plot.YAxis2.Label(v); });
-
     public ICollection<ScatterData> ScatterDataCollection { get; set; } = new List<ScatterData>();
     public static readonly DirectProperty<BindableMultiScatterPlot, ICollection<ScatterData>> ScatterDataCollectionProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, ICollection<ScatterData>>(
         nameof(ScatterDataCollection),
@@ -49,18 +24,19 @@ public partial class BindableMultiScatterPlot : AvaPlot
         o => o.IsXDateTime,
         (o, v) => o.IsXDateTime = v);
 
-    public bool RefreshDataToggle { get; set; } = false;
-    public static readonly DirectProperty<BindableMultiScatterPlot, bool> RefreshDataToggleProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, bool>(
-        nameof(RefreshDataToggle),
-        o => o.RefreshDataToggle,
-        (o, v) => { if(v == true) { o.RefreshData(); } o.RefreshDataToggle = false; });
+    public bool XLog { get; set; } = false;
+    public static readonly DirectProperty<BindableMultiScatterPlot, bool> XLogProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, bool>(
+        nameof(XLog),
+        o => o.XLog,
+        (o, v) => o.XLog = v);
 
-    public string ErrorText { get; private set; } = "";
-    public static readonly DirectProperty<BindableMultiScatterPlot, string> ErrorTextProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, string>(
-        nameof(ErrorText),
-        o => o.ErrorText);
+    public bool YLog { get; set; } = false;
+    public static readonly DirectProperty<BindableMultiScatterPlot, bool> YLogProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, bool>(
+        nameof(YLog),
+        o => o.YLog,
+        (o, v) => o.YLog = v);
 
-    private readonly Color[] Colors = new Color[]
+    private readonly Color[] Colors =
     {
         Color.Red,
         Color.Green,
@@ -76,17 +52,10 @@ public partial class BindableMultiScatterPlot : AvaPlot
     {
         Plot.YAxis2.IsVisible = true;
         Plot.YAxis2.Ticks(true);
-        RefreshData();
     }
 
-    public void RefreshData()
+    protected override void RefreshCustom()
     {
-        Plot.Clear();
-
-        Plot.Style(ScottPlot.Style.Gray1);
-        var darkBackground = System.Drawing.ColorTranslator.FromHtml("#2e3440");
-        Plot.Style(figureBackground: darkBackground, dataBackground: darkBackground);
-
         ErrorText = "";
         for(var i = 0; i < ScatterDataCollection.Count; i++)
         {
@@ -105,7 +74,5 @@ public partial class BindableMultiScatterPlot : AvaPlot
                 ErrorText = $"Failed to plot item {i}.\n";
             }
         }
-        _ = Plot.Legend();
-        Refresh();
     }
 }

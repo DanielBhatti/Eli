@@ -8,11 +8,12 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Eli.Avalonia.Controls.SetValueControl"
+			 x:Name="MainContentControl"
 			 >
 	<UserControl.Resources>
 		<converters:EnumToNamesConverter x:Key="EnumToNamesConverter"/>
 	</UserControl.Resources>
-	<ContentControl x:Name="MainContentControl" Content="{Binding Value}">
+	<ContentControl Content="{Binding Value}">
 		<ContentControl.DataTemplates>
 			<DataTemplate DataType="{x:Type sys:Enum}">
 				<local:EnumComboBoxControl SelectedValue="{Binding DataContext.Value, ElementName=MainContentControl, Mode=TwoWay}">
@@ -25,7 +26,7 @@
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:DateTime}">
-				<DatePicker SelectedDate="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<CalendarDatePicker Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" SelectedDate="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Boolean}">
@@ -33,55 +34,55 @@
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Int32}">
-				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<NumericUpDown Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Byte}">
-				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<NumericUpDown Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Int16}">
-				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<NumericUpDown Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:UInt16}">
-				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<NumericUpDown Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Int32}">
-				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<NumericUpDown Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:UInt32}">
-				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<NumericUpDown Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Int64}">
-				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<NumericUpDown Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:UInt64}">
-				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<NumericUpDown Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Single}">
-				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<NumericUpDown Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Double}">
-				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<NumericUpDown Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Decimal}">
-				<NumericUpDown Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<NumericUpDown Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Char}">
-				<TextBox Text="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<TextBox Watermark="{Binding DataContext.Watermark, ElementName=MainContentControl, Mode=TwoWay}" Text="{Binding DataContext.Value, ElementName=MainContentControl}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:String}">
-				<TextBox Text="{Binding DataContext.Value, ElementName=MainContentControl}" />
+				<TextBox DataContext="{Binding DataContext, ElementName=MainContentControl}" Watermark="{Binding Watermark}" Text="{Binding Value}" />
 			</DataTemplate>
 		</ContentControl.DataTemplates>
 	</ContentControl>

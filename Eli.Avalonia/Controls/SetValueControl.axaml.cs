@@ -2,9 +2,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Markup.Xaml;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Eli.Avalonia.Controls;
 
@@ -18,6 +15,14 @@ public partial class SetValueControl : UserControl
     {
         get => GetValue(ValueProperty);
         set => SetValue(ValueProperty, value);
+    }
+
+    public static readonly StyledProperty<string> WatermarkProperty = AvaloniaProperty.Register<SetValueControl, string>(nameof(Watermark), defaultBindingMode: BindingMode.TwoWay);
+
+    public string Watermark
+    {
+        get => GetValue(WatermarkProperty);
+        set => SetValue(WatermarkProperty, value);
     }
 
     public static readonly StyledProperty<bool> UseReflectionProperty = AvaloniaProperty.Register<SetValueControl, bool>(nameof(UseReflection), defaultBindingMode: BindingMode.TwoWay);

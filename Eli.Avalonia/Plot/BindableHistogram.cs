@@ -1,77 +1,52 @@
 ﻿using Avalonia;
-using ScottPlot.Avalonia;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Eli.Avalonia.Plot;
 
-public class BindableHistogram : AvaPlot
+public class BindableHistogram : BindablePlot
 {
-    public string Title { get; set; } = "";
-    public static readonly DirectProperty<BindableHistogram, string> TitleProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, string>(
-        nameof(Title),
-        o => o.Title,
-        (o, v) => { o.Title = v; o.Plot.Title(v, true); });
-
-    public string BottomAxis { get; set; } = "";
-    public static readonly DirectProperty<BindableHistogram, string> BottomAxisProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, string>(
-        nameof(BottomAxis),
-        o => o.BottomAxis,
-        (o, v) => { o.BottomAxis = v; _ = o.Plot.XAxis.Label(v); });
-
-    public string LeftAxis { get; set; } = "";
-    public static readonly DirectProperty<BindableHistogram, string> LeftAxisProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, string>(
-        nameof(LeftAxis),
-        o => o.LeftAxis,
-        (o, v) => { o.LeftAxis = v; _ = o.Plot.YAxis.Label(v); });
-
-    public string RightAxis { get; set; } = "";
-    public static readonly DirectProperty<BindableHistogram, string> RightAxisProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, string>(
-        nameof(RightAxis),
-        o => o.RightAxis,
-        (o, v) => { o.RightAxis = v; _ = o.Plot.YAxis2.Label(v); });
-
     public ICollection<double> Data { get; set; } = new List<double>();
     public static readonly DirectProperty<BindableHistogram, ICollection<double>> DataProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, ICollection<double>>(
         nameof(Data),
         o => o.Data,
         (o, v) => o.Data = v);
 
-    public bool RefreshDataToggle { get; set; } = false;
-    public static readonly DirectProperty<BindableHistogram, bool> RefreshDataToggleProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, bool>(
-        nameof(RefreshDataToggle),
-        o => o.RefreshDataToggle,
-        (o, v) => { if(v == true) { o.RefreshData(); } o.RefreshDataToggle = false; });
+    public int NumberOfBins { get; set; } = 10;
+    public static readonly DirectProperty<BindableHistogram, int> NumberOfBinsProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, int>(
+        nameof(NumberOfBins),
+        o => o.NumberOfBins,
+        (o, v) => o.NumberOfBins = v);
 
-    public string ErrorText { get; private set; } = "";
-    public static readonly DirectProperty<BindableMultiScatterPlot, string> ErrorTextProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, string>(
-        nameof(ErrorText),
-        o => o.ErrorText);
+    public int? BinWidth { get; set; } = null;
+    public static readonly DirectProperty<BindableHistogram, int?> BinWidthProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, int?>(
+        nameof(BinWidth),
+        o => o.BinWidth,
+        (o, v) => o.BinWidth = v);
 
-    public BindableHistogram() : base()
+    public bool IsCumulativeProbability { get; set; } = false;
+    public static readonly DirectProperty<BindableHistogram, bool> IsCumulativeProbabilityProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, bool>(
+        nameof(IsCumulativeProbability),
+        o => o.IsCumulativeProbability);
+
+    public BindableHistogram() : base() { }
+
+    protected override void RefreshCustom()
     {
-        Plot.YAxis2.IsVisible = true;
-        Plot.YAxis2.Ticks(true);
-        RefreshData();
-    }
-
-    public void RefreshData()
-    {
-        if(Data.Count == 0) return;
-        Plot.Clear();
-        Plot.Style(ScottPlot.Style.Gray1);
-        var darkBackground = System.Drawing.ColorTranslator.FromHtml("#2e3440");
-        Plot.Style(figureBackground: darkBackground, dataBackground: darkBackground);
-        ErrorText = "";
-        var histogram = new ScottPlot.Statistics.Histogram(Data.Min(), Data.Max(), 100);
+        if(Data.Count == 0 || NumberOfBins == 0) return;
+        
+        var histogram = new ScottPlot.Statistics.Histogram(Data.Min(), Data.Max(), NumberOfBins);
         histogram.AddRange(Data);
 
-        var bars = Plot.AddBar(histogram.Counts, histogram.Bins);
-        bars.BarWidth = 0.2;
+        if(IsCumulativeProbability) _ = Plot.AddScatterStep(xs: histogram.Bins, ys: histogram.GetCumulativeProbability());
+        else
+        {
+            var bars = Plot.AddBar(histogram.Counts, histogram.Bins);
+            bars.BarWidth = BinWidth ?? (histogram.Bins.Max() - histogram.Bins.Min()) / NumberOfBins;
+        }
         Plot.Title("Histogram");
         Plot.XLabel("Value");
         Plot.YLabel("Frequency");
         Plot.SetAxisLimits(yMin: 0);
-        Refresh();
     }
 }

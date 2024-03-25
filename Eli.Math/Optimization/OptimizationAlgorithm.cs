@@ -2,5 +2,6 @@
 
 public enum AlgorithmName
 {
-    GradientDescent
+    GradientDescent,
+    StochasticGradientDescent
 }

@@ -1,6 +1,6 @@
 ﻿namespace Eli.Math.Optimization;
 
-public static class GradientDescent
+public class GradientDescent
 {
     public static double[] Optimize(IEnumerable<(double, double)> points, Func<double, double[], double> f, double[] parameters, double epsilon, double learningRate, double tolerance, long maxIterations)
     {
@@ -55,8 +55,8 @@ public static class GradientDescent
             parametersPlusEpsilon[i] *= 1 + epsilon;
             parametersMinusEpsilon[i] *= 1 - epsilon;
 
-            var functionPlusEpsilon = System.Math.Sqrt(points.Sum(p => System.Math.Pow(f(p.x, parametersPlusEpsilon) - p.y, 2)));
-            var functionMinusEpsilon = System.Math.Sqrt(points.Sum(p => System.Math.Pow(f(p.x, parametersMinusEpsilon) - p.y, 2)));
+            var functionPlusEpsilon = ObjectiveFunction.MeanSquaredError(points.Select(p => (f(p.x, parametersPlusEpsilon), p.y)));
+            var functionMinusEpsilon = ObjectiveFunction.MeanSquaredError(points.Select(p => (f(p.x, parametersMinusEpsilon), p.y)));
 
             gradients[i] = (functionPlusEpsilon - functionMinusEpsilon) / (2 * epsilon);
         }

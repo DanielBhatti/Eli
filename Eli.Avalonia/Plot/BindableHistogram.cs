@@ -57,22 +57,42 @@ public class BindableHistogram : BindablePlot
         nameof(IsCumulativeProbability),
         o => o.IsCumulativeProbability);
 
+    public bool IsNormalizedProbability { get; set; } = false;
+    public static readonly DirectProperty<BindableHistogram, bool> IsNormalizedProbabilityProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, bool>(
+    nameof(IsNormalizedProbability),
+    o => o.IsNormalizedProbability,
+    (o, v) => o.IsNormalizedProbability = v);
+
+    public string Label { get; protected set; } = "";
+    public static readonly DirectProperty<BindableHistogram, string> LabelProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, string>(
+        nameof(Label),
+        o => o.Label,
+        (o, v) => o.Label = v);
+
     public BindableHistogram() : base() { }
 
     protected override void RefreshCustom()
     {
         if(Data.Count == 0 || NumberOfBins == 0) return;
-        
+
         var histogram = new ScottPlot.Statistics.Histogram(Data.Min(), Data.Max(), NumberOfBins);
         histogram.AddRange(Data);
 
-        Counts = new AvaloniaList<double>(histogram.Counts);
-        Bins = new AvaloniaList<double>(histogram.Bins);
-
-        if(IsCumulativeProbability) _ = Plot.AddScatterStep(xs: histogram.Bins, ys: histogram.GetCumulativeProbability());
+        if(IsCumulativeProbability)
+        {
+            var scatterPlot = Plot.AddScatterStep(xs: histogram.Bins, ys: histogram.GetCumulativeProbability());
+            scatterPlot.Label = Label;
+            Counts = histogram.GetCumulativeProbability();
+            Bins = histogram.Bins;
+        }
         else
         {
-            var bars = Plot.AddBar(histogram.Counts, histogram.Bins);
+            var counts = IsNormalizedProbability ? histogram.GetProbability() : histogram.Counts;
+            var bars = Plot.AddBar(counts, histogram.Bins);
+            bars.Label = Label;
+            Counts = counts;
+            Bins = histogram.Bins;
+
             bars.BarWidth = BinWidth ?? (histogram.Bins.Max() - histogram.Bins.Min()) / NumberOfBins;
         }
 

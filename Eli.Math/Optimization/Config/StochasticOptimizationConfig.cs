@@ -2,6 +2,6 @@
 
 public class StochasticOptimizationConfig : OptimizationConfig
 {
-    public int BatchSize { get; set; }
-    public double LearningRateFactor { get; set; }
+    public int BatchSize { get; set; } = 10;
+    public double LearningRateFactor { get; set; } = 0.3;
 }

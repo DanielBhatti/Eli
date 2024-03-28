@@ -14,7 +14,7 @@ public class StochasticGradientDescent : OptimizationAlgorithm<StochasticOptimiz
         var n = 0;
         var pointsList = points.ToList();
         var totalPoints = pointsList.Count;
-        var random = new Random();
+        var random = new Random(optimizationParameters.Seed);
         var previousTotalError = double.MaxValue;
         var learningRateAdjustmentFactor = optimizationParameters.LearningRateFactor;
 

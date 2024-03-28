@@ -5,9 +5,9 @@ namespace Eli.Math;
 
 public static class CurveFit
 {
-    public static (double, double, double) FitLaplaceParameters(IEnumerable<(double, double)> points, double? maxHeight = null, double? centerLocation = null, double? diversity = null, AlgorithmName algorithmName = 0) => Fit(points, SpecialFunction.Laplace, maxHeight ?? points.Max(p => p.Item2), centerLocation ?? points.Sum(p => p.Item1 * p.Item2) / points.Sum(p => p.Item2), diversity ?? points.StandardDeviation(p => p.Item1) / 10, algorithmName, new StochasticOptimizationConfig());
+    public static (double, double, double) FitLaplaceParameters(IEnumerable<(double, double)> points, StochasticOptimizationConfig optimizationConfig, double? maxHeight = null, double? centerLocation = null, double? diversity = null, AlgorithmName algorithmName = 0) => Fit(points, SpecialFunction.Laplace, maxHeight ?? points.Max(p => p.Item2), centerLocation ?? points.Sum(p => p.Item1 * p.Item2) / points.Sum(p => p.Item2), diversity ?? points.StandardDeviation(p => p.Item1) / 10, algorithmName, optimizationConfig);
 
-    public static (double, double, double) FitGuassianParameters(IEnumerable<(double, double)> points, double? amplitude = null, double? mean = null, double? standardDeviation = null, AlgorithmName algorithm = 0) => Fit(points, SpecialFunction.Gaussian, amplitude ?? points.Max(p => p.Item2) - points.Min(p => p.Item2), mean ?? points.Sum(p => p.Item1 * p.Item2) / points.Sum(p => p.Item2), standardDeviation ?? points.StandardDeviation(p => p.Item1) / 10, algorithm, new StochasticOptimizationConfig());
+    public static (double, double, double) FitGuassianParameters(IEnumerable<(double, double)> points, StochasticOptimizationConfig optimizationConfig, double? amplitude = null, double? mean = null, double? standardDeviation = null, AlgorithmName algorithm = 0) => Fit(points, SpecialFunction.Gaussian, amplitude ?? points.Max(p => p.Item2) - points.Min(p => p.Item2), mean ?? points.Sum(p => p.Item1 * p.Item2) / points.Sum(p => p.Item2), standardDeviation ?? points.StandardDeviation(p => p.Item1) / 10, algorithm, optimizationConfig);
 
     public static double[] Fit(IEnumerable<(double, double)> points, Func<double, double[], double> f, double[] parameters, AlgorithmName algorithm, StochasticOptimizationConfig optimizationConfig) => algorithm switch
     {

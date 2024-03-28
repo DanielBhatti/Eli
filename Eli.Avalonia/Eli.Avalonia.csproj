@@ -34,4 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Eli\Eli.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Controls\PropertyGrid.axaml" />
+  </ItemGroup>
 </Project>

@@ -1,6 +1,10 @@
 ﻿namespace Eli.Math.Optimization;
 
-public abstract class OptimizationAlgorithm<TParameterConfig>
+public interface OptimizationAlgorithm
+{
+}
+
+public abstract class OptimizationAlgorithm<TParameterConfig> : OptimizationAlgorithm
 {
     public abstract double[] Optimize(IEnumerable<(double, double)> points, Func<double, double[], double> f, double[] functionParameters, TParameterConfig optimizationConfig);
 

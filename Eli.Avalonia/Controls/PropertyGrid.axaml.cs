@@ -4,6 +4,10 @@ using System.Reflection;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using System.Linq;
+using Avalonia.Data.Core;
+using System.ComponentModel;
+using System.Xml.Linq;
+using Eli.Text;
 
 namespace Eli.Avalonia.Controls;
 
@@ -40,35 +44,22 @@ public partial class PropertyGrid : UserControl
 
         foreach(var property in properties)
         {
-            var control = CreateControlForProperty(property);
-            if(control != null)
+            var textBlock = new TextBlock { Text = CaseConverter.ToSpacedPascalCase(property.Name) };
+            panel.Children.Add(textBlock);
+
+            var textBox = new TextBox();
+
+            if(_object != null)
             {
-                panel.Children.Add(control);
+                var binding = new Binding
+                {
+                    Source = _object,
+                    Path = property.Name,
+                    Mode = BindingMode.TwoWay,
+                };
+                _ = textBox.Bind(TextBox.TextProperty, binding);
             }
+            panel.Children.Add(textBox);
         }
-    }
-
-    private Control? CreateControlForProperty(PropertyInfo propertyInfo)
-    {
-        var container = new UniformGrid { Columns = 2 };
-
-        var textBlock = new TextBlock { Text = propertyInfo.Name };
-        container.Children.Add(textBlock);
-
-        var textBox = new TextBox();
-
-        if(_object != null)
-        {
-            var binding = new Binding
-            {
-                Source = _object,
-                Path = propertyInfo.Name,
-                Mode = BindingMode.TwoWay,
-            };
-            _ = textBox.Bind(TextBox.TextProperty, binding);
-        }
-        container.Children.Add(textBox);
-
-        return container;
     }
 }

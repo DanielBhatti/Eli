@@ -10,7 +10,6 @@ public partial class SetValueControl : UserControl
     private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
     public static readonly StyledProperty<object> ValueProperty = AvaloniaProperty.Register<SetValueControl, object>(nameof(Value), defaultBindingMode: BindingMode.TwoWay);
-
     public object Value
     {
         get => GetValue(ValueProperty);
@@ -18,7 +17,6 @@ public partial class SetValueControl : UserControl
     }
 
     public static readonly StyledProperty<string> WatermarkProperty = AvaloniaProperty.Register<SetValueControl, string>(nameof(Watermark), defaultBindingMode: BindingMode.TwoWay);
-
     public string Watermark
     {
         get => GetValue(WatermarkProperty);
@@ -26,7 +24,6 @@ public partial class SetValueControl : UserControl
     }
 
     public static readonly StyledProperty<bool> UseReflectionProperty = AvaloniaProperty.Register<SetValueControl, bool>(nameof(UseReflection), defaultBindingMode: BindingMode.TwoWay);
-
     public bool UseReflection
     {
         get => GetValue(UseReflectionProperty);

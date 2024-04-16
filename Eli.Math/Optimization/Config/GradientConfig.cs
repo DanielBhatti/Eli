@@ -1,6 +1,6 @@
 ﻿namespace Eli.Math.Optimization.Config;
 
-public class OptimizationConfig
+public class GradientConfig
 {
     public int Seed { get; set; } = 573845789;
     public double StoppingTolerance { get; set; } = 1e-6;

@@ -1,8 +1,8 @@
 ﻿namespace Eli.Math.Optimization;
 
-public interface OptimizationAlgorithm
+public abstract class OptimizationAlgorithm
 {
-    protected double[] Optimize(IEnumerable<(double, double)> points, Func<double, double[], double> f, double[] functionParameters);
+    public abstract double[] Optimize(IEnumerable<(double, double)> points, Func<double, double[], double> f, double[] functionParameters);
 
     public double Optimize(IEnumerable<(double, double)> points, Func<double, double, double> f, double parameter) => Optimize(points, (x, p) => f(x, p[0]), [parameter])[0];
 
@@ -42,6 +42,4 @@ public abstract class OptimizationAlgorithm<TParameterConfig> : OptimizationAlgo
     public TParameterConfig Config { get; }
 
     public OptimizationAlgorithm(TParameterConfig config) => Config = config;
-
-    public abstract double[] Optimize(IEnumerable<(double, double)> points, Func<double, double[], double> f, double[] functionParameters);
 }

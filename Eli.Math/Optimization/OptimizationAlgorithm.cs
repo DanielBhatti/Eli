@@ -37,9 +37,7 @@ public abstract class OptimizationAlgorithm
     }
 }
 
-public abstract class OptimizationAlgorithm<TParameterConfig> : OptimizationAlgorithm
+public abstract class OptimizationAlgorithm<TParameterConfig>(TParameterConfig config) : OptimizationAlgorithm
 {
-    public TParameterConfig Config { get; }
-
-    public OptimizationAlgorithm(TParameterConfig config) => Config = config;
+    public TParameterConfig Config { get; } = config;
 }

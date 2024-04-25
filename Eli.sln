@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eli.Avalonia.Test", "Eli.Av
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eli.Math", "Eli.Math\Eli.Math.csproj", "{750E68E3-448B-4BDF-96A6-F7E65B535776}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eli.Math.Test", "Eli.Math.Test\Eli.Math.Test.csproj", "{0999D700-7C92-4D44-BFAA-50C92C6C7ADB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eli.Math.Test", "Eli.Math.Test\Eli.Math.Test.csproj", "{0999D700-7C92-4D44-BFAA-50C92C6C7ADB}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Eli.Math.Fs", "Eli.Math.Fs\Eli.Math.Fs.fsproj", "{BDF4F985-15A6-4157-BAFB-966FC6E68584}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Eli.Math.Fs.Test", "Eli.Math.Fs.Test\Eli.Math.Fs.Test.fsproj", "{D6E535FB-31A3-4635-B094-5D1D5AB86CDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{0999D700-7C92-4D44-BFAA-50C92C6C7ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0999D700-7C92-4D44-BFAA-50C92C6C7ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0999D700-7C92-4D44-BFAA-50C92C6C7ADB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDF4F985-15A6-4157-BAFB-966FC6E68584}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDF4F985-15A6-4157-BAFB-966FC6E68584}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDF4F985-15A6-4157-BAFB-966FC6E68584}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDF4F985-15A6-4157-BAFB-966FC6E68584}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6E535FB-31A3-4635-B094-5D1D5AB86CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6E535FB-31A3-4635-B094-5D1D5AB86CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6E535FB-31A3-4635-B094-5D1D5AB86CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6E535FB-31A3-4635-B094-5D1D5AB86CDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

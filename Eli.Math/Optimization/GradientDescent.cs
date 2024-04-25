@@ -3,10 +3,8 @@ using Eli.Math.Optimization.Config;
 
 namespace Eli.Math.Optimization;
 
-public class GradientDescent : OptimizationAlgorithm<GradientConfig>
+public class GradientDescent(GradientConfig config) : OptimizationAlgorithm<GradientConfig>(config)
 {
-    public GradientDescent(GradientConfig config) : base(config) { }
-
     public override double[] Optimize(IEnumerable<(double, double)> points, Func<double, double[], double> f, double[] functionParameters)
     {
         var nextParameters = new double[functionParameters.Length];

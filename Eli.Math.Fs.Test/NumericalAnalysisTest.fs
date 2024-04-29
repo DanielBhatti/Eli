@@ -13,7 +13,7 @@ module NumericalAnalysisTest =
         let xStart = 0.0
         let yStart = 1.0
         let xEnd = 1.0
-        let h = 0.1
+        let h = 1e-6
         let result = NumericalAnalysis.rk4Integrate f xStart yStart xEnd h
         let expected = Math.Exp(xEnd)
         Assert.AreEqual(expected, result, tolerance)
@@ -24,7 +24,7 @@ module NumericalAnalysisTest =
         let xStart = 0.0
         let yStart = 1.0
         let xEnd = 1.0
-        let h = 0.0001
+        let h = 1e-8
         let result = NumericalAnalysis.rk4Integrate f xStart yStart xEnd h
         let expected = Math.Exp(xEnd)
         Assert.AreEqual(expected, result, tolerance)
@@ -35,7 +35,7 @@ module NumericalAnalysisTest =
         let xStart = 0.0
         let yStart = 0.0
         let xEnd = 1.0
-        let h = 0.1
+        let h = 1e-6
         let result = NumericalAnalysis.rk4Integrate f xStart yStart xEnd h
         let expected = xEnd ** 3.0
         Assert.AreEqual(expected, result, tolerance)

@@ -13,6 +13,6 @@ module NumericalAnalysis =
         let mutable x = xStart
         let mutable y = yStart
         while x < xEnd do
-            y <- rk4Step f' h x y
+            y <- rk4Step f' x y h
             x <- x + h
         y

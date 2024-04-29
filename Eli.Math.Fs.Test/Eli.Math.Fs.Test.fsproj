@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="NumericalAnalysisTest.fs" />
     <Compile Include="DynamicsTest.fs" />
-    <Compile Include="Program.fs" />
+    <Compile Include="SequenceTest.fs" />
   </ItemGroup>
 
   <ItemGroup>

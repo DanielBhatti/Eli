@@ -6,6 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="NumericalAnalysis.fs" />
 		<Compile Include="Derivative.fs" />
 		<Compile Include="MetaFunction.fs" />
 		<Compile Include="Function.fs" />

@@ -20,24 +20,24 @@ module Derivative =
             let g = (fun y -> nthDerivative f y (n - 1) delta method)
             derivative g x delta method
 
-    let gradient (f: float[] -> float) point delta method =
+    let gradient (f: float[] -> float) (point: float[]) delta method =
         point
         |> Array.mapi (fun i x_i ->
-            let rightShift = Array.mapi (fun j x_j -> if i = j then x_j + delta else x_j) point
-            let leftShift = Array.mapi (fun j x_j -> if i = j then x_j - delta else x_j) point
+            let shiftedPoint h = point |> Array.mapi (fun j x_j -> if i = j then x_j + h else x_j)
+            let fShifted h = f (shiftedPoint h)
             match method with
-            | Forward | Default -> derivative (fun t -> f rightShift) x_i delta Forward
-            | Backward -> derivative (fun t -> f leftShift) x_i delta Backward
-            | Central -> derivative (fun t -> f rightShift) x_i delta Central
+            | Forward | Default -> (fShifted delta - f point) / delta
+            | Backward -> (f point - fShifted (-delta)) / delta
+            | Central -> (fShifted delta - fShifted (-delta)) / (2.0 * delta)
         )
 
-    let jacobian (f: float[] -> float[]) point delta =
-        let n = point |> Array.length
+    let jacobian (f: float[] -> float[]) (point: float[]) delta =
         let m = f point |> Array.length
+        let n = point |> Array.length
         Array.init m (fun i ->
             Array.init n (fun j ->
-                let rightShift = Array.mapi (fun k x_k -> if k = j then x_k + delta else x_k) point
-                let leftShift = Array.mapi (fun k x_k -> if k = j then x_k - delta else x_k) point
-                (f rightShift).[i] - (f leftShift).[i] / (2.0 * delta)
+                let shiftedPoint h = point |> Array.mapi (fun k x_k -> if j = k then x_k + h else x_k)
+                let fShifted h = f (shiftedPoint h)
+                ((fShifted delta).[i] - (fShifted (-delta)).[i]) / (2.0 * delta)
             )
         )

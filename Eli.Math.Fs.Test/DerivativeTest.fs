@@ -39,7 +39,8 @@ module DerivativeTests =
         let point = [| 3.0; 4.0 |]
         let result = Derivative.gradient f point 0.00001 Derivative.Method.Central
         let expected = [| 6.0; 8.0 |]
-        CollectionAssert.AreEqual(expected, result)
+        for i in 0..result.Length - 1 do
+            Assert.AreEqual(expected.[i], result.[i], 0.01)
 
     [<Test>]
     let ``Test jacobian`` () =

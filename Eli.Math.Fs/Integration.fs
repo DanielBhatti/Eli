@@ -1,6 +1,6 @@
 ﻿namespace Eli.Math.Fs
 
-module NumericalAnalysis =
+module Integration =
     let rec integrate methodStep f' tStart xStart tEnd h =
         if tStart >= tEnd then xStart
         else integrate methodStep f' (tStart + h) (methodStep f' tStart xStart h) tEnd h
@@ -31,10 +31,10 @@ module NumericalAnalysis =
 
     let rec midpointIntegrate f' tStart xStart tEnd h = integrate midpointStep f' tStart xStart tEnd h
 
-    let rec tracePath methodStep f' (tStart: float) xStart tEnd h path =
-        if tStart >= tEnd then
-            List.rev path
+    let rec _tracePath methodStep f' (tStart: float) xStart tEnd h path =
+        if tStart >= tEnd then List.rev path
         else
-            let xNext = tStart + h
-            let yNext = methodStep f' tStart xStart h
-            tracePath methodStep f' xNext yNext tEnd h ((xNext, yNext)::path)
+            let tNext = tStart + h
+            let xNext = methodStep f' tStart xStart h
+            _tracePath methodStep f' tNext xNext tEnd h ((tNext, xNext)::path)
+    let tracePath methodStep f' (tStart: float) xStart tEnd h = _tracePath methodStep f' tStart xStart tEnd h []

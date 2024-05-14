@@ -6,11 +6,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="NumericalAnalysis.fs" />
+		<Compile Include="Integration.fs" />
 		<Compile Include="Derivative.fs" />
 		<Compile Include="MetaFunction.fs" />
 		<Compile Include="Function.fs" />
 		<Compile Include="Sequence.fs" />
 		<Compile Include="Dynamics.fs" />
-	</ItemGroup>
+    <Compile Include="Series.fs" />
+    <Compile Include="DifferentialEquation.fs" />
+  </ItemGroup>
 </Project>

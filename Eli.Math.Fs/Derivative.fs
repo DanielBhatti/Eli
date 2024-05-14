@@ -13,6 +13,13 @@ module Derivative =
         | Backward -> (f x - f (x - delta)) / delta
         | Central -> (f (x + delta) - f (x - delta)) / (2.0 * delta)
 
+    let rec nthDerivative (f: float -> float) x n delta method =
+        if n = 0 then f x
+        else if n = 1 then derivative f x delta method
+        else
+            let g = (fun y -> nthDerivative f y (n - 1) delta method)
+            derivative g x delta method
+
     let gradient (f: float[] -> float) point delta method =
         point
         |> Array.mapi (fun i x_i ->

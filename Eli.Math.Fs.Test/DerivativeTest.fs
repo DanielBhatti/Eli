@@ -3,7 +3,7 @@
 open NUnit.Framework
 open Eli.Math.Fs
 
-module DerivativeTests =
+module DerivativeTest =
 
     [<Test>]
     let ``Test forward derivative`` () =

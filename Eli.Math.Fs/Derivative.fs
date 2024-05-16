@@ -7,11 +7,11 @@ module Derivative =
         | Backward
         | Central
 
-    let derivative (f: float -> float) x delta (method: Method) =
+    let derivative (f: float -> float) x delta method =
         match method with
-        | Forward | Default -> (f (x + delta) - f x) / delta
+        | Forward -> (f (x + delta) - f x) / delta
         | Backward -> (f x - f (x - delta)) / delta
-        | Central -> (f (x + delta) - f (x - delta)) / (2.0 * delta)
+        | Central | Default -> (f (x + delta) - f (x - delta)) / (2.0 * delta)
 
     let rec nthDerivative (f: float -> float) x n delta method =
         if n = 0 then f x
@@ -26,9 +26,9 @@ module Derivative =
             let shiftedPoint h = point |> Array.mapi (fun j x_j -> if i = j then x_j + h else x_j)
             let fShifted h = f (shiftedPoint h)
             match method with
-            | Forward | Default -> (fShifted delta - f point) / delta
+            | Forward -> (fShifted delta - f point) / delta
             | Backward -> (f point - fShifted (-delta)) / delta
-            | Central -> (fShifted delta - fShifted (-delta)) / (2.0 * delta)
+            | Central | Default -> (fShifted delta - fShifted (-delta)) / (2.0 * delta)
         )
 
     let jacobian (f: float[] -> float[]) (point: float[]) delta =

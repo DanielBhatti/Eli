@@ -30,6 +30,6 @@ public partial class TabNavigatableControl : TabControl
         }
     }
 
-    // adding Items.Count is a workaround for the modulo operator return negative numbers 
+    // adding Items.Count is a workaround for the modulo operator returning negative numbers 
     private void ChangeTab(int direction) => SelectedIndex = (SelectedIndex + direction + Items.Count) % Items.Count;
 }

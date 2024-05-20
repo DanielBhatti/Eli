@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Eli.Web;
@@ -19,10 +20,10 @@ public class HttpStreamFetcher
 
     public Stream GetResponseStream(string url, int timeoutMilliseconds = 3000)
     {
-        var request = (HttpWebRequest)WebRequest.CreateDefault(new Uri(url));
-        request.Timeout = timeoutMilliseconds;
         try
         {
+            var request = (HttpWebRequest)WebRequest.CreateDefault(new Uri(url));
+            request.Timeout = timeoutMilliseconds;
             var response = (HttpWebResponse)request.GetResponse();
             return response.GetResponseStream();
         }
@@ -32,12 +33,19 @@ public class HttpStreamFetcher
         }
     }
 
-    public async Task<Stream> GetResponseStreamAsync(string url, int timeout = 300)
+    public async Task<Stream> GetResponseStreamAsync(string url, int timeoutSeconds = 300)
     {
-        var client = _clientFactory != null ? _clientFactory.CreateClient() : _client;
-        client.Timeout = TimeSpan.FromSeconds(timeout);
-        var response = await client.GetAsync(url);
-        _ = response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStreamAsync();
+        try
+        {
+            var client = _clientFactory != null ? _clientFactory.CreateClient() : _client;
+            client.Timeout = TimeSpan.FromSeconds(timeoutSeconds);
+            var response = await client.GetAsync(url);
+            _ = response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStreamAsync();
+        }
+        catch
+        {
+            return Stream.Null;
+        }
     }
 }

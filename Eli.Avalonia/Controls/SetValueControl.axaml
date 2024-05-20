@@ -62,7 +62,7 @@
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Single}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding Value, ElementName=MainContentControl, Mode=TwoWay}" />
+				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainCovlcntentControl, Mode=TwoWay}" Value="{Binding Value, ElementName=MainContentControl, Mode=TwoWay}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Double}">

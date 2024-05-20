@@ -15,9 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eli.Math", "Eli.Math\Eli.Ma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eli.Math.Test", "Eli.Math.Test\Eli.Math.Test.csproj", "{0999D700-7C92-4D44-BFAA-50C92C6C7ADB}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Eli.Math.Fs", "Eli.Math.Fs\Eli.Math.Fs.fsproj", "{BDF4F985-15A6-4157-BAFB-966FC6E68584}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Eli.Math.Fs", "Eli.Math.Fs\Eli.Math.Fs.fsproj", "{BDF4F985-15A6-4157-BAFB-966FC6E68584}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Eli.Math.Fs.Test", "Eli.Math.Fs.Test\Eli.Math.Fs.Test.fsproj", "{D6E535FB-31A3-4635-B094-5D1D5AB86CDE}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Eli.Math.Fs.Test", "Eli.Math.Fs.Test\Eli.Math.Fs.Test.fsproj", "{D6E535FB-31A3-4635-B094-5D1D5AB86CDE}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Eli.Physics", "Eli.Physics\Eli.Physics.fsproj", "{AB229FC1-2AD3-412A-B8D7-745F39AE59C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{D6E535FB-31A3-4635-B094-5D1D5AB86CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6E535FB-31A3-4635-B094-5D1D5AB86CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6E535FB-31A3-4635-B094-5D1D5AB86CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB229FC1-2AD3-412A-B8D7-745F39AE59C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB229FC1-2AD3-412A-B8D7-745F39AE59C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB229FC1-2AD3-412A-B8D7-745F39AE59C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB229FC1-2AD3-412A-B8D7-745F39AE59C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

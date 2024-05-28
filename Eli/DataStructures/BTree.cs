@@ -3,35 +3,35 @@ using System.Collections.Generic;
 
 namespace Eli.DataStructures;
 
-public class BTreeNode<T1, T2> where T2 : IComparable<T2>
+internal class BTreeNode<TKey, TValue> where TKey : IComparable<TKey>
 {
-    public List<T1> Values { get; } = new();
-    public List<T2> Keys { get; } = new();
-    public List<BTreeNode<T1, T2>> Children { get; } = new();
+    public List<TValue> Values { get; } = new List<TValue>();
+    public List<TKey> Keys { get; } = new List<TKey>();
+    public List<BTreeNode<TKey, TValue>> Children { get; } = new List<BTreeNode<TKey, TValue>>();
     public bool IsLeaf => Children.Count == 0;
 }
 
-public class BTree<T1, T2> where T2 : IComparable<T2>
+public class BTree<TKey, TValue> : Tree<TKey, TValue> where TKey : IComparable<TKey>
 {
     private int MinimumDegree { get; init; }
-    private BTreeNode<T1, T2> Root { get; set; }
-    private Func<T1, T2> KeySelector { get; set; }
+    private BTreeNode<TKey, TValue> Root { get; set; }
+    private Func<TValue, TKey> KeySelector { get; set; }
 
-    public BTree(int minimumDegree, Func<T1, T2> keySelector)
+    public BTree(int minimumDegree, Func<TValue, TKey> keySelector)
     {
         if(minimumDegree <= 0) throw new ArgumentException("Minimum degree must be a positive integer", nameof(minimumDegree));
         MinimumDegree = minimumDegree;
-        Root = new BTreeNode<T1, T2>();
+        Root = new BTreeNode<TKey, TValue>();
         KeySelector = keySelector;
     }
 
-    public void Insert(T1 value)
+    public void Insert(TValue value)
     {
         var key = KeySelector(value);
         var root = Root;
         if(root.Keys.Count == 2 * MinimumDegree - 1)
         {
-            var newNode = new BTreeNode<T1, T2>();
+            var newNode = new BTreeNode<TKey, TValue>();
             newNode.Children.Add(root);
             SplitChild(newNode, 0);
             Root = newNode;
@@ -39,19 +39,18 @@ public class BTree<T1, T2> where T2 : IComparable<T2>
         InsertNonFull(Root, value, key);
     }
 
-    public void Delete(T1 value)
+    public void Delete(TKey key)
     {
-        var key = KeySelector(value);
         Delete(Root, key);
         if(Root.Keys.Count == 0 && !Root.IsLeaf) Root = Root.Children[0];
     }
 
-    public bool Search(T1 value) => Search(Root, KeySelector(value)) != null;
+    public TValue Search(TKey key) => Search(Root, key);
 
-    private void SplitChild(BTreeNode<T1, T2> node, int index)
+    private void SplitChild(BTreeNode<TKey, TValue> node, int index)
     {
         var child = node.Children[index];
-        var newNode = new BTreeNode<T1, T2>();
+        var newNode = new BTreeNode<TKey, TValue>();
 
         newNode.Keys.AddRange(child.Keys.GetRange(MinimumDegree, MinimumDegree - 1));
         newNode.Values.AddRange(child.Values.GetRange(MinimumDegree, MinimumDegree - 1));
@@ -71,7 +70,7 @@ public class BTree<T1, T2> where T2 : IComparable<T2>
         child.Values.RemoveAt(MinimumDegree - 1);
     }
 
-    private void InsertNonFull(BTreeNode<T1, T2> node, T1 value, T2 key)
+    private void InsertNonFull(BTreeNode<TKey, TValue> node, TValue value, TKey key)
     {
         if(node.IsLeaf)
         {
@@ -94,15 +93,15 @@ public class BTree<T1, T2> where T2 : IComparable<T2>
         InsertNonFull(node.Children[i], value, key);
     }
 
-    private BTreeNode<T1, T2> Search(BTreeNode<T1, T2> node, T2 key)
+    private TValue Search(BTreeNode<TKey, TValue> node, TKey key)
     {
         var i = 0;
         while(i < node.Keys.Count && key.CompareTo(node.Keys[i]) > 0) i++;
-        if(i < node.Keys.Count && key.CompareTo(node.Keys[i]) == 0) return node;
-        return node.IsLeaf ? null : Search(node.Children[i], key);
+        if(i < node.Keys.Count && key.CompareTo(node.Keys[i]) == 0) return node.Values[i];
+        return node.IsLeaf ? default : Search(node.Children[i], key);
     }
 
-    private void Delete(BTreeNode<T1, T2> node, T2 key)
+    private void Delete(BTreeNode<TKey, TValue> node, TKey key)
     {
         var idx = node.Keys.BinarySearch(key);
         if(idx >= 0)
@@ -152,19 +151,19 @@ public class BTree<T1, T2> where T2 : IComparable<T2>
         }
     }
 
-    private T2 GetPredecessor(BTreeNode<T1, T2> node)
+    private TKey GetPredecessor(BTreeNode<TKey, TValue> node)
     {
         while(!node.IsLeaf) node = node.Children[node.Keys.Count];
         return node.Keys[^1];
     }
 
-    private T2 GetSuccessor(BTreeNode<T1, T2> node)
+    private TKey GetSuccessor(BTreeNode<TKey, TValue> node)
     {
         while(!node.IsLeaf) node = node.Children[0];
         return node.Keys[0];
     }
 
-    private void MergeChildren(BTreeNode<T1, T2> node, int idx)
+    private void MergeChildren(BTreeNode<TKey, TValue> node, int idx)
     {
         var child = node.Children[idx];
         var sibling = node.Children[idx + 1];
@@ -180,7 +179,7 @@ public class BTree<T1, T2> where T2 : IComparable<T2>
         node.Children.RemoveAt(idx + 1);
     }
 
-    private void FixChildSize(BTreeNode<T1, T2> node, int idx)
+    private void FixChildSize(BTreeNode<TKey, TValue> node, int idx)
     {
         var child = node.Children[idx];
         var leftSibling = idx > 0 ? node.Children[idx - 1] : null;

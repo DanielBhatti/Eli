@@ -34,8 +34,8 @@ public static class Gradient
                 parametersMinusEpsilon[j] = parameters[j];
             }
 
-            parametersPlusEpsilon[i] *= 1 + epsilon;
-            parametersMinusEpsilon[i] *= 1 - epsilon;
+            parametersPlusEpsilon[i] += epsilon;
+            parametersMinusEpsilon[i] -= epsilon;
 
             var functionPlusEpsilon = ObjectiveFunction.MeanSquaredError(points.Select(p => (f(p.x, parametersPlusEpsilon), p.y)));
             var functionMinusEpsilon = ObjectiveFunction.MeanSquaredError(points.Select(p => (f(p.x, parametersMinusEpsilon), p.y)));

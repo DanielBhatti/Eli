@@ -11,7 +11,7 @@ public class TrieTest
     {
         var trie = new Trie();
         trie.Insert("hello");
-        Assert.IsTrue(trie.Search("hello"));
+        Assert.IsNotNull(trie.Search("hello"));
     }
 
     [Test]
@@ -21,8 +21,8 @@ public class TrieTest
         trie.Insert("hello");
         trie.Insert("world");
 
-        Assert.IsTrue(trie.Search("hello"));
-        Assert.IsTrue(trie.Search("world"));
+        Assert.IsNotNull(trie.Search("hello"));
+        Assert.IsNotNull(trie.Search("world"));
     }
 
     [Test]
@@ -30,7 +30,7 @@ public class TrieTest
     {
         var trie = new Trie();
         trie.Insert("hello");
-        Assert.IsFalse(trie.Search("hell"));
+        Assert.IsNull(trie.Search("hell"));
     }
 
     [Test]
@@ -38,7 +38,7 @@ public class TrieTest
     {
         var trie = new Trie();
         trie.Insert("hello");
-        Assert.IsFalse(trie.Search("world"));
+        Assert.IsNull(trie.Search("world"));
     }
 
     [Test]
@@ -47,9 +47,9 @@ public class TrieTest
         var trie = new Trie();
         trie.Insert("hello");
 
-        Assert.IsTrue(trie.StartsWith("hell"));
-        Assert.IsTrue(trie.StartsWith("he"));
-        Assert.IsTrue(trie.StartsWith("h"));
+        Assert.IsNotNull(trie.StartsWith("hell"));
+        Assert.IsNotNull(trie.StartsWith("he"));
+        Assert.IsNotNull(trie.StartsWith("h"));
     }
 
     [Test]

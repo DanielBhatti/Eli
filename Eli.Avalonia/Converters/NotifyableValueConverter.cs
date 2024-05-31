@@ -1,8 +1,9 @@
 ﻿using Avalonia.Data.Converters;
+using Eli.Avalonia.Mvvm;
 using System;
 using System.Globalization;
 
-namespace Eli.Avalonia.Mvvm.Converter;
+namespace Eli.Avalonia.Converter;
 
 public class NotifyableValueConverter : IValueConverter
 {

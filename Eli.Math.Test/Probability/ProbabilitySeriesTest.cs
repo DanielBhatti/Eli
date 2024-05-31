@@ -6,7 +6,7 @@ namespace Eli.Math.Test.Probability;
 public class ProbabilitySeriesTests
 {
     [Test]
-    public void ExpectedAverage_WithValidData_ReturnsCorrectResult()
+    public void ExpectedAverageWithValidDataReturnsCorrectResult()
     {
         var data = new List<(double Probability, double Value)>
         {
@@ -20,7 +20,7 @@ public class ProbabilitySeriesTests
     }
 
     [Test]
-    public void Variance_WithValidData_ReturnsCorrectResult()
+    public void VarianceWithValidDataReturnsCorrectResult()
     {
         var data = new List<(double Probability, double Value)>
         {
@@ -34,7 +34,7 @@ public class ProbabilitySeriesTests
     }
 
     [Test]
-    public void ExpectedAverage_WithEmptyData_ReturnsZero()
+    public void ExpectedAverageWithEmptyDataReturnsZero()
     {
         var data = new List<(double Probability, double Value)>();
         var result = ProbabilitySeries.ExpectedValue(data);
@@ -42,7 +42,7 @@ public class ProbabilitySeriesTests
     }
 
     [Test]
-    public void Variance_WithEmptyData_ReturnsZero()
+    public void VarianceWithEmptyDataReturnsZero()
     {
         var data = new List<(double Probability, double Value)>();
         var result = ProbabilitySeries.Variance(data);

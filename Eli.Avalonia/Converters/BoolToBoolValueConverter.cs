@@ -3,7 +3,7 @@ using Avalonia.Data.Converters;
 using System;
 using System.Globalization;
 
-namespace Eli.Avalonia.Mvvm.Converter;
+namespace Eli.Avalonia.Converter;
 
 public class BoolToBoolValueConverter : AvaloniaObject, IValueConverter
 {

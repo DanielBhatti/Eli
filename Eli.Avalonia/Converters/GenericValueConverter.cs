@@ -2,7 +2,7 @@
 using System;
 using System.Globalization;
 
-namespace Eli.Avalonia.Mvvm.Converter;
+namespace Eli.Avalonia.Converter;
 
 public abstract class GenericValueConverter<TSource, TTarget, TParameter> : IValueConverter
 {

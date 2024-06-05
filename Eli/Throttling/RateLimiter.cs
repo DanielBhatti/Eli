@@ -58,14 +58,14 @@ public class RateLimiter
         while(true)
         {
             await Semaphore.WaitAsync();
-            CleanupOldRequests();
+            RemoveOldRequests();
             if(RequestTimes.Count < MaxRequests) break;
             _ = Semaphore.Release();
             await Task.Delay(RetryWaitTime);
         }
     }
 
-    private void CleanupOldRequests()
+    private void RemoveOldRequests()
     {
         var cutoff = DateTime.UtcNow - MaxRequestsTimeSpan;
         while(RequestTimes.TryPeek(out var timestamp) && timestamp <= cutoff) _ = RequestTimes.TryDequeue(out _);

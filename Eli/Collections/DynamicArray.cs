@@ -1,6 +1,6 @@
 ﻿namespace Eli.Collections;
 
-public class DynamicArray<T>
+public class DynamicArray<T> where T : notnull
 {
     private T[] Array { get; set; }
     private int Capacity { get; set; }
@@ -27,7 +27,7 @@ public class DynamicArray<T>
         Count++;
     }
 
-    public T this[int index] => (index < 0 || index >= Count) ? default : Array[index];
+    public T this[int index] => (index < 0 || index >= Count) ? default! : Array[index];
 
     private void Resize()
     {

@@ -10,7 +10,6 @@ namespace Eli.Web;
 public class HttpStreamFetcher
 {
     private IHttpClientFactory? HttpClientFactory { get; }
-    private Lazy<HttpClient> HttpClient { get; } = new Lazy<HttpClient>(() => new HttpClient());
     private AsyncRetryPolicy<HttpResponseMessage> RetryPolicy { get; }
 
     private int DefaultMaxRequests { get; } = 5;
@@ -37,9 +36,9 @@ public class HttpStreamFetcher
 
     public Stream GetResponseStream(string url, int timeoutMilliseconds = 3000, string? userAgentValue = null)
     {
+        var client = HttpClientFactory?.CreateClient() ?? new HttpClient();
         try
         {
-            var client = HttpClientFactory?.CreateClient() ?? HttpClient.Value;
             client.Timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -55,13 +54,17 @@ public class HttpStreamFetcher
         {
             return Stream.Null;
         }
+        finally
+        {
+            if(HttpClientFactory is null) client.Dispose();
+        }
     }
 
     public async Task<Stream> GetResponseStreamAsync(string url, int timeoutMilliseconds = 3000, string? userAgentStringValue = null)
     {
+        var client = HttpClientFactory?.CreateClient() ?? new HttpClient();
         try
         {
-            var client = HttpClientFactory?.CreateClient() ?? HttpClient.Value;
             client.Timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -79,6 +82,10 @@ public class HttpStreamFetcher
         catch
         {
             return Stream.Null;
+        }
+        finally
+        {
+            if (HttpClientFactory is null) client.Dispose();
         }
     }
 }

@@ -2,16 +2,10 @@
 
 namespace Eli.DataStuctures;
 
-public class SkipListNode<T> where T : notnull
+public class SkipListNode<T>(T value, int level) where T : notnull
 {
-    public T Value { get; set; }
-    public SkipListNode<T>[] Forward { get; set; }
-
-    public SkipListNode(T value, int level)
-    {
-        Value = value;
-        Forward = new SkipListNode<T>[level + 1];
-    }
+    public T Value { get; set; } = value;
+    public SkipListNode<T>[] Forward { get; set; } = new SkipListNode<T>[level + 1];
 }
 
 public class SkipList<T> where T : notnull, IComparable<T>
@@ -22,13 +16,12 @@ public class SkipList<T> where T : notnull, IComparable<T>
     private Random Random { get; }
     private int Level { get; set; }
 
-    public SkipList(double probability = 0.5, int maxLevel = 0, int? seed = null)
+    public SkipList(double probability = 0.5, int maxLevel = 5, int? seed = null)
     {
         Probability = probability;
         MaxLevel = maxLevel;
         Head = new SkipListNode<T>(default!, MaxLevel);
-        Random = seed is null ? new Random(seed.Value) : new Random();
-
+        Random = seed is not null ? new Random(seed.Value) : new Random();
         Level = 0;
     }
 

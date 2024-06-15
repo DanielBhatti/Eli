@@ -35,5 +35,5 @@ public static class ReflectionMetadata
         return value.Select(item => Convert.ChangeType(item, containedType)).ToList();
     }
 
-    public static T Parse<T>(string value) => (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(value);
+    public static T Parse<T>(string value) => (T)TypeDescriptor.GetConverter(typeof(T)).ConvertFromString(value)!;
 }

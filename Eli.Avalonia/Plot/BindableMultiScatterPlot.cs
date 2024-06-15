@@ -64,7 +64,7 @@ public partial class BindableMultiScatterPlot : BindablePlot
             {
                 if(scatterData.XData.Length > 0)
                 {
-                    var plot = Plot.AddScatter(scatterData.XData, scatterData.YData, Colors[i % Colors.Length], label: scatterData.Label, markerSize: scatterData.MarkerSize);
+                    var plot = Plot.AddScatter(scatterData.XData, scatterData.YData, Colors[i % Colors.Length], label: scatterData.Label, markerSize: scatterData.MarkerSize, lineWidth: scatterData.LineWidth);
                     plot.XAxisIndex = scatterData.XAxisIndex;
                     plot.YAxisIndex = scatterData.YAxisIndex;
                 }

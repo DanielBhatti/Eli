@@ -16,8 +16,8 @@ public partial class EnumComboBoxControl : UserControl
             o => o.SelectedValue,
             (o, v) =>
             {
-                if(o != null && v != null && o.GetType() != v.GetType() && o.Items == null) o.Items = new AvaloniaList<object>(Enum.GetValues(v.GetType()).Cast<Enum>().ToArray());
-                o.SelectedValue = v;
+                if(o is not null && v is not null && o.GetType() != v.GetType() && o.Items == null) o.Items = new AvaloniaList<object>(Enum.GetValues(v.GetType()).Cast<Enum>().ToArray());
+                if(o is not null && v is not null) o.SelectedValue = v;
             },
             defaultBindingMode: BindingMode.TwoWay);
     private Enum _selectedValue = DummyEnum.DummyValue;
@@ -39,10 +39,7 @@ public partial class EnumComboBoxControl : UserControl
         set => _ = SetAndRaise(ItemsProperty, ref _items, value);
     }
 
-    public EnumComboBoxControl()
-    {
-        InitializeComponent();
-    }
+    public EnumComboBoxControl() => InitializeComponent();
 
     public enum DummyEnum
     {

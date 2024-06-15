@@ -1,13 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
-using System.Reflection;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
-using System.Linq;
-using Avalonia.Data.Core;
-using System.ComponentModel;
-using System.Xml.Linq;
 using Eli.Text;
+using System.Linq;
 
 namespace Eli.Avalonia.Controls;
 

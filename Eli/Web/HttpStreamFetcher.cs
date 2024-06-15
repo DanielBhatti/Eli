@@ -29,9 +29,8 @@ public class HttpStreamFetcher
         RetryPolicy = Policy
             .Handle<HttpRequestException>()
             .OrResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
-            .WaitAndRetryAsync(
-                retryCount: retryMaxRequests,
-                sleepDurationProvider: _ => retryWaitDuration,
+            .WaitAndRetryAsync(retryCount: retryMaxRequests,
+                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt) * retryWaitDuration.TotalSeconds),
                 onRetry: (response, timespan, retryCount, context) => { });
     }
 
@@ -65,7 +64,7 @@ public class HttpStreamFetcher
             client.Timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
-            if (userAgentStringValue is not null) request.Headers.Add("User-Agent", userAgentStringValue);
+            if(userAgentStringValue is not null) request.Headers.Add("User-Agent", userAgentStringValue);
 
             var response = await RetryPolicy.ExecuteAsync(async () =>
             {

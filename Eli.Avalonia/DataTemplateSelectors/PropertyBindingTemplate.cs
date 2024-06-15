@@ -23,7 +23,7 @@ public class PropertyBindingTemplate : IDataTemplate
             Control control;
             var propertyValue = data.GetType().GetProperty(property.Name)?.GetValue(data);
 
-            if(BuiltInTypeTemplate.Match(propertyValue)) control = ((ITemplate<object?, Control?>)BuiltInTypeTemplate).Build(propertyValue);
+            if(BuiltInTypeTemplate.Match(propertyValue)) control = ((ITemplate<object?, Control?>)BuiltInTypeTemplate).Build(propertyValue)!; // todo verify why we can't use an as expression
             else control = ((ITemplate<object?, Control?>)this).Build(propertyValue) ?? new TextBox { Text = data as string };
 
             if(control == null) throw new UnreachableException();

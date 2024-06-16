@@ -18,13 +18,13 @@ public partial class BindableScatterPlot : BindablePlot
         o => o.YAxis,
         (o, v) => { o.YAxis = v; _ = o.Plot.YAxis.Label(v); });
 
-    public double[] XData { get; set; } = System.Array.Empty<double>();
+    public double[] XData { get; set; } = [];
     public static readonly DirectProperty<BindableScatterPlot, double[]> XDataProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, double[]>(
         nameof(XData),
         o => o.XData,
         (o, v) => { o.XData = v; o.RefreshCustom(); });
 
-    public double[] YData { get; set; } = System.Array.Empty<double>();
+    public double[] YData { get; set; } = [];
     public static readonly DirectProperty<BindableScatterPlot, double[]> YDataProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, double[]>(
         nameof(YData),
         o => o.YData,

@@ -19,13 +19,13 @@ public class ScatterData : AvaloniaObject
         o => o.YAxisIndex,
         (o, v) => o.YAxisIndex = v);
 
-    public double[] XData { get; set; } = new double[0];
+    public double[] XData { get; set; } = [];
     public static readonly DirectProperty<ScatterData, double[]> XDataProperty = AvaloniaProperty.RegisterDirect<ScatterData, double[]>(
         nameof(XData),
         o => o.XData,
         (o, v) => o.XData = v);
 
-    public double[] YData { get; set; } = new double[0];
+    public double[] YData { get; set; } = [];
     public static readonly DirectProperty<ScatterData, double[]> YDataProperty = AvaloniaProperty.RegisterDirect<ScatterData, double[]>(
         nameof(YData),
         o => o.YData,

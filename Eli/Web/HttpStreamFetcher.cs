@@ -13,7 +13,7 @@ public class HttpStreamFetcher
     private Lazy<HttpClient> HttpClient { get; } = new Lazy<HttpClient>(() => new HttpClient());
     private AsyncRetryPolicy<HttpResponseMessage> RetryPolicy { get; }
 
-    private int DefaultMaxRequests { get; } = 5;
+    private int DefaultMaxRequests { get; } = 3;
     private TimeSpan DefaultMaxRequestsTimeSpan { get; } = TimeSpan.FromSeconds(1);
 
     public HttpStreamFetcher(IHttpClientFactory? clientFactory = null, int? maxRequests = null, TimeSpan? retryWaitTime = null)

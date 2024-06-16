@@ -96,7 +96,7 @@ public class BindableHistogram : BindablePlot
             bars.BarWidth = BinWidth ?? (histogram.Bins.Max() - histogram.Bins.Min()) / NumberOfBins;
         }
 
-        if(CurveData?.Count() > 0 && CurveData.All(cd => !double.IsNaN(cd.Item1) && !double.IsNaN(cd.Item2))) _ = Plot.AddScatter(CurveData.Select(p => p.Item1).ToArray(), CurveData.Select(p => p.Item2).ToArray());
+        if(CurveData?.Count > 0 && CurveData.All(cd => !double.IsNaN(cd.Item1) && !double.IsNaN(cd.Item2))) _ = Plot.AddScatter(CurveData.Select(p => p.Item1).ToArray(), CurveData.Select(p => p.Item2).ToArray());
 
         Plot.Title("Histogram");
         Plot.XLabel("Value");

@@ -37,7 +37,7 @@ public partial class BindableMultiScatterPlot : BindablePlot
         (o, v) => o.YLog = v);
 
     private readonly Color[] Colors =
-    {
+    [
         Color.Red,
         Color.Green,
         Color.Blue,
@@ -46,7 +46,7 @@ public partial class BindableMultiScatterPlot : BindablePlot
         Color.Indigo,
         Color.Violet,
         Color.Brown
-    };
+    ];
 
     public BindableMultiScatterPlot() : base()
     {

@@ -8,7 +8,7 @@ using System.Text.Json;
 namespace Eli.Security;
 
 //https://stackoverflow.com/a/10177020/6732239
-public class Encrypter
+public static class Encrypter
 {
     // This constant is used to determine the keysize of the encryption algorithm in bits.
     // We divide this by 8 within the code below to get the equivalent number of bytes.
@@ -17,7 +17,7 @@ public class Encrypter
     // This constant determines the number of iterations for the password bytes generation function.
     private const int DerivationIterations = 1000;
 
-    public string Encrypt(string plainText, string passPhrase)
+    public static string Encrypt(string plainText, string passPhrase)
     {
         // Salt and IV is randomly generated each time, but is preprended to encrypted cipher text
         // so that the same Salt and IV values can be used when decrypting.  
@@ -37,14 +37,14 @@ public class Encrypter
         cryptoStream.FlushFinalBlock();
         // Create the final bytes as a concatenation of the random salt bytes, the random iv bytes and the cipher bytes.
         var cipherTextBytes = saltStringBytes;
-        cipherTextBytes = cipherTextBytes.Concat(ivStringBytes).ToArray();
-        cipherTextBytes = cipherTextBytes.Concat(memoryStream.ToArray()).ToArray();
+        cipherTextBytes = [.. cipherTextBytes, .. ivStringBytes];
+        cipherTextBytes = [.. cipherTextBytes, .. memoryStream.ToArray()];
         memoryStream.Close();
         cryptoStream.Close();
         return Convert.ToBase64String(cipherTextBytes);
     }
 
-    public string Decrypt(string cipherText, string passPhrase, bool hasPadding = false)
+    public static string Decrypt(string cipherText, string passPhrase, bool hasPadding = false)
     {
         // Get the complete stream of bytes that represent:
         // [16 bytes of Salt] + [16 bytes of IV] + [n - 32 bytes of CipherText]
@@ -73,7 +73,7 @@ public class Encrypter
         return hasPadding ? result : result.Trim('\"');
     }
 
-    private byte[] Generate128BitsOfRandomEntropy()
+    private static byte[] Generate128BitsOfRandomEntropy()
     {
         var randomBytes = new byte[16]; // 16 Bytes will give us 128 bits.
         using var rngCsp = RandomNumberGenerator.Create();
@@ -81,14 +81,14 @@ public class Encrypter
         return randomBytes;
     }
 
-    public string JsonEncrypt(object o, string password)
+    public static string JsonEncrypt(object o, string password)
     {
         var json = JsonSerializer.Serialize(o);
         var cipher = Encrypt(json, password);
         return cipher;
     }
 
-    public object JsonDecrypt(string cipher, string password, Type type)
+    public static object? JsonDecrypt(string cipher, string password, Type type)
     {
         var plainText = Decrypt(cipher, password);
         return JsonSerializer.Deserialize(plainText, type);

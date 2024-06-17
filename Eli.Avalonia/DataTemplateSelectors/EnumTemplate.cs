@@ -9,7 +9,7 @@ internal class EnumTemplate : IDataTemplate
 {
     public Control? Build(object? param)
     {
-        var e = param as Enum;
+        if(param is not Enum e) return null;
         var comboBox = new ComboBox { SelectedValue = e, ItemsSource = Enum.GetValues(e.GetType()).Cast<Enum>().ToList() };
         return comboBox;
     }

@@ -5,9 +5,9 @@ namespace Eli.DataStructures;
 
 internal class BTreeNode<TKey, TValue> where TKey : IComparable<TKey>
 {
-    public List<TValue> Values { get; } = new List<TValue>();
-    public List<TKey> Keys { get; } = new List<TKey>();
-    public List<BTreeNode<TKey, TValue>> Children { get; } = new List<BTreeNode<TKey, TValue>>();
+    public List<TValue> Values { get; } = [];
+    public List<TKey> Keys { get; } = [];
+    public List<BTreeNode<TKey, TValue>> Children { get; } = [];
     public bool IsLeaf => Children.Count == 0;
 }
 
@@ -45,7 +45,7 @@ public class BTree<TKey, TValue> : Tree<TKey, TValue> where TKey : IComparable<T
         if(Root.Keys.Count == 0 && !Root.IsLeaf) Root = Root.Children[0];
     }
 
-    public TValue Search(TKey key) => Search(Root, key);
+    public TValue? Search(TKey key) => BTree<TKey, TValue>.Search(Root, key);
 
     private void SplitChild(BTreeNode<TKey, TValue> node, int index)
     {
@@ -93,12 +93,12 @@ public class BTree<TKey, TValue> : Tree<TKey, TValue> where TKey : IComparable<T
         InsertNonFull(node.Children[i], value, key);
     }
 
-    private TValue Search(BTreeNode<TKey, TValue> node, TKey key)
+    private static TValue? Search(BTreeNode<TKey, TValue> node, TKey key)
     {
         var i = 0;
         while(i < node.Keys.Count && key.CompareTo(node.Keys[i]) > 0) i++;
         if(i < node.Keys.Count && key.CompareTo(node.Keys[i]) == 0) return node.Values[i];
-        return node.IsLeaf ? default : Search(node.Children[i], key);
+        return node.IsLeaf ? default : BTree<TKey, TValue>.Search(node.Children[i], key);
     }
 
     private void Delete(BTreeNode<TKey, TValue> node, TKey key)
@@ -118,7 +118,7 @@ public class BTree<TKey, TValue> : Tree<TKey, TValue> where TKey : IComparable<T
 
                 if(predChild.Keys.Count >= MinimumDegree)
                 {
-                    var predKey = GetPredecessor(predChild);
+                    var predKey = BTree<TKey, TValue>.GetPredecessor(predChild);
                     node.Keys[idx] = predKey;
                     var predValue = node.Values[idx];
                     node.Values[idx] = predValue;
@@ -126,7 +126,7 @@ public class BTree<TKey, TValue> : Tree<TKey, TValue> where TKey : IComparable<T
                 }
                 else if(succChild.Keys.Count >= MinimumDegree)
                 {
-                    var succKey = GetSuccessor(succChild);
+                    var succKey = BTree<TKey, TValue>.GetSuccessor(succChild);
                     node.Keys[idx] = succKey;
                     var succValue = node.Values[idx];
                     node.Values[idx] = succValue;
@@ -134,7 +134,7 @@ public class BTree<TKey, TValue> : Tree<TKey, TValue> where TKey : IComparable<T
                 }
                 else
                 {
-                    MergeChildren(node, idx);
+                    BTree<TKey, TValue>.MergeChildren(node, idx);
                     Delete(predChild, key);
                 }
             }
@@ -151,19 +151,19 @@ public class BTree<TKey, TValue> : Tree<TKey, TValue> where TKey : IComparable<T
         }
     }
 
-    private TKey GetPredecessor(BTreeNode<TKey, TValue> node)
+    private static TKey GetPredecessor(BTreeNode<TKey, TValue> node)
     {
         while(!node.IsLeaf) node = node.Children[node.Keys.Count];
         return node.Keys[^1];
     }
 
-    private TKey GetSuccessor(BTreeNode<TKey, TValue> node)
+    private static TKey GetSuccessor(BTreeNode<TKey, TValue> node)
     {
         while(!node.IsLeaf) node = node.Children[0];
         return node.Keys[0];
     }
 
-    private void MergeChildren(BTreeNode<TKey, TValue> node, int idx)
+    private static void MergeChildren(BTreeNode<TKey, TValue> node, int idx)
     {
         var child = node.Children[idx];
         var sibling = node.Children[idx + 1];
@@ -215,8 +215,8 @@ public class BTree<TKey, TValue> : Tree<TKey, TValue> where TKey : IComparable<T
         }
         else
         {
-            if(leftSibling != null) MergeChildren(node, idx - 1);
-            else if(rightSibling != null) MergeChildren(node, idx);
+            if(leftSibling != null) BTree<TKey, TValue>.MergeChildren(node, idx - 1);
+            else if(rightSibling != null) BTree<TKey, TValue>.MergeChildren(node, idx);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Eli.Collections;
 
 public class CircularBuffer<T> : IEnumerable<T>, ICollection, IReadOnlyCollection<T>
 {
-    public T this[int index] => Peek(index);
+    public T? this[int index] => Peek(index);
 
     private readonly T[] Buffer;
     private int Head { get; set; } = 0;

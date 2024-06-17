@@ -4,5 +4,7 @@ public enum AlgorithmName
 {
     GradientDescent,
     StochasticGradientDescent,
-    GeneticAlgorithm
+    GeneticAlgorithm,
+    SimulatedAnnealing,
+    Adam
 }

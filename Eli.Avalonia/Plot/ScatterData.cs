@@ -19,13 +19,13 @@ public class ScatterData : AvaloniaObject
         o => o.YAxisIndex,
         (o, v) => o.YAxisIndex = v);
 
-    public double[] XData { get; set; } = new double[0];
+    public double[] XData { get; set; } = [];
     public static readonly DirectProperty<ScatterData, double[]> XDataProperty = AvaloniaProperty.RegisterDirect<ScatterData, double[]>(
         nameof(XData),
         o => o.XData,
         (o, v) => o.XData = v);
 
-    public double[] YData { get; set; } = new double[0];
+    public double[] YData { get; set; } = [];
     public static readonly DirectProperty<ScatterData, double[]> YDataProperty = AvaloniaProperty.RegisterDirect<ScatterData, double[]>(
         nameof(YData),
         o => o.YData,
@@ -43,8 +43,14 @@ public class ScatterData : AvaloniaObject
         o => o.MarkerSize,
         (o, v) => o.MarkerSize = v);
 
-    public ScatterData(IEnumerable<decimal> xData, IEnumerable<decimal> yData, int xAxisIndex = 0, int yAxisIndex = 0, string label = "", float markerSize = 3) : this(xData.Select(Convert.ToDouble), yData.Select(Convert.ToDouble), xAxisIndex, yAxisIndex, label, markerSize) { }
-    public ScatterData(IEnumerable<double> xData, IEnumerable<double> yData, int xAxisIndex = 0, int yAxisIndex = 0, string label = "", float markerSize = 3)
+    public int LineWidth{ get; set; }
+    public static readonly DirectProperty<ScatterData, int> LineWidthProperty = AvaloniaProperty.RegisterDirect<ScatterData, int>(
+        nameof(LineWidth),
+        o => o.LineWidth,
+        (o, v) => o.LineWidth = v);
+
+    public ScatterData(IEnumerable<decimal> xData, IEnumerable<decimal> yData, int xAxisIndex = 0, int yAxisIndex = 0, string label = "", float markerSize = 3, int lineWidth = 1) : this(xData.Select(Convert.ToDouble), yData.Select(Convert.ToDouble), xAxisIndex, yAxisIndex, label, markerSize, lineWidth) { }
+    public ScatterData(IEnumerable<double> xData, IEnumerable<double> yData, int xAxisIndex = 0, int yAxisIndex = 0, string label = "", float markerSize = 3, int lineWidth = 1)
     {
         XData = xData.ToArray();
         YData = yData.ToArray();
@@ -52,5 +58,6 @@ public class ScatterData : AvaloniaObject
         YAxisIndex = yAxisIndex;
         Label = label;
         MarkerSize = markerSize;
+        LineWidth = lineWidth;
     }
 }

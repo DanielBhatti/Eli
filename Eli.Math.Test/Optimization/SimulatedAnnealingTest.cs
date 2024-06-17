@@ -12,7 +12,12 @@ public class SimulatedAnnealingTest
     [SetUp]
     public void SetUp()
     {
-        var config = new SimulatedAnnealingConfig(initialTemperature: 100.0, coolingRate: 0.99, maxIterations: 1000);
+        var config = new SimulatedAnnealingConfig()
+        {
+            InitialTemperature = 100.0,
+            CoolingRate = 0.99,
+            MaxIterations = 1000,
+        };
         SimulatedAnnealing = new SimulatedAnnealing(config);
     }
 

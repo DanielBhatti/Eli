@@ -5,14 +5,12 @@
 			 xmlns:dts="using:Eli.Avalonia.DataTemplateSelectors"
              xmlns:local="using:Eli.Avalonia.Controls"
 			 xmlns:converters="using:Eli.Avalonia.Converters"
+			 xmlns:controls="using:Eli.Avalonia.Controls"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Eli.Avalonia.Controls.SetValueControl"
 			 x:Name="MainContentControl"
 			 >
-	<UserControl.Resources>
-		<converters:SpacedPascalCaseConverter x:Key="SpacedPascalCaseConverter"/>
-	</UserControl.Resources>
 	<ContentControl Content="{Binding Value, ElementName=MainContentControl, Mode=TwoWay}">
 		<ContentControl.DataTemplates>
 			<DataTemplate DataType="{x:Type sys:Enum}">
@@ -46,7 +44,7 @@
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Int32}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding Value, ElementName=MainContentControl, Mode=TwoWay}" />
+				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding Value, ElementName=MainContentControl, Mode=TwoWay}" ParsingNumberStyle="Integer"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:UInt32}">
@@ -62,7 +60,7 @@
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Single}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainCovlcntentControl, Mode=TwoWay}" Value="{Binding Value, ElementName=MainContentControl, Mode=TwoWay}" />
+				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding Value, ElementName=MainContentControl, Mode=TwoWay}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Double}">

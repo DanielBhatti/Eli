@@ -44,6 +44,12 @@ public abstract class BindablePlot : AvaPlot
         nameof(ErrorText),
         o => o.ErrorText);
 
+    public bool IsShowingLegend{ get; set; } = true;
+    public static readonly DirectProperty<BindablePlot, bool> IsShowingLegendProperty = AvaloniaProperty.RegisterDirect<BindablePlot, bool>(
+        nameof(IsShowingLegend),
+        o => o.IsShowingLegend,
+        (o, v) => o.IsShowingLegend = v);
+
     public BindablePlot() : base() => RefreshPlot();
 
     protected abstract void RefreshCustom();
@@ -54,7 +60,7 @@ public abstract class BindablePlot : AvaPlot
         Plot.Style(figureBackground: darkBackground, dataBackground: darkBackground);
         Plot.XAxis.TickLabelStyle(color: System.Drawing.Color.White, fontSize: 13);
         Plot.YAxis.TickLabelStyle(color: System.Drawing.Color.White, fontSize: 13);
-        _ = Plot.Legend();
+        if(IsShowingLegend) _ = Plot.Legend();
     }
 
     private void RefreshPlot()

@@ -75,7 +75,12 @@ public class BindableHistogram : BindablePlot
     {
         if(Data.Count == 0 || NumberOfBins == 0) return;
 
-        var histogram = new ScottPlot.Statistics.Histogram(Data.Min(), Data.Max(), NumberOfBins);
+        var min = Data.Min();
+        var max = Data.Max();
+
+        if(min == max) return;
+
+        var histogram = new ScottPlot.Statistics.Histogram(min, max, NumberOfBins);
         histogram.AddRange(Data);
 
         if(IsCumulativeProbability)

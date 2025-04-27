@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Eli.Avalonia.Plot.HeatmapControl">
+	<UserControl.Resources>
+		<DataTemplate x:Key="RowDataTemplate">
+			<UniformGrid Columns="{Binding ColumnsCount}" Rows="1">
+				<ItemsControl ItemsSource="{Binding Cells}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<ContentControl Content="{Binding .}"
+                                            ContentTemplate="{Binding $parent.CellTemplate}"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</UniformGrid>
+		</DataTemplate>
+	</UserControl.Resources>
+
+	<ItemsControl ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType=UserControl}}">
+		<ItemsControl.ItemTemplate>
+			<DataTemplate>
+				<ContentControl Content="{Binding ., Converter={StaticResource RowConverter}, ConverterParameter={Binding $parent.Items}}">
+					<ContentControl.ContentTemplate>
+						<DataTemplate>
+							<ContentControl Content="{Binding}" ContentTemplate="{StaticResource RowDataTemplate}"/>
+						</DataTemplate>
+					</ContentControl.ContentTemplate>
+				</ContentControl>
+			</DataTemplate>
+		</ItemsControl.ItemTemplate>
+	</ItemsControl>
+</UserControl>

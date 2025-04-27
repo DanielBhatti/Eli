@@ -7,10 +7,14 @@
 			 xmlns:converters="using:Eli.Avalonia.Converters"
 			 xmlns:controls="using:Eli.Avalonia.Controls"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:s="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Eli.Avalonia.Controls.SetValueControl"
 			 x:Name="MainContentControl"
 			 >
+	<UserControl.Resources>
+		<converters:DateOnlyToDateTimeConverter x:Key="DateOnlyToDateTimeConverter"/>
+	</UserControl.Resources>
 	<ContentControl Content="{Binding Value, ElementName=MainContentControl, Mode=TwoWay}">
 		<ContentControl.DataTemplates>
 			<DataTemplate DataType="{x:Type sys:Enum}">
@@ -24,7 +28,11 @@
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:DateTime}">
-				<CalendarDatePicker Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" SelectedDate="{Binding}" />
+				<CalendarDatePicker Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" SelectedDate="{Binding, Mode=TwoWay}" />
+			</DataTemplate>
+
+			<DataTemplate DataType="{x:Type s:DateOnly}">
+				<CalendarDatePicker Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" SelectedDate="{Binding, Mode=TwoWay, Converter={StaticResource DateOnlyToDateTimeConverter}}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Boolean}">

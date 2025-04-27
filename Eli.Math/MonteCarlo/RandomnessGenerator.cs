@@ -22,6 +22,12 @@ public class RandomnessGenerator
         return randomDate.AddHours(hours).AddMinutes(minutes).AddSeconds(seconds);
     }
 
+    public DateOnly GetRandomDateOnly(DateOnly startDate, DateOnly endDate)
+    {
+        var range = (endDate.ToDateTime(TimeOnly.MinValue) - startDate.ToDateTime(TimeOnly.MinValue)).Days + 1;
+        return startDate.AddDays(Random.Next(range));
+    }
+
     public double GetUniform(double start, double end) => start + (end - start) * Random.NextDouble();
 
     public double GetGaussian(double mean, double stdDev)

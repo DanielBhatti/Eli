@@ -2,43 +2,36 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 
-namespace Eli.Avalonia.Controls
+namespace Eli.Avalonia.Controls;
+
+public partial class IntegerNumericUpDown : NumericUpDown
 {
-    public partial class IntegerNumericUpDown : NumericUpDown
+    public static new readonly StyledProperty<int> ValueProperty =
+        AvaloniaProperty.Register<IntegerNumericUpDown, int>(nameof(Value), defaultBindingMode: BindingMode.TwoWay);
+
+    public new int Value
     {
-        public static new readonly StyledProperty<int> ValueProperty =
-            AvaloniaProperty.Register<IntegerNumericUpDown, int>(nameof(Value), defaultBindingMode: BindingMode.TwoWay);
+        get => GetValue(ValueProperty);
+        set => SetValue(ValueProperty, value);
+    }
 
-        public new int Value
+    static IntegerNumericUpDown() => ValueProperty.Changed.AddClassHandler<IntegerNumericUpDown>((x, e) => x.OnIntValueChanged(e));
+
+    public IntegerNumericUpDown() => base.ValueChanged += OnBaseValueChanged;
+
+    private void OnBaseValueChanged(object sender, NumericUpDownValueChangedEventArgs e)
+    {
+        if(e.NewValue.HasValue)
         {
-            get => GetValue(ValueProperty);
-            set => SetValue(ValueProperty, value);
+            Value = (int)e.NewValue.Value;
         }
+    }
 
-        static IntegerNumericUpDown()
+    private void OnIntValueChanged(AvaloniaPropertyChangedEventArgs e)
+    {
+        if(e.NewValue is int newValue)
         {
-            ValueProperty.Changed.AddClassHandler<IntegerNumericUpDown>((x, e) => x.OnIntValueChanged(e));
-        }
-
-        public IntegerNumericUpDown()
-        {
-            base.ValueChanged += OnBaseValueChanged;
-        }
-
-        private void OnBaseValueChanged(object sender, NumericUpDownValueChangedEventArgs e)
-        {
-            if(e.NewValue.HasValue)
-            {
-                Value = (int)e.NewValue.Value;
-            }
-        }
-
-        private void OnIntValueChanged(AvaloniaPropertyChangedEventArgs e)
-        {
-            if(e.NewValue is int newValue)
-            {
-                base.Value = newValue;
-            }
+            base.Value = newValue;
         }
     }
 }

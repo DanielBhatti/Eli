@@ -3,7 +3,7 @@ using System;
 
 namespace Eli.Extensions;
 
-internal static class EnumExtensions
+public static class EnumExtensions
 {
     public static string ToSpacedString(this Enum enumValue) => enumValue.ToString().ToSpacedPascalCase();
 

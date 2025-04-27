@@ -44,7 +44,6 @@ public class HttpStreamFetcher
             if(userAgentValue is not null) request.Headers.Add("User-Agent", userAgentValue);
 
             var response = client.SendAsync(request).GetAwaiter().GetResult();
-
             var result = response.EnsureSuccessStatusCode();
             if(result.IsSuccessStatusCode) return response.Content.ReadAsStream();
             else return Stream.Null;

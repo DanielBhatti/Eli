@@ -44,7 +44,7 @@ public abstract class BindablePlot : AvaPlot
         nameof(ErrorText),
         o => o.ErrorText);
 
-    public bool IsShowingLegend{ get; set; } = true;
+    public bool IsShowingLegend { get; set; } = true;
     public static readonly DirectProperty<BindablePlot, bool> IsShowingLegendProperty = AvaloniaProperty.RegisterDirect<BindablePlot, bool>(
         nameof(IsShowingLegend),
         o => o.IsShowingLegend,

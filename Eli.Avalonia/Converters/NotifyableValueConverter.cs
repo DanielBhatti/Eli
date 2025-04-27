@@ -3,7 +3,7 @@ using Eli.Avalonia.Mvvm;
 using System;
 using System.Globalization;
 
-namespace Eli.Avalonia.Converter;
+namespace Eli.Avalonia.Converters;
 
 public class NotifyableValueConverter : IValueConverter
 {

@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -36,6 +37,12 @@ public partial class BindableMultiScatterPlot : BindablePlot
         o => o.YLog,
         (o, v) => o.YLog = v);
 
+    public int LogBase { get; set; } = 10;
+    public static readonly DirectProperty<BindableMultiScatterPlot, int> LogBaseProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, int>(
+        nameof(LogBase),
+        o => o.LogBase,
+        (o, v) => o.LogBase = v);
+
     private readonly Color[] Colors =
     [
         Color.Red,
@@ -62,9 +69,23 @@ public partial class BindableMultiScatterPlot : BindablePlot
             var scatterData = ScatterDataCollection.ElementAt(i);
             try
             {
+                if(YLog)
+                {
+                    if(LogBase <= 0) LogBase = 10;
+                    LogBase = 2;
+                    string logTickLabels(double y) => Math.Pow(LogBase, y).ToString("N0");
+                    Plot.YAxis.TickLabelFormat(logTickLabels);
+                    Plot.YAxis.MinorLogScale(enable: true);
+                }
+                else
+                {
+                    Plot.YAxis.TickLabelFormat(y => y.ToString());
+                    Plot.YAxis.MinorLogScale(enable: false);
+                }
+
                 if(scatterData.XData.Length > 0)
                 {
-                    var plot = Plot.AddScatter(scatterData.XData, scatterData.YData, Colors[i % Colors.Length], label: scatterData.Label, markerSize: scatterData.MarkerSize, lineWidth: scatterData.LineWidth);
+                    var plot = Plot.AddScatter(scatterData.XData, YLog ? scatterData.YData.Select(y => System.Math.Log(y, LogBase)).ToArray() : scatterData.YData, Colors[i % Colors.Length], label: scatterData.Label, markerSize: scatterData.MarkerSize, lineWidth: scatterData.LineWidth);
                     plot.XAxisIndex = scatterData.XAxisIndex;
                     plot.YAxisIndex = scatterData.YAxisIndex;
                 }

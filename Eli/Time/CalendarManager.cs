@@ -6,7 +6,7 @@ namespace Eli.Time;
 
 public static class CalendarManager
 {
-    private static readonly HashSet<DateTime> MiscellaneousNyseClosedDates = new()
+    private static readonly HashSet<DateOnly> MiscellaneousNyseClosedDates = new()
     {
         new(2018, 12, 5),
         new(2012, 10, 29),
@@ -27,20 +27,20 @@ public static class CalendarManager
         new(1970, 2, 23)
     };
 
-    private static readonly Lazy<ConcurrentDictionary<int, DateTime>> EasterSundayCache = new(() => new ConcurrentDictionary<int, DateTime>());
+    private static readonly Lazy<ConcurrentDictionary<int, DateOnly>> EasterSundayCache = new(() => new ConcurrentDictionary<int, DateOnly>());
 
-    private static bool IsThursday(DateTime date) => date.DayOfWeek == DayOfWeek.Thursday;
-    private static bool IsFriday(DateTime date) => date.DayOfWeek == DayOfWeek.Friday;
-    private static bool IsMonday(DateTime date) => date.DayOfWeek == DayOfWeek.Monday;
-    private static bool IsWeekend(DateTime date) => date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday;
+    private static bool IsThursday(DateOnly date) => date.DayOfWeek == DayOfWeek.Thursday;
+    private static bool IsFriday(DateOnly date) => date.DayOfWeek == DayOfWeek.Friday;
+    private static bool IsMonday(DateOnly date) => date.DayOfWeek == DayOfWeek.Monday;
+    private static bool IsWeekend(DateOnly date) => date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday;
 
-    public static bool IsNyseOpen(DateTime date)
+    public static bool IsNyseOpen(DateOnly date)
     {
         if(IsWeekend(date) || IsObservedNyseHoliday(date) || MiscellaneousNyseClosedDates.Contains(date)) return false;
         else return true;
     }
 
-    private static bool IsObservedNyseHoliday(DateTime date)
+    private static bool IsObservedNyseHoliday(DateOnly date)
     {
         var nthWeekDay = (int)Math.Ceiling(date.Day / 7.0d);
 
@@ -74,7 +74,7 @@ public static class CalendarManager
                (date.Month == 12 && date.Day == 26 && IsMonday(date));
     }
 
-    public static bool IsFederalHoliday(DateTime date)
+    public static bool IsFederalHoliday(DateOnly date)
     {
         var nthWeekDay = (int)Math.Ceiling(date.Day / 7.0d);
         var dayName = date.DayOfWeek;
@@ -113,7 +113,7 @@ public static class CalendarManager
                (date.Month == 12 && date.Day == 26 && isMonday);
     }
 
-    public static DateTime GetEasterSunday(int year)
+    public static DateOnly GetEasterSunday(int year)
     {
         return EasterSundayCache.Value.GetOrAdd(year, y =>
         {
@@ -129,9 +129,9 @@ public static class CalendarManager
                 month++;
                 day -= 31;
             }
-            return new DateTime(y, month, day);
+            return new DateOnly(y, month, day);
         });
     }
 
-    public static bool IsGoodFriday(DateTime date) => date == GetEasterSunday(date.Year).AddDays(-2);
+    public static bool IsGoodFriday(DateOnly date) => date == GetEasterSunday(date.Year).AddDays(-2);
 }

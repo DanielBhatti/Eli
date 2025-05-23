@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,13 +25,13 @@ public class BindableHistogram : BindablePlot
         nameof(Bins),
         o => o.Bins);
 
-    private ICollection<double> _counts = new AvaloniaList<double>();
-    public ICollection<double> Counts
+    private IEnumerable<double> _counts = new AvaloniaList<double>();
+    public IEnumerable<double> Counts
     {
         get => _counts;
         private set => SetAndRaise(CountsProperty, ref _counts, value);
     }
-    public static readonly DirectProperty<BindableHistogram, ICollection<double>> CountsProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, ICollection<double>>(
+    public static readonly DirectProperty<BindableHistogram, IEnumerable<double>> CountsProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, IEnumerable<double>>(
         nameof(Counts),
         o => o.Counts);
 
@@ -80,32 +81,34 @@ public class BindableHistogram : BindablePlot
 
         if(min == max) return;
 
-        var histogram = new ScottPlot.Statistics.Histogram(min, max, NumberOfBins);
+        var histogram = ScottPlot.Statistics.Histogram.WithBinCount(NumberOfBins, min, max);
         histogram.AddRange(Data);
 
         if(IsCumulativeProbability)
         {
-            var scatterPlot = Plot.AddScatterStep(xs: histogram.Bins, ys: histogram.GetCumulativeProbability());
-            scatterPlot.Label = Label;
+            var scatterPlot = Plot.Add.ScatterPoints(xs: histogram.Bins, ys: histogram.GetCumulativeProbability());
+            scatterPlot.LegendText = Label;
             Counts = histogram.GetCumulativeProbability();
             Bins = histogram.Bins;
         }
         else
         {
-            var counts = IsNormalizedProbability ? histogram.GetProbability() : histogram.Counts;
-            var bars = Plot.AddBar(counts, histogram.Bins);
-            bars.Label = Label;
+            var counts = IsNormalizedProbability ? histogram.GetProbability() : histogram.Counts.Select(Convert.ToDouble);
+            var bars = Plot.Add.Bars(counts, histogram.Bins);
+            bars.LegendText = Label;
             Counts = counts;
             Bins = histogram.Bins;
 
-            bars.BarWidth = BinWidth ?? (histogram.Bins.Max() - histogram.Bins.Min()) / NumberOfBins;
+            //todo
+            //bars.BarWidth = BinWidth ?? (histogram.Bins.Max() - histogram.Bins.Min()) / NumberOfBins;
         }
 
-        if(CurveData?.Count > 0 && CurveData.All(cd => !double.IsNaN(cd.Item1) && !double.IsNaN(cd.Item2))) _ = Plot.AddScatter(CurveData.Select(p => p.Item1).ToArray(), CurveData.Select(p => p.Item2).ToArray());
+        if(CurveData?.Count > 0 && CurveData.All(cd => !double.IsNaN(cd.Item1) && !double.IsNaN(cd.Item2))) _ = Plot.Add.Scatter(CurveData.Select(p => p.Item1).ToArray(), CurveData.Select(p => p.Item2).ToArray());
 
         Plot.Title("Histogram");
         Plot.XLabel("Value");
         Plot.YLabel("Frequency");
-        Plot.SetAxisLimits(yMin: 0);
+        //todo
+        //Plot.SetAxisLimits(yMin: 0);
     }
 }

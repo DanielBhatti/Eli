@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using ScottPlot.TickGenerators;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -18,7 +19,7 @@ public partial class BindableMultiScatterPlot : BindablePlot
     public bool IsXDateTime
     {
         get => _isXDateTime;
-        set { Plot.XAxis.DateTimeFormat(value); _isXDateTime = value; }
+        set { if(value) _ = Plot.Axes.DateTimeTicksBottom(); _isXDateTime = value; }
     }
     public static readonly DirectProperty<BindableMultiScatterPlot, bool> IsXDateTimeProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, bool>(
         nameof(IsXDateTime),
@@ -57,8 +58,8 @@ public partial class BindableMultiScatterPlot : BindablePlot
 
     public BindableMultiScatterPlot() : base()
     {
-        Plot.YAxis2.IsVisible = true;
-        Plot.YAxis2.Ticks(true);
+        Plot.Axes.Right.IsVisible = true;
+        Plot.Axes.Right.TickGenerator = new EmptyTickGenerator();
     }
 
     protected override void RefreshCustom()
@@ -74,20 +75,39 @@ public partial class BindableMultiScatterPlot : BindablePlot
                     if(LogBase <= 0) LogBase = 10;
                     LogBase = 2;
                     string logTickLabels(double y) => Math.Pow(LogBase, y).ToString("N0");
-                    Plot.YAxis.TickLabelFormat(logTickLabels);
-                    Plot.YAxis.MinorLogScale(enable: true);
+
+                    LogMinorTickGenerator minorTickGen = new();
+                    NumericAutomatic tickgen = new()
+                    {
+                        MinorTickGenerator = minorTickGen,
+                        LabelFormatter = logTickLabels,
+                        IntegerTicksOnly = true
+                    };
+                    Plot.Axes.Left.TickGenerator = tickgen;
                 }
                 else
                 {
-                    Plot.YAxis.TickLabelFormat(y => y.ToString());
-                    Plot.YAxis.MinorLogScale(enable: false);
+                    EvenlySpacedMinorTickGenerator minorTickGen = new(5.0);
+                    NumericAutomatic tickgen = new()
+                    {
+                        MinorTickGenerator = minorTickGen,
+                        LabelFormatter = (double y) => y.ToString(),
+                        IntegerTicksOnly = false
+                    };
+                    Plot.Axes.Left.TickGenerator = tickgen;
                 }
 
                 if(scatterData.XData.Length > 0)
                 {
-                    var plot = Plot.AddScatter(scatterData.XData, YLog ? scatterData.YData.Select(y => System.Math.Log(y, LogBase)).ToArray() : scatterData.YData, Colors[i % Colors.Length], label: scatterData.Label, markerSize: scatterData.MarkerSize, lineWidth: scatterData.LineWidth);
-                    plot.XAxisIndex = scatterData.XAxisIndex;
-                    plot.YAxisIndex = scatterData.YAxisIndex;
+
+                    var plot = Plot.Add.Scatter(scatterData.XData, YLog ? scatterData.YData.Select(y => System.Math.Log(y, LogBase)).ToArray() : scatterData.YData);
+                    plot.LegendText = scatterData.Label;
+                    plot.MarkerSize = scatterData.MarkerSize;
+                    plot.LineWidth = scatterData.LineWidth;
+                    plot.Color = ScottPlot.Color.FromColor(Colors[i % Colors.Length]);
+                    //todo
+                    //plot.XAxisIndex = scatterData.XAxisIndex;
+                    //plot.YAxisIndex = scatterData.YAxisIndex;
                 }
             }
             catch

@@ -19,7 +19,7 @@ public partial class IntegerNumericUpDown : NumericUpDown
 
     public IntegerNumericUpDown() => base.ValueChanged += OnBaseValueChanged;
 
-    private void OnBaseValueChanged(object sender, NumericUpDownValueChangedEventArgs e)
+    private void OnBaseValueChanged(object? sender, NumericUpDownValueChangedEventArgs e)
     {
         if(e.NewValue.HasValue)
         {

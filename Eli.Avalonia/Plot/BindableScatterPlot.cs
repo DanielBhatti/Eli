@@ -4,19 +4,19 @@ namespace Eli.Avalonia.Plot;
 
 public partial class BindableScatterPlot : BindablePlot
 {
-    private ScottPlot.Plottable.ScatterPlot? _scatterPlot;
+    private ScottPlot.Plottables.Scatter? _scatterPlot;
 
     public string XAxis { get; set; } = "";
     public static readonly DirectProperty<BindableScatterPlot, string> XAxisProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, string>(
         nameof(XAxis),
         o => o.XAxis,
-        (o, v) => { o.XAxis = v; _ = o.Plot.XAxis.Label(v); });
+        (o, v) => { o.XAxis = v; o.Plot.XLabel(v); });
 
     public string YAxis { get; set; } = "";
     public static readonly DirectProperty<BindableScatterPlot, string> YAxisProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, string>(
         nameof(YAxis),
         o => o.YAxis,
-        (o, v) => { o.YAxis = v; _ = o.Plot.YAxis.Label(v); });
+        (o, v) => { o.YAxis = v; o.Plot.YLabel(v); });
 
     public double[] XData { get; set; } = [];
     public static readonly DirectProperty<BindableScatterPlot, double[]> XDataProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, double[]>(
@@ -34,7 +34,7 @@ public partial class BindableScatterPlot : BindablePlot
     public bool IsXDateTime
     {
         get => _isXDateTime;
-        set { Plot.XAxis.DateTimeFormat(value); _isXDateTime = value; }
+        set { if(value) _ = Plot.Axes.DateTimeTicksBottom(); _isXDateTime = value; }
     }
     public static readonly DirectProperty<BindableScatterPlot, bool> IsXDateTimeProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, bool>(
         nameof(IsXDateTime),
@@ -52,6 +52,11 @@ public partial class BindableScatterPlot : BindablePlot
     protected override void RefreshCustom()
     {
         if(_scatterPlot is not null) Plot.Remove(_scatterPlot);
-        if(XData is not null && YData is not null && XData.Length > 0 && XData.Length == YData.Length) _scatterPlot = XData.Length <= 1000 ? Plot.AddScatter(XData, YData, lineWidth: LineWidth) : Plot.AddScatter(XData, YData, markerSize: 0, lineWidth: LineWidth);
+        if(XData is not null && YData is not null && XData.Length > 0 && XData.Length == YData.Length)
+        {
+            _scatterPlot = Plot.Add.Scatter(XData, YData);
+            _scatterPlot.LineWidth = LineWidth;
+            if(XData.Length > 1000) _scatterPlot.MarkerSize = 0;
+        }
     }
 }

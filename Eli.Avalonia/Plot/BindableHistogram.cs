@@ -98,9 +98,6 @@ public class BindableHistogram : BindablePlot
             bars.LegendText = Label;
             Counts = counts;
             Bins = histogram.Bins;
-
-            //todo
-            //bars.BarWidth = BinWidth ?? (histogram.Bins.Max() - histogram.Bins.Min()) / NumberOfBins;
         }
 
         if(CurveData?.Count > 0 && CurveData.All(cd => !double.IsNaN(cd.Item1) && !double.IsNaN(cd.Item2))) _ = Plot.Add.Scatter(CurveData.Select(p => p.Item1).ToArray(), CurveData.Select(p => p.Item2).ToArray());
@@ -110,5 +107,45 @@ public class BindableHistogram : BindablePlot
         Plot.YLabel("Frequency");
         //todo
         //Plot.SetAxisLimits(yMin: 0);
+    }
+
+    private static double AutoBinWidth(ICollection<double> data)
+    {
+        var n = data.Count;
+        if(n < 2) return 1;
+
+        var sorted = data.OrderBy(v => v).ToArray();
+        var q1 = PercentileSorted(sorted, 0.25);
+        var q3 = PercentileSorted(sorted, 0.75);
+        var iqr = q3 - q1;
+        var fd = iqr > 0 ? 2.0 * iqr / Math.Cbrt(n) : double.NaN; // 2 * IQR / n^(1/3)
+
+        var mean = sorted.Average();
+        var sd = Math.Sqrt(sorted.Select(v => (v - mean) * (v - mean)).Sum() / (n - 1));
+        var scott = sd > 0 ? 3.49 * sd / Math.Cbrt(n) : double.NaN; // 3.49 * σ / n^(1/3)
+
+        var raw = double.IsFinite(fd) && fd > 0 ? fd : (double.IsFinite(scott) && scott > 0 ? scott :
+                      Math.Max((sorted[^1] - sorted[0]) / Math.Max(10, Math.Min(50, n)), 1e-9));
+
+        return NiceStep(raw);
+    }
+
+    private static double PercentileSorted(IList<double> sorted, double p)
+    {
+        if(sorted.Count == 0) return double.NaN;
+        var pos = (sorted.Count - 1) * p;
+        var lo = (int)Math.Floor(pos);
+        var hi = (int)Math.Ceiling(pos);
+        if(lo == hi) return sorted[lo];
+        var frac = pos - lo;
+        return sorted[lo] + (sorted[hi] - sorted[lo]) * frac;
+    }
+
+    private static double NiceStep(double x)
+    {
+        if(!(x > 0) || double.IsNaN(x) || double.IsInfinity(x)) return 1;
+        var exp = Math.Floor(Math.Log10(x));
+        var frac = x / Math.Pow(10, exp);
+        return ((frac <= 1) ? 1 : (frac <= 2) ? 2 : (frac <= 5) ? 5 : 10) * Math.Pow(10, exp);
     }
 }

@@ -1,8 +1,8 @@
-using Avalonia.Controls;
-using System;
-using Avalonia.Data;
 using Avalonia;
 using Avalonia.Collections;
+using Avalonia.Controls;
+using Avalonia.Data;
+using System;
 using System.Collections;
 using System.Linq;
 

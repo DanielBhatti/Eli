@@ -65,14 +65,14 @@ public static partial class CaseConverter
     public static bool IsSpacedCase(this string input) => SpacedCaseRegex().IsMatch(input);
 
     public static string[] GetWordParts(this string input) => input.GetCaseType() switch
-        {
-            CaseType.PascalCase or CaseType.CamelCase => SplitPascalOrCamelCaseRegex().Split(input),
-            CaseType.SnakeCase => input.Split('_'),
-            CaseType.SpacedPascalCase => input.Split(' '),
-            CaseType.SpacedLowerCase => input.Split(' '),
-            CaseType.SpacedCase => input.Split(' '),
-            _ => new string[] { input },
-        };
+    {
+        CaseType.PascalCase or CaseType.CamelCase => SplitPascalOrCamelCaseRegex().Split(input),
+        CaseType.SnakeCase => input.Split('_'),
+        CaseType.SpacedPascalCase => input.Split(' '),
+        CaseType.SpacedLowerCase => input.Split(' '),
+        CaseType.SpacedCase => input.Split(' '),
+        _ => new string[] { input },
+    };
 
     [GeneratedRegex("^([A-Z][a-z0-9]+)*$")]
     private static partial Regex PascalCaseRegex();

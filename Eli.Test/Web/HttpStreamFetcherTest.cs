@@ -1,11 +1,11 @@
-﻿using System.IO;
+﻿using Moq;
+using Moq.Protected;
+using NUnit.Framework;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Moq;
-using Moq.Protected;
-using NUnit.Framework;
 
 namespace Eli.Web.Tests;
 

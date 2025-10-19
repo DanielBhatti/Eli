@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 
 namespace Eli.DataStructures;
 
-public  class BloomFilter<T> where T : notnull
+public class BloomFilter<T> where T : notnull
 {
     private int Size { get; }
     private BitArray BitArray { get; }

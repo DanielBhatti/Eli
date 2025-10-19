@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Polly;
+using Polly.Retry;
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Polly;
-using Polly.Retry;
 
 namespace Eli.Web;
 
@@ -83,7 +83,7 @@ public class HttpStreamFetcher
         }
         finally
         {
-            if (HttpClientFactory is null) client.Dispose();
+            if(HttpClientFactory is null) client.Dispose();
         }
     }
 }

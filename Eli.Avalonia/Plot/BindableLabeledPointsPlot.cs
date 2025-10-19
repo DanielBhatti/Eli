@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using System.Linq;
 
 namespace Eli.Avalonia.Plot;
 

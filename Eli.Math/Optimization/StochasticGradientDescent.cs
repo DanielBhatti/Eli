@@ -7,7 +7,7 @@ public class StochasticGradientDescent : OptimizationAlgorithm<StochasticGradien
 {
     public StochasticGradientDescent(StochasticGradientConfig config) : base(config) { }
 
-    public override double[] Optimize(IEnumerable<(double, double)> points, Func<double, double[], double> f, double[] parameters) 
+    public override double[] Optimize(IEnumerable<(double, double)> points, Func<double, double[], double> f, double[] parameters)
     {
         if(Config.BatchSize <= 0) throw new ArgumentException("Batch size must be greater than 0.", nameof(Config.BatchSize));
 

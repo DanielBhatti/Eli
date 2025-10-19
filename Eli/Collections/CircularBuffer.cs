@@ -11,7 +11,7 @@ public class CircularBuffer<T> : IEnumerable<T>, ICollection, IReadOnlyCollectio
     private readonly T[] Buffer;
     private int Head { get; set; } = 0;
     private int Tail { get; set; } = 0;
-    
+
     public int Count { get; set; } = 0;
     public int Capacity { get; }
 

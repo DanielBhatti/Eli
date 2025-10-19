@@ -1,9 +1,4 @@
-﻿using Eli.Math.MonteCarlo;
-using NUnit.Framework;
-using System;
-using System.Numerics;
-
-namespace Eli.Test.Math.MonteCarlo;
+﻿namespace Eli.Test.Math.MonteCarlo;
 
 [TestFixture]
 public class RandomNumberGeneratorTest

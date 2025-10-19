@@ -45,7 +45,7 @@ public partial class BindableScatterPlot : BindablePlot
     public static readonly DirectProperty<BindableScatterPlot, int> LineWidthProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, int>(
         nameof(LineWidth),
         o => o.LineWidth,
-        (o, v) => o.LineWidth= v);
+        (o, v) => o.LineWidth = v);
 
     public BindableScatterPlot() : base() { }
 

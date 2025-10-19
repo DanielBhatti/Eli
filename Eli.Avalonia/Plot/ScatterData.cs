@@ -43,7 +43,7 @@ public class ScatterData : AvaloniaObject
         o => o.MarkerSize,
         (o, v) => o.MarkerSize = v);
 
-    public int LineWidth{ get; set; }
+    public int LineWidth { get; set; }
     public static readonly DirectProperty<ScatterData, int> LineWidthProperty = AvaloniaProperty.RegisterDirect<ScatterData, int>(
         nameof(LineWidth),
         o => o.LineWidth,

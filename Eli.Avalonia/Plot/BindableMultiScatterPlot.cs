@@ -53,7 +53,7 @@ public partial class BindableMultiScatterPlot : BindablePlot
         Color.Pink,
         Color.Indigo,
         Color.Violet,
-        Color.Brown
+        Color.Brown,
     ];
 
     public BindableMultiScatterPlot() : base()
@@ -73,7 +73,6 @@ public partial class BindableMultiScatterPlot : BindablePlot
                 if(YLog)
                 {
                     if(LogBase <= 0) LogBase = 10;
-                    LogBase = 2;
                     string logTickLabels(double y) => Math.Pow(LogBase, y).ToString("N0");
 
                     LogMinorTickGenerator minorTickGen = new();
@@ -81,7 +80,7 @@ public partial class BindableMultiScatterPlot : BindablePlot
                     {
                         MinorTickGenerator = minorTickGen,
                         LabelFormatter = logTickLabels,
-                        IntegerTicksOnly = true
+                        IntegerTicksOnly = true,
                     };
                     Plot.Axes.Left.TickGenerator = tickgen;
                 }
@@ -99,7 +98,6 @@ public partial class BindableMultiScatterPlot : BindablePlot
 
                 if(scatterData.XData.Length > 0)
                 {
-
                     var plot = Plot.Add.Scatter(scatterData.XData, YLog ? scatterData.YData.Select(y => System.Math.Log(y, LogBase)).ToArray() : scatterData.YData);
                     plot.LegendText = scatterData.Label;
                     plot.MarkerSize = scatterData.MarkerSize;

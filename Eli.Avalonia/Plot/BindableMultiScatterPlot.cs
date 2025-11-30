@@ -73,13 +73,12 @@ public partial class BindableMultiScatterPlot : BindablePlot
                 if(YLog)
                 {
                     if(LogBase <= 0) LogBase = 10;
-                    string logTickLabels(double y) => Math.Pow(LogBase, y).ToString("N0");
 
                     LogMinorTickGenerator minorTickGen = new();
                     NumericAutomatic tickgen = new()
                     {
                         MinorTickGenerator = minorTickGen,
-                        LabelFormatter = logTickLabels,
+                        LabelFormatter = (double y) => Math.Pow(LogBase, y).ToString("N0"),
                         IntegerTicksOnly = true,
                     };
                     Plot.Axes.Left.TickGenerator = tickgen;
@@ -90,7 +89,7 @@ public partial class BindableMultiScatterPlot : BindablePlot
                     NumericAutomatic tickgen = new()
                     {
                         MinorTickGenerator = minorTickGen,
-                        LabelFormatter = (double y) => y.ToString(),
+                        LabelFormatter = (double y) => y.ToString("N0"),
                         IntegerTicksOnly = false
                     };
                     Plot.Axes.Left.TickGenerator = tickgen;
@@ -113,5 +112,11 @@ public partial class BindableMultiScatterPlot : BindablePlot
                 ErrorText = $"Failed to plot item {i}.\n";
             }
         }
+        if(ScatterDataCollection.Count() > 0)
+        {
+            var maxPoint = Math.Log(ScatterDataCollection.Select(d => d.YData.Max()).Max(), LogBase);
+            Plot.Axes.SetLimitsY(0, maxPoint);
+        }
+
     }
 }

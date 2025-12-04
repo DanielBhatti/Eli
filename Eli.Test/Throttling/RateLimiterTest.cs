@@ -1,5 +1,6 @@
 ﻿using Eli.Throttling;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ public class RateLimiterTest
         var tasks = Enumerable.Range(0, 5).Select(_ => rateLimiter.PerformActionAsync(TestAction)).ToArray();
         await Task.WhenAll(tasks);
 
-        Assert.AreEqual(5, counter);
+        ClassicAssert.AreEqual(5, counter);
     }
 
     [Test]
@@ -47,7 +48,7 @@ public class RateLimiterTest
         var tasks = Enumerable.Range(0, 5).Select(i => rateLimiter.PerformActionAsync(() => TestAction(i))).ToArray();
         await Task.WhenAll(tasks);
 
-        Assert.AreEqual(5, results.Count);
+        ClassicAssert.AreEqual(5, results.Count);
         CollectionAssert.AreEquivalent(new[] { 0, 1, 2, 3, 4 }, results);
     }
 
@@ -66,6 +67,6 @@ public class RateLimiterTest
         var tasks = Enumerable.Range(0, 10).Select(_ => rateLimiter.PerformActionAsync(TestAction)).ToArray();
         await Task.WhenAll(tasks);
 
-        Assert.AreEqual(10, counter);
+        ClassicAssert.AreEqual(10, counter);
     }
 }

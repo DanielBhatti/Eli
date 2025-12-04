@@ -1,6 +1,7 @@
 ﻿namespace Eli.Math.Fs.Test
 
 open NUnit.Framework
+open NUnit.Framework.Legacy
 open Eli.Math.Fs
 open System
 
@@ -16,7 +17,7 @@ module NumericalAnalysisTest =
         let h = 1e-6
         let result = Integration.rk4Integrate f xStart yStart xEnd h
         let expected = Math.Exp(xEnd)
-        Assert.AreEqual(expected, result, tolerance)
+        ClassicAssert.AreEqual(expected, result, tolerance)
 
     [<Test>]
     let ``Test rk4Integrate with small step size``() =
@@ -27,7 +28,7 @@ module NumericalAnalysisTest =
         let h = 1e-8
         let result = Integration.rk4Integrate f xStart yStart xEnd h
         let expected = Math.Exp(xEnd)
-        Assert.AreEqual(expected, result, tolerance)
+        ClassicAssert.AreEqual(expected, result, tolerance)
 
     [<Test>]
     let ``Test rk4Integrate on a known polynomial solution``() =
@@ -38,7 +39,7 @@ module NumericalAnalysisTest =
         let h = 1e-6
         let result = Integration.rk4Integrate f xStart yStart xEnd h
         let expected = xEnd ** 3.0
-        Assert.AreEqual(expected, result, tolerance)
+        ClassicAssert.AreEqual(expected, result, tolerance)
 
     [<Test>]
     let ``Test eulerIntegrate with exponential growth``() =
@@ -49,7 +50,7 @@ module NumericalAnalysisTest =
         let h = 1e-6
         let result = Integration.eulerIntegrate f xStart yStart xEnd h
         let expected = Math.Exp(xEnd)
-        Assert.AreEqual(expected, result, tolerance)
+        ClassicAssert.AreEqual(expected, result, tolerance)
 
     [<Test>]
     let ``Test heunIntegrate with exponential growth``() =
@@ -60,7 +61,7 @@ module NumericalAnalysisTest =
         let h = 1e-6
         let result = Integration.heunIntegrate f xStart yStart xEnd h
         let expected = Math.Exp(xEnd)
-        Assert.AreEqual(expected, result, tolerance)
+        ClassicAssert.AreEqual(expected, result, tolerance)
 
     [<Test>]
     let ``Test midpointIntegrate with exponential growth``() =
@@ -71,4 +72,4 @@ module NumericalAnalysisTest =
         let h = 1e-6
         let result = Integration.midpointIntegrate f xStart yStart xEnd h
         let expected = Math.Exp(xEnd)
-        Assert.AreEqual(expected, result, tolerance)
+        ClassicAssert.AreEqual(expected, result, tolerance)

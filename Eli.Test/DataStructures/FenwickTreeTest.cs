@@ -1,5 +1,6 @@
 ﻿using Eli.DataStructures;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Eli.Test.DataStructures;
 
@@ -11,7 +12,7 @@ public class FenwickTreeTest
     {
         var fenwickTree = new FenwickTree<int>(10);
         fenwickTree.Update(0, 5);
-        Assert.AreEqual(5, fenwickTree.Query(1));
+        ClassicAssert.AreEqual(5, fenwickTree.Query(1));
     }
 
     [Test]
@@ -22,9 +23,9 @@ public class FenwickTreeTest
         fenwickTree.Update(1, 3);
         fenwickTree.Update(2, 7);
 
-        Assert.AreEqual(5, fenwickTree.Query(0));
-        Assert.AreEqual(8, fenwickTree.Query(1));
-        Assert.AreEqual(15, fenwickTree.Query(2));
+        ClassicAssert.AreEqual(5, fenwickTree.Query(0));
+        ClassicAssert.AreEqual(8, fenwickTree.Query(1));
+        ClassicAssert.AreEqual(15, fenwickTree.Query(2));
     }
 
     [Test]
@@ -36,9 +37,9 @@ public class FenwickTreeTest
         fenwickTree.Update(2, 7);
         fenwickTree.Update(3, 6);
 
-        Assert.AreEqual(8, fenwickTree.QueryRange(0, 1));
-        Assert.AreEqual(15, fenwickTree.QueryRange(0, 2));
-        Assert.AreEqual(16, fenwickTree.QueryRange(1, 3));
+        ClassicAssert.AreEqual(8, fenwickTree.QueryRange(0, 1));
+        ClassicAssert.AreEqual(15, fenwickTree.QueryRange(0, 2));
+        ClassicAssert.AreEqual(16, fenwickTree.QueryRange(1, 3));
     }
 
     [Test]
@@ -47,11 +48,11 @@ public class FenwickTreeTest
         var values = new int[] { 1, 2, 3, 4, 5 };
         var fenwickTree = new FenwickTree<int>(values);
 
-        Assert.AreEqual(1, fenwickTree.Query(0));
-        Assert.AreEqual(3, fenwickTree.Query(1));
-        Assert.AreEqual(6, fenwickTree.Query(2));
-        Assert.AreEqual(10, fenwickTree.Query(3));
-        Assert.AreEqual(15, fenwickTree.Query(4));
+        ClassicAssert.AreEqual(1, fenwickTree.Query(0));
+        ClassicAssert.AreEqual(3, fenwickTree.Query(1));
+        ClassicAssert.AreEqual(6, fenwickTree.Query(2));
+        ClassicAssert.AreEqual(10, fenwickTree.Query(3));
+        ClassicAssert.AreEqual(15, fenwickTree.Query(4));
     }
 
     [Test]
@@ -59,7 +60,7 @@ public class FenwickTreeTest
     {
         var fenwickTree = new FenwickTree<int>(10);
 
-        Assert.AreEqual(0, fenwickTree.QueryRange(0, 0));
-        Assert.AreEqual(0, fenwickTree.QueryRange(1, 1));
+        ClassicAssert.AreEqual(0, fenwickTree.QueryRange(0, 0));
+        ClassicAssert.AreEqual(0, fenwickTree.QueryRange(1, 1));
     }
 }

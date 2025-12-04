@@ -1,6 +1,7 @@
 ﻿namespace Eli.Math.Fs.Test
 
 open NUnit.Framework
+open NUnit.Framework.Legacy
 open Eli.Math.Fs
 
 [<TestFixture>]
@@ -12,7 +13,7 @@ module SeriesTest =
         let n = 3
         let h = 1e-5
         let series = Series.taylorExpansion f x0 n h
-        Assert.AreEqual(f 1.0, series 1.0)
+        ClassicAssert.AreEqual(f 1.0, series 1.0)
 
     [<Test>]
     let ``Test series expansion for a quadratic function``() =
@@ -21,7 +22,7 @@ module SeriesTest =
         let n = 3
         let h = 1e-5
         let series = Series.taylorExpansion f x0 n h
-        Assert.AreEqual(f 2.0, series 2.0)
+        ClassicAssert.AreEqual(f 2.0, series 2.0)
 
     [<Test>]
     let ``Test series expansion for a cubic function``() =
@@ -30,4 +31,4 @@ module SeriesTest =
         let n = 4
         let h = 1e-5
         let series = Series.taylorExpansion f x0 n h
-        Assert.AreEqual(f 2.0, series 2.0)
+        ClassicAssert.AreEqual(f 2.0, series 2.0)

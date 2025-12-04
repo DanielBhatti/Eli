@@ -1,5 +1,6 @@
 ﻿using Eli.DataStructures;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Eli.Test.DataStructures;
 
@@ -11,7 +12,7 @@ public class BTreeTests
     {
         var bTree = new BTree<int, int>(10, i => i);
         bTree.Insert(10);
-        Assert.IsNotNull(bTree.Search(10));
+        ClassicAssert.IsNotNull(bTree.Search(10));
     }
 
     [Test]
@@ -22,9 +23,9 @@ public class BTreeTests
         bTree.Insert(20);
         bTree.Insert(5);
 
-        Assert.IsNotNull(bTree.Search(10));
-        Assert.IsNotNull(bTree.Search(20));
-        Assert.IsNotNull(bTree.Search(5));
+        ClassicAssert.IsNotNull(bTree.Search(10));
+        ClassicAssert.IsNotNull(bTree.Search(20));
+        ClassicAssert.IsNotNull(bTree.Search(5));
     }
 
     [Test]
@@ -33,7 +34,7 @@ public class BTreeTests
         var bTree = new BTree<int, int>(20, i => i);
         bTree.Insert(10);
         bTree.Delete(10);
-        Assert.AreEqual(0, bTree.Search(10));
+        ClassicAssert.AreEqual(0, bTree.Search(10));
     }
 
     [Test]
@@ -45,9 +46,9 @@ public class BTreeTests
         bTree.Insert(5);
         bTree.Delete(20);
 
-        Assert.IsNotNull(bTree.Search(10));
-        Assert.AreEqual(0, bTree.Search(20));
-        Assert.IsNotNull(bTree.Search(5));
+        ClassicAssert.IsNotNull(bTree.Search(10));
+        ClassicAssert.AreEqual(0, bTree.Search(20));
+        ClassicAssert.IsNotNull(bTree.Search(5));
     }
 
     [Test]
@@ -61,10 +62,10 @@ public class BTreeTests
         bTree.Insert(25);
         bTree.Delete(20);
 
-        Assert.IsNotNull(bTree.Search(10));
-        Assert.AreEqual(0, bTree.Search(20));
-        Assert.IsNotNull(bTree.Search(5));
-        Assert.IsNotNull(bTree.Search(15));
-        Assert.IsNotNull(bTree.Search(25));
+        ClassicAssert.IsNotNull(bTree.Search(10));
+        ClassicAssert.AreEqual(0, bTree.Search(20));
+        ClassicAssert.IsNotNull(bTree.Search(5));
+        ClassicAssert.IsNotNull(bTree.Search(15));
+        ClassicAssert.IsNotNull(bTree.Search(25));
     }
 }

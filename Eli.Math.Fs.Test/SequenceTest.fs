@@ -1,7 +1,9 @@
 namespace Eli.Math.Fs.Test
 
+open NUnit.Framework
+
 module SequenceTest =
-    open NUnit.Framework
+    open NUnit.Framework.Legacy
     open Eli.Math.Fs
 
     [<Test>]

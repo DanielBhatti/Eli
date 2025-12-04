@@ -1,5 +1,6 @@
 ﻿using Eli.DataStuctures;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Eli.Test.DataStructures;
 
@@ -11,7 +12,7 @@ public class SkipListTest
     {
         var skipList = new SkipList<int>(0.5, 16, 42); // Fixed seed for reproducibility
         skipList.Insert(10);
-        Assert.IsTrue(skipList.Search(10));
+        ClassicAssert.IsTrue(skipList.Search(10));
     }
 
     [Test]
@@ -22,9 +23,9 @@ public class SkipListTest
         skipList.Insert(20);
         skipList.Insert(5);
 
-        Assert.IsTrue(skipList.Search(10));
-        Assert.IsTrue(skipList.Search(20));
-        Assert.IsTrue(skipList.Search(5));
+        ClassicAssert.IsTrue(skipList.Search(10));
+        ClassicAssert.IsTrue(skipList.Search(20));
+        ClassicAssert.IsTrue(skipList.Search(5));
     }
 
     [Test]
@@ -32,7 +33,7 @@ public class SkipListTest
     {
         var skipList = new SkipList<int>(0.5, 16, 42); // Fixed seed for reproducibility
         skipList.Insert(10);
-        Assert.IsFalse(skipList.Search(20));
+        ClassicAssert.IsFalse(skipList.Search(20));
     }
 
     [Test]
@@ -41,7 +42,7 @@ public class SkipListTest
         var skipList = new SkipList<int>(0.5, 16, 42); // Fixed seed for reproducibility
         skipList.Insert(10);
         skipList.Insert(10);
-        Assert.IsTrue(skipList.Search(10));
+        ClassicAssert.IsTrue(skipList.Search(10));
     }
 
     [Test]
@@ -52,8 +53,8 @@ public class SkipListTest
         skipList.Insert(5);
         skipList.Insert(15);
 
-        Assert.IsTrue(skipList.Search(5));
-        Assert.IsTrue(skipList.Search(10));
-        Assert.IsTrue(skipList.Search(15));
+        ClassicAssert.IsTrue(skipList.Search(5));
+        ClassicAssert.IsTrue(skipList.Search(10));
+        ClassicAssert.IsTrue(skipList.Search(15));
     }
 }

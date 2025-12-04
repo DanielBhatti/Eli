@@ -21,6 +21,8 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Eli.Math.Fs.Test", "Eli.Mat
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Eli.Physics", "Eli.Physics\Eli.Physics.fsproj", "{AB229FC1-2AD3-412A-B8D7-745F39AE59C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eli.Data", "Eli.Data\Eli.Data.csproj", "{9B125AAB-FBCA-4A4F-98B1-878AC31634B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{AB229FC1-2AD3-412A-B8D7-745F39AE59C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB229FC1-2AD3-412A-B8D7-745F39AE59C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB229FC1-2AD3-412A-B8D7-745F39AE59C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B125AAB-FBCA-4A4F-98B1-878AC31634B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B125AAB-FBCA-4A4F-98B1-878AC31634B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B125AAB-FBCA-4A4F-98B1-878AC31634B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B125AAB-FBCA-4A4F-98B1-878AC31634B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

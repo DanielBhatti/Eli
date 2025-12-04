@@ -17,8 +17,8 @@ public class Hasher
     public string Hash(byte[] bytes, byte[] salt, int iterations = 10000)
     {
         var hashAlgorithm = HashAlgorithmName.SHA256;
-        Rfc2898DeriveBytes result = new(bytes, salt, iterations, hashAlgorithm);
-        return Convert.ToBase64String(result.GetBytes(24));
+        var outputBytes = Rfc2898DeriveBytes.Pbkdf2(bytes, salt, iterations, hashAlgorithm, 24);
+        return Convert.ToBase64String(outputBytes);
     }
 
     public string Hash(string password, string salt) => Hash(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(salt));

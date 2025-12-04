@@ -1,20 +1,22 @@
-﻿namespace Eli.Test.Math.MonteCarlo;
+﻿using Eli.Math.MonteCarlo;
+
+namespace Eli.Math.Test.MonteCarlo;
 
 [TestFixture]
-public class RandomNumberGeneratorTest
+public class RandomnessGeneratorTest
 {
     private const int Seed = 42;
-    private RandomNumberGenerator RandomNumberGenerator { get; set; }
+    private RandomnessGenerator RandomnessGenerator { get; set; }
 
     [SetUp]
-    public void Setup() => RandomNumberGenerator = new RandomNumberGenerator(Seed);
+    public void Setup() => RandomnessGenerator = new RandomnessGenerator(Seed);
 
     [Test]
     public void TestGaussianDistribution()
     {
         var mean = 0.0;
         var stdDev = 1.0;
-        var value = RandomNumberGenerator.GetGaussian(mean, stdDev);
+        var value = RandomnessGenerator.GetGaussian(mean, stdDev);
         Assert.That(value, Is.Not.NaN);
     }
 
@@ -23,7 +25,7 @@ public class RandomNumberGeneratorTest
     {
         var mean = 1.0;
         var stdDev = 0.5;
-        var value = RandomNumberGenerator.GetGaussian(mean, stdDev);
+        var value = RandomnessGenerator.GetGaussian(mean, stdDev);
         Assert.That(value, Is.Not.NaN);
     }
 
@@ -31,7 +33,7 @@ public class RandomNumberGeneratorTest
     public void TestPoissonDistribution()
     {
         var lambda = 4.0;
-        var value = RandomNumberGenerator.GetPoisson(lambda);
+        var value = RandomnessGenerator.GetPoisson(lambda);
         Assert.That(value, Is.GreaterThanOrEqualTo(0));
     }
 
@@ -39,7 +41,7 @@ public class RandomNumberGeneratorTest
     public void TestExponentialDistribution()
     {
         var lambda = 1.0;
-        var value = RandomNumberGenerator.GetExponential(lambda);
+        var value = RandomnessGenerator.GetExponential(lambda);
         Assert.That(value, Is.GreaterThanOrEqualTo(0.0));
     }
 
@@ -47,7 +49,7 @@ public class RandomNumberGeneratorTest
     public void TestExponentialDistributionWithParams()
     {
         var lambda = 2.0;
-        var value = RandomNumberGenerator.GetExponential(lambda);
+        var value = RandomnessGenerator.GetExponential(lambda);
         Assert.That(value, Is.GreaterThanOrEqualTo(0.0));
     }
 
@@ -56,7 +58,7 @@ public class RandomNumberGeneratorTest
     {
         var n = 10;
         var p = 0.5;
-        var value = RandomNumberGenerator.GetBinomial(n, p);
+        var value = RandomnessGenerator.GetBinomial(n, p);
         Assert.That(value, Is.InRange(0, n));
     }
 
@@ -65,7 +67,7 @@ public class RandomNumberGeneratorTest
     {
         var n = 20;
         var p = 0.7;
-        var value = RandomNumberGenerator.GetBinomial(n, p);
+        var value = RandomnessGenerator.GetBinomial(n, p);
         Assert.That(value, Is.InRange(0, n));
     }
 }

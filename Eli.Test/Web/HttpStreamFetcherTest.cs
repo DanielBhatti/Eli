@@ -1,13 +1,15 @@
-﻿using Moq;
+﻿using Eli.Web;
+using Moq;
 using Moq.Protected;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Eli.Web.Tests;
+namespace Eli.Test.Web;
 
 [TestFixture]
 public class HttpStreamFetcherTests
@@ -45,8 +47,8 @@ public class HttpStreamFetcherTests
             .ReturnsAsync(response);
 
         var stream = await HttpStreamFetcher.GetResponseStreamAsync("https://example.com");
-        Assert.IsNotNull(stream);
-        Assert.IsInstanceOf<Stream>(stream);
+        ClassicAssert.IsNotNull(stream);
+        ClassicAssert.IsInstanceOf<Stream>(stream);
     }
 
     [Test]
@@ -67,8 +69,8 @@ public class HttpStreamFetcherTests
             .ReturnsAsync(successResponse);
 
         var stream = await HttpStreamFetcher.GetResponseStreamAsync("https://example.com");
-        Assert.IsNotNull(stream);
-        Assert.IsInstanceOf<Stream>(stream);
+        ClassicAssert.IsNotNull(stream);
+        ClassicAssert.IsInstanceOf<Stream>(stream);
     }
 
     [Test]
@@ -82,7 +84,7 @@ public class HttpStreamFetcherTests
             .ThrowsAsync(new HttpRequestException());
 
         var stream = await HttpStreamFetcher.GetResponseStreamAsync("https://example.com");
-        Assert.AreEqual(Stream.Null, stream);
+        ClassicAssert.AreEqual(Stream.Null, stream);
     }
 
     [Test]
@@ -102,8 +104,8 @@ public class HttpStreamFetcherTests
             .ReturnsAsync(response);
 
         var stream = HttpStreamFetcher.GetResponseStream("https://example.com");
-        Assert.IsNotNull(stream);
-        Assert.IsInstanceOf<Stream>(stream);
+        ClassicAssert.IsNotNull(stream);
+        ClassicAssert.IsInstanceOf<Stream>(stream);
     }
 
     [Test]
@@ -117,6 +119,6 @@ public class HttpStreamFetcherTests
             .ThrowsAsync(new HttpRequestException());
 
         var stream = HttpStreamFetcher.GetResponseStream("https://example.com");
-        Assert.AreEqual(Stream.Null, stream);
+        ClassicAssert.AreEqual(Stream.Null, stream);
     }
 }

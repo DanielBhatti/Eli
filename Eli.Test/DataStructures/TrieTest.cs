@@ -1,5 +1,6 @@
 ﻿using Eli.DataStructures;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Eli.Test.DataStructures;
 
@@ -11,7 +12,7 @@ public class TrieTest
     {
         var trie = new Trie();
         trie.Insert("hello");
-        Assert.IsNotNull(trie.Search("hello"));
+        ClassicAssert.IsNotNull(trie.Search("hello"));
     }
 
     [Test]
@@ -21,8 +22,8 @@ public class TrieTest
         trie.Insert("hello");
         trie.Insert("world");
 
-        Assert.IsNotNull(trie.Search("hello"));
-        Assert.IsNotNull(trie.Search("world"));
+        ClassicAssert.IsNotNull(trie.Search("hello"));
+        ClassicAssert.IsNotNull(trie.Search("world"));
     }
 
     [Test]
@@ -30,7 +31,7 @@ public class TrieTest
     {
         var trie = new Trie();
         trie.Insert("hello");
-        Assert.IsNull(trie.Search("hell"));
+        ClassicAssert.IsNull(trie.Search("hell"));
     }
 
     [Test]
@@ -38,7 +39,7 @@ public class TrieTest
     {
         var trie = new Trie();
         trie.Insert("hello");
-        Assert.IsNull(trie.Search("world"));
+        ClassicAssert.IsNull(trie.Search("world"));
     }
 
     [Test]
@@ -47,9 +48,9 @@ public class TrieTest
         var trie = new Trie();
         trie.Insert("hello");
 
-        Assert.IsNotNull(trie.StartsWith("hell"));
-        Assert.IsNotNull(trie.StartsWith("he"));
-        Assert.IsNotNull(trie.StartsWith("h"));
+        ClassicAssert.IsNotNull(trie.StartsWith("hell"));
+        ClassicAssert.IsNotNull(trie.StartsWith("he"));
+        ClassicAssert.IsNotNull(trie.StartsWith("h"));
     }
 
     [Test]
@@ -58,7 +59,7 @@ public class TrieTest
         var trie = new Trie();
         trie.Insert("hello");
 
-        Assert.IsFalse(trie.StartsWith("world"));
-        Assert.IsFalse(trie.StartsWith("w"));
+        ClassicAssert.IsFalse(trie.StartsWith("world"));
+        ClassicAssert.IsFalse(trie.StartsWith("w"));
     }
 }

@@ -25,7 +25,7 @@ public class SimulatedAnnealingTest
     public void TestOptimizeFindsMinimumNearOrigin()
     {
         var result = SimulatedAnnealing.Optimize(new List<(double, double)>(), TestFunction1, -3.0, 0.0);
-        Assert.IsTrue(System.Math.Abs(result.Item1) < 0.1, "Optimization did not converge near the expected minimum.");
+        Assert.That(result.Item1, Is.EqualTo(0.0).Within(0.1), "Optimization did not converge near the expected minimum.");
     }
 
     [Test]
@@ -35,13 +35,13 @@ public class SimulatedAnnealingTest
         var result = SimulatedAnnealing.Optimize(new List<(double, double)>(), TestFunction1, -3.0, 0.0);
         var resultCost = TestFunction1(0.0, result.Item1, result.Item2);
 
-        Assert.IsTrue(resultCost <= initialCost, "Optimization did not reduce the function value.");
+        Assert.That(initialCost, Is.GreaterThanOrEqualTo(resultCost), "Optimization did not reduce the function value.");
     }
 
     [Test]
     public void TestOptimizationWithCooling()
     {
         var result = SimulatedAnnealing.Optimize(new List<(double, double)>(), TestFunction1, -3.0, 0.0);
-        Assert.IsTrue(System.Math.Abs(result.Item1) < 1.0, "Optimization with aggressive cooling did not perform as expected.");
+        Assert.That(result.Item1, Is.EqualTo(0.0).Within(1.0), "Optimization with aggressive cooling did not perform as expected.");
     }
 }

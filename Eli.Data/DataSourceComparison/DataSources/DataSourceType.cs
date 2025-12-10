@@ -1,4 +1,4 @@
-﻿namespace Eli.Data.Comparison;
+﻿namespace Eli.Data.DataSourceComparison.DataSources;
 
 public enum DataSourceType
 {

@@ -35,7 +35,7 @@ public class DataTypePredictor
         var maxLength = 0;
         var precision = 0;
         var scale = 0;
-        var possiblePredictions = PredictorOptions.PossiblePredictions.DeepClone().ToHashSet();
+        var possiblePredictions = PredictorOptions.PossiblePredictions.ToHashSet();
         foreach(var value in values)
         {
             var normalized = Normalizer.Normalize(value);
@@ -57,8 +57,8 @@ public class DataTypePredictor
             {
                 _ = possiblePredictions.Remove(DataTypeName.Numeric);
                 var split = normalized.Split('.');
-                precision = Math.Max(precision, split[0].Length);
-                scale = Math.Max(scale, split[1].Length);
+                if(split.Length > 0) precision = Math.Max(precision, split[0].Length);
+                if(split.Length > 1) scale = Math.Max(scale, split[1].Length);
             }
             if(!PredictorRegex.DateRegex().IsMatch(normalized)) _ = possiblePredictions.Remove(DataTypeName.Date);
             if(!PredictorRegex.TimeRegex().IsMatch(normalized)) _ = possiblePredictions.Remove(DataTypeName.Time);

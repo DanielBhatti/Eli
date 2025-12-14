@@ -3,7 +3,8 @@ namespace Eli.Data.DataTypes;
 
 public record class StringType : DataType<string>
 {
-    public required int Length { get; init; }
+    public required bool IsFixedLength { get; init; }
+    public required int MaxLength { get; init; }
     public StringComparison StringComparison { get; init; } = StringComparison.OrdinalIgnoreCase;
 
     public override DataTypeName Name => DataTypeName.String;
@@ -12,7 +13,7 @@ public record class StringType : DataType<string>
     {
         result = "";
         if(string.IsNullOrWhiteSpace(value)) return IsNullable;
-        if(Length > 0 && value.Length > Length) return false;
+        if(MaxLength > 0 && value.Length > MaxLength) return false;
         result = value;
         return true;
     }

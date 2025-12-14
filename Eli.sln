@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.1.11304.174 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eli", "Eli\Eli.csproj", "{12D63EEA-C766-43F9-9B3F-74340357CD83}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Eli.Physics", "Eli.Physics\Eli.Physics.fsproj", "{AB229FC1-2AD3-412A-B8D7-745F39AE59C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eli.Data", "Eli.Data\Eli.Data.csproj", "{9B125AAB-FBCA-4A4F-98B1-878AC31634B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eli.Data.Test", "Eli.Data.Test\Eli.Data.Test.csproj", "{D7422A5E-73F2-4A1B-8A19-2B69C9BAC598}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{9B125AAB-FBCA-4A4F-98B1-878AC31634B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B125AAB-FBCA-4A4F-98B1-878AC31634B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B125AAB-FBCA-4A4F-98B1-878AC31634B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7422A5E-73F2-4A1B-8A19-2B69C9BAC598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7422A5E-73F2-4A1B-8A19-2B69C9BAC598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7422A5E-73F2-4A1B-8A19-2B69C9BAC598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7422A5E-73F2-4A1B-8A19-2B69C9BAC598}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

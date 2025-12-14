@@ -1,4 +1,4 @@
-﻿namespace Eli.Data.DataTypes;
+﻿namespace Eli.Data;
 
 public enum RelationType
 {

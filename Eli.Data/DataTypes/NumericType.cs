@@ -6,8 +6,8 @@ public record class NumericType : DataType<decimal>
 {
     public override DataTypeName Name => DataTypeName.Numeric;
 
-    public int Precision { get; init; }
-    public int Scale { get; init; }
+    public required int Precision { get; init; }
+    public required int Scale { get; init; }
 
     public bool PositiveDefinite { get; init; } = false;
     public bool NegativeDefinite { get; init; } = false;

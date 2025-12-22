@@ -1,5 +1,4 @@
-﻿using Accord.IO;
-using Eli.Data.DataTypes;
+﻿using Eli.Data.DataTypes;
 using Eli.Text.Normalization;
 
 namespace Eli.Data.Predictor;
@@ -45,7 +44,11 @@ public class DataTypePredictor
                 maxLength = normalized.Length;
             }
 
-            if(string.IsNullOrEmpty(normalized)) isNullable = true;
+            if(string.IsNullOrEmpty(normalized))
+            {
+                isNullable = true;
+                continue;
+            }
             if(!PredictorRegex.CharRegex().IsMatch(normalized)) _ = possiblePredictions.Remove(DataTypeName.Character);
             if(!PredictorRegex.BooleanRegex().IsMatch(normalized)) _ = possiblePredictions.Remove(DataTypeName.Boolean);
             if(!PredictorRegex.IntegerRegex().IsMatch(normalized))
@@ -75,14 +78,14 @@ public class DataTypePredictor
                 DataTypeName.Unknown => new UnknownDataType(),
                 DataTypeName.Character => new CharType() { IsNullable = isNullable },
                 DataTypeName.String => new StringType() { IsNullable = isNullable, MaxLength = maxLength, IsFixedLength = isFixedLength },
-                DataTypeName.Boolean => throw new NotImplementedException(),
+                DataTypeName.Boolean => new BooleanType() { IsNullable = isNullable },
                 DataTypeName.Integer => new IntegerType() { IsNullable = isNullable },
                 DataTypeName.Numeric => new NumericType() { IsNullable = isNullable, Precision = precision, Scale = scale },
-                DataTypeName.Date => throw new NotImplementedException(),
-                DataTypeName.Time => throw new NotImplementedException(),
-                DataTypeName.DateTime => throw new NotImplementedException(),
-                DataTypeName.DateTimeOffset => throw new NotImplementedException(),
-                DataTypeName.Guid => throw new NotImplementedException(),
+                DataTypeName.Date => new DateType() { IsNullable = isNullable },
+                DataTypeName.Time => new TimeType() { IsNullable = isNullable },
+                DataTypeName.DateTime => new DateTimeType() { IsNullable = isNullable },
+                DataTypeName.DateTimeOffset => new DateTimeOffsetType() { IsNullable = isNullable },
+                DataTypeName.Guid => new GuidType() { IsNullable = isNullable },
                 _ => throw new NotImplementedException(),
             });
         }

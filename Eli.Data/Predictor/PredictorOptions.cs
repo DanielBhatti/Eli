@@ -9,13 +9,13 @@ public record class PredictorOptions
 
     public static IEnumerable<DataTypeName> PossiblePredictions { get; } = new List<DataTypeName>() {
         DataTypeName.Boolean,
+        DataTypeName.Integer,
+        DataTypeName.Numeric,
         DataTypeName.Character,
         DataTypeName.Date,
         DataTypeName.Time,
         DataTypeName.DateTime,
         DataTypeName.DateTimeOffset,
-        DataTypeName.Integer,
-        DataTypeName.Numeric,
         DataTypeName.Guid,
         DataTypeName.String,
         DataTypeName.Unknown,

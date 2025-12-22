@@ -2,7 +2,7 @@
 
 public interface DataType
 {
-    Type Type { get; }
+    // Type Type { get; }
     DataTypeName Name { get; }
     bool IsNullable { get; }
 
@@ -13,7 +13,7 @@ public interface DataType
 
 public abstract record class DataType<T> : DataType where T : notnull
 {
-    public Type Type => typeof(T);
+    // public Type Type => typeof(T);
     public abstract DataTypeName Name { get; }
     public required bool IsNullable { get; init; }
 

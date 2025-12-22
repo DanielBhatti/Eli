@@ -1,5 +1,8 @@
-﻿namespace Eli.Data.DataTypes;
+﻿using System.Text.Json.Serialization;
 
+namespace Eli.Data.DataTypes;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum DataTypeName
 {
     Unknown,

@@ -1,5 +1,8 @@
-﻿namespace Eli.Data.DataSourceComparison;
+﻿using System.Text.Json.Serialization;
 
+namespace Eli.Data.DataSourceComparison;
+
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ComparisonResultType
 {
     NonComparable,

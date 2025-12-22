@@ -12,9 +12,9 @@ public sealed class Comparator
 
     public List<ComparisonResult> Compare(DataSource leftDataSource, DataSource rightDataSource, string primaryKey) => Compare(leftDataSource, rightDataSource, [primaryKey]);
 
-    private static string GetPrimaryKeyValue(IReadOnlyDictionary<string, string> fieldToValues, ICollection<string> primaryKeys) => string.Join("|", primaryKeys.Select(pk => fieldToValues[pk]));
+    private static string GetPrimaryKeyValue(IReadOnlyDictionary<string, string> fieldToValues, IEnumerable<string> primaryKeys) => string.Join("|", primaryKeys.Select(pk => fieldToValues[pk]));
 
-    private static List<ValidationError> Validate(DataSource dataSource, ICollection<string> primaryKeys)
+    private static List<ValidationError> Validate(DataSource dataSource, IEnumerable<string> primaryKeys)
     {
         var errors = new List<ValidationError>();
         var missingPrimaryKeyRows = dataSource.FieldToValueCollection.Where(row => primaryKeys.Any(pk => !row.ContainsKey(pk))).ToList();
@@ -27,7 +27,7 @@ public sealed class Comparator
         return errors;
     }
 
-    public List<ComparisonResult> Compare(DataSource leftDataSource, DataSource rightDataSource, ICollection<string> primaryKeys)
+    public List<ComparisonResult> Compare(DataSource leftDataSource, DataSource rightDataSource, IEnumerable<string> primaryKeys)
     {
         var leftErrors = Validate(leftDataSource, primaryKeys);
         var rightErrors = Validate(rightDataSource, primaryKeys);
@@ -73,10 +73,12 @@ public sealed class Comparator
 
         var comparisonResults = new List<ComparisonResult>();
         var fieldToDataTypePrediction = allFieldToValues.ToDictionary(f => f.Key, f => DataTypePredictor.Predict(f.Value));
+
         foreach(var pk in leftPkToFieldToValues.Keys.Except(rightpkToFieldToValues.Keys))
         {
             comparisonResults.Add(new()
             {
+                FieldName = string.Join(",", primaryKeys),
                 PrimaryKey = pk,
                 PredictedDataType = null,
                 ComparisonResultType = ComparisonResultType.MissingRightRow,
@@ -89,6 +91,7 @@ public sealed class Comparator
         {
             comparisonResults.Add(new()
             {
+                FieldName = string.Join(",", primaryKeys),
                 PrimaryKey = pk,
                 PredictedDataType = null,
                 ComparisonResultType = ComparisonResultType.MissingLeftRow,
@@ -111,6 +114,7 @@ public sealed class Comparator
                 {
                     comparisonResults.Add(new()
                     {
+                        FieldName = fieldName,
                         PrimaryKey = pk,
                         PredictedDataType = null,
                         ComparisonResultType = ComparisonResultType.RightValueHeaderFieldMissing,
@@ -123,6 +127,7 @@ public sealed class Comparator
                 {
                     comparisonResults.Add(new()
                     {
+                        FieldName = fieldName,
                         PrimaryKey = pk,
                         PredictedDataType = null,
                         ComparisonResultType = ComparisonResultType.LeftValueHeaderFieldMissing,
@@ -141,6 +146,7 @@ public sealed class Comparator
                     else comparisonResultType = ComparisonResultType.BothDataTypesUnknown;
                     comparisonResults.Add(new()
                     {
+                        FieldName = fieldName,
                         PrimaryKey = pk,
                         PredictedDataType = null,
                         ComparisonResultType = comparisonResultType.Value,
@@ -156,6 +162,7 @@ public sealed class Comparator
 
                 comparisonResults.Add(new()
                 {
+                    FieldName = fieldName,
                     PrimaryKey = pk,
                     PredictedDataType = dataTypePrediction,
                     ComparisonResultType = relationType.ToComparisonResultType(),

@@ -97,7 +97,6 @@ public sealed class Comparator
                     continue;
                 }
 
-                // Both present
                 var prediction = fieldToPrediction[field];
 
                 if(prediction.Name == DataTypeName.Unknown)
@@ -116,9 +115,9 @@ public sealed class Comparator
 
                 var leftOk = prediction.TryConvert(leftRaw ?? "", out var leftConverted);
                 var rightOk = prediction.TryConvert(rightRaw ?? "", out var rightConverted);
+                leftConverted = string.IsNullOrEmpty(leftRaw) ? null : leftConverted;
+                rightConverted = string.IsNullOrEmpty(rightRaw) ? null : rightConverted;
 
-                // If TryConvert fails, you probably want an explicit failure result.
-                // If your DataType<T>.TryConvert returns false for invalid data, Compare() below may be unsafe.
                 if(!leftOk || !rightOk)
                 {
                     results.Add(new ComparisonResult
@@ -135,7 +134,7 @@ public sealed class Comparator
                     continue;
                 }
 
-                var relation = prediction.Compare(leftConverted, rightConverted);
+                var relation = leftConverted != null && rightConverted != null ? prediction.Compare(leftConverted, rightConverted) : RelationType.NonComparable;
 
                 results.Add(new ComparisonResult
                 {
@@ -148,7 +147,6 @@ public sealed class Comparator
                 });
             }
         }
-
         return results;
     }
 

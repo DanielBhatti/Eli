@@ -10,172 +10,226 @@ public sealed class Comparator
     private Normalizer Normalizer { get; } = new();
     private DataTypePredictor DataTypePredictor { get; } = new();
 
-    public List<ComparisonResult> Compare(DataSource leftDataSource, DataSource rightDataSource, string primaryKey) => Compare(leftDataSource, rightDataSource, [primaryKey]);
+    public List<ComparisonResult> Compare(DataSource left, DataSource right, string primaryKey) =>
+        Compare(left, right, [primaryKey]);
 
-    private static string GetPrimaryKeyValue(IReadOnlyDictionary<string, string> fieldToValues, IEnumerable<string> primaryKeys) => string.Join("|", primaryKeys.Select(pk => fieldToValues[pk]));
-
-    private static List<ValidationError> Validate(DataSource dataSource, IEnumerable<string> primaryKeys)
+    public List<ComparisonResult> Compare(DataSource left, DataSource right, IEnumerable<string> primaryKeys)
     {
-        var errors = new List<ValidationError>();
-        var missingPrimaryKeyRows = dataSource.FieldToValueCollection.Where(row => primaryKeys.Any(pk => !row.ContainsKey(pk))).ToList();
+        primaryKeys = primaryKeys.ToArray();
 
-        if(missingPrimaryKeyRows.Count > 0) errors.Add(new() { Error = $"One or more rows in {dataSource.Name} are missing required primary key fields: {string.Join(", ", primaryKeys)}." });
+        ValidateOrThrow(left, primaryKeys.ToList());
+        ValidateOrThrow(right, primaryKeys.ToList());
 
-        var duplicateKeys = dataSource.FieldToValueCollection.Select(row => GetPrimaryKeyValue(row, primaryKeys)).GroupBy(key => key).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+        var leftByPk = IndexByNormalizedPk(left, primaryKeys.ToList());
+        var rightByPk = IndexByNormalizedPk(right, primaryKeys.ToList());
 
-        if(duplicateKeys.Count > 0) errors.Add(new() { Error = $"Duplicate primary key combinations found in {dataSource.Name}: {string.Join(", ", duplicateKeys)}." });
-        return errors;
-    }
+        var fieldToPrediction = PredictFieldTypes(left, right);
 
-    public List<ComparisonResult> Compare(DataSource leftDataSource, DataSource rightDataSource, IEnumerable<string> primaryKeys)
-    {
-        var leftErrors = Validate(leftDataSource, primaryKeys);
-        var rightErrors = Validate(rightDataSource, primaryKeys);
-        if(leftErrors.Any() || rightErrors.Any())
+        var results = new List<ComparisonResult>();
+
+        var allPks = new HashSet<string>(leftByPk.Keys);
+        allPks.UnionWith(rightByPk.Keys);
+
+        foreach(var pk in allPks)
         {
-            var messageLines = new List<string> { "Could not complete comparison, the following errors occurred when trying to process the data:" };
+            var leftExists = leftByPk.TryGetValue(pk, out var leftRow);
+            var rightExists = rightByPk.TryGetValue(pk, out var rightRow);
 
-            if(leftErrors.Any())
+            if(!leftExists)
             {
-                messageLines.Add($"Data Source {leftDataSource.Name}:");
-                messageLines.AddRange(leftErrors.Select(e => $"  - {e}"));
-            }
-
-            if(rightErrors.Any())
-            {
-                messageLines.Add($"Data Source {rightDataSource.Name}:");
-                messageLines.AddRange(rightErrors.Select(e => $"  - {e}"));
-            }
-
-            throw new Exception(string.Join(Environment.NewLine, messageLines));
-        }
-
-        var leftPkToFieldToValues = new Dictionary<string, IReadOnlyDictionary<string, string>>();
-        var rightpkToFieldToValues = new Dictionary<string, IReadOnlyDictionary<string, string>>();
-
-        var allFieldToValues = leftDataSource.FieldToValueCollection.SelectMany(row => row).Concat(rightDataSource.FieldToValueCollection.SelectMany(row => row)).GroupBy(kvp => kvp.Key).ToDictionary(g => g.Key, g => g.Select(kvp => kvp.Value).ToList());
-
-        foreach(var fieldToValue in leftDataSource.FieldToValueCollection)
-        {
-            var key = Normalizer.Normalize(GetPrimaryKeyValue(fieldToValue, primaryKeys));
-            leftPkToFieldToValues.Add(key, fieldToValue);
-
-            foreach(var field in fieldToValue.Keys) allFieldToValues[field].Add(fieldToValue[field]);
-        }
-
-        foreach(var fieldToValue in rightDataSource.FieldToValueCollection)
-        {
-            var key = Normalizer.Normalize(GetPrimaryKeyValue(fieldToValue, primaryKeys));
-            rightpkToFieldToValues.Add(key, fieldToValue);
-
-            foreach(var field in fieldToValue.Keys) allFieldToValues[field].Add(fieldToValue[field]);
-        }
-
-        var comparisonResults = new List<ComparisonResult>();
-        var fieldToDataTypePrediction = allFieldToValues.ToDictionary(f => f.Key, f => DataTypePredictor.Predict(f.Value));
-
-        foreach(var pk in leftPkToFieldToValues.Keys.Except(rightpkToFieldToValues.Keys))
-        {
-            comparisonResults.Add(new()
-            {
-                FieldName = string.Join(",", primaryKeys),
-                PrimaryKey = pk,
-                PredictedDataType = null,
-                ComparisonResultType = ComparisonResultType.MissingRightRow,
-                LeftValue = pk,
-                RightValue = null,
-            });
-        }
-
-        foreach(var pk in rightpkToFieldToValues.Keys.Except(leftPkToFieldToValues.Keys))
-        {
-            comparisonResults.Add(new()
-            {
-                FieldName = string.Join(",", primaryKeys),
-                PrimaryKey = pk,
-                PredictedDataType = null,
-                ComparisonResultType = ComparisonResultType.MissingLeftRow,
-                LeftValue = null,
-                RightValue = pk,
-            });
-        }
-
-        foreach(var pk in rightpkToFieldToValues.Keys.Intersect(leftPkToFieldToValues.Keys))
-        {
-            var leftFieldToValues = leftPkToFieldToValues[pk];
-            var rightFieldToValues = rightpkToFieldToValues[pk];
-
-            var fieldNames = leftFieldToValues.Keys.Union(rightFieldToValues.Keys);
-            foreach(var fieldName in fieldNames)
-            {
-                var leftHasFieldName = leftFieldToValues.TryGetValue(fieldName, out var leftValue);
-                var rightHasFieldName = rightFieldToValues.TryGetValue(fieldName, out var rightValue);
-                if(leftHasFieldName && !rightHasFieldName)
+                results.Add(new ComparisonResult
                 {
-                    comparisonResults.Add(new()
+                    FieldName = string.Join(",", primaryKeys),
+                    PrimaryKey = pk,
+                    PredictedDataType = null,
+                    ComparisonResultType = ComparisonResultType.MissingLeftRow,
+                    LeftValue = null,
+                    RightValue = pk,
+                });
+                continue;
+            }
+
+            if(!rightExists)
+            {
+                results.Add(new ComparisonResult
+                {
+                    FieldName = string.Join(",", primaryKeys),
+                    PrimaryKey = pk,
+                    PredictedDataType = null,
+                    ComparisonResultType = ComparisonResultType.MissingRightRow,
+                    LeftValue = pk,
+                    RightValue = null,
+                });
+                continue;
+            }
+
+            var fields = leftRow!.Keys.Union(rightRow!.Keys);
+            foreach(var field in fields)
+            {
+                var leftHas = leftRow.TryGetValue(field, out var leftRaw);
+                var rightHas = rightRow.TryGetValue(field, out var rightRaw);
+
+                if(leftHas && !rightHas)
+                {
+                    results.Add(new ComparisonResult
                     {
-                        FieldName = fieldName,
+                        FieldName = field,
                         PrimaryKey = pk,
                         PredictedDataType = null,
                         ComparisonResultType = ComparisonResultType.RightValueHeaderFieldMissing,
-                        LeftValue = leftValue,
+                        LeftValue = leftRaw,
                         RightValue = null,
                     });
                     continue;
                 }
-                if(!leftHasFieldName && rightHasFieldName)
+
+                if(!leftHas && rightHas)
                 {
-                    comparisonResults.Add(new()
+                    results.Add(new ComparisonResult
                     {
-                        FieldName = fieldName,
+                        FieldName = field,
                         PrimaryKey = pk,
                         PredictedDataType = null,
                         ComparisonResultType = ComparisonResultType.LeftValueHeaderFieldMissing,
                         LeftValue = null,
-                        RightValue = rightValue,
+                        RightValue = rightRaw,
                     });
                     continue;
                 }
-                var dataTypePrediction = fieldToDataTypePrediction[fieldName];
 
-                if(dataTypePrediction.Name == DataTypeName.Unknown)
+                // Both present
+                var prediction = fieldToPrediction[field];
+
+                if(prediction.Name == DataTypeName.Unknown)
                 {
-                    ComparisonResultType? comparisonResultType = null;
-                    if(dataTypePrediction.Name == DataTypeName.Unknown) comparisonResultType = ComparisonResultType.LeftDataTypeUnknown;
-                    else if(dataTypePrediction.Name != DataTypeName.Unknown) comparisonResultType = ComparisonResultType.RightDataTypeUnknown;
-                    else comparisonResultType = ComparisonResultType.BothDataTypesUnknown;
-                    comparisonResults.Add(new()
+                    results.Add(new ComparisonResult
                     {
-                        FieldName = fieldName,
+                        FieldName = field,
                         PrimaryKey = pk,
                         PredictedDataType = null,
-                        ComparisonResultType = comparisonResultType.Value,
-                        LeftValue = leftValue,
-                        RightValue = rightValue,
+                        ComparisonResultType = ComparisonResultType.BothDataTypesUnknown,
+                        LeftValue = leftRaw,
+                        RightValue = rightRaw,
                     });
                     continue;
                 }
 
-                var leftConverted = dataTypePrediction.TryConvert(leftValue ?? "", out var leftConvertedValue);
-                var rightConverted = dataTypePrediction.TryConvert(rightValue ?? "", out var rightConvertedValue);
-                var relationType = dataTypePrediction.Compare(leftConverted, rightConverted);
+                var leftOk = prediction.TryConvert(leftRaw ?? "", out var leftConverted);
+                var rightOk = prediction.TryConvert(rightRaw ?? "", out var rightConverted);
 
-                comparisonResults.Add(new()
+                // If TryConvert fails, you probably want an explicit failure result.
+                // If your DataType<T>.TryConvert returns false for invalid data, Compare() below may be unsafe.
+                if(!leftOk || !rightOk)
                 {
-                    FieldName = fieldName,
+                    results.Add(new ComparisonResult
+                    {
+                        FieldName = field,
+                        PrimaryKey = pk,
+                        PredictedDataType = prediction,
+                        ComparisonResultType = !leftOk && !rightOk
+                            ? ComparisonResultType.BothDataTypesUnknown
+                            : (!leftOk ? ComparisonResultType.LeftDataTypeUnknown : ComparisonResultType.RightDataTypeUnknown),
+                        LeftValue = leftRaw,
+                        RightValue = rightRaw,
+                    });
+                    continue;
+                }
+
+                var relation = prediction.Compare(leftConverted, rightConverted);
+
+                results.Add(new ComparisonResult
+                {
+                    FieldName = field,
                     PrimaryKey = pk,
-                    PredictedDataType = dataTypePrediction,
-                    ComparisonResultType = relationType.ToComparisonResultType(),
+                    PredictedDataType = prediction,
+                    ComparisonResultType = relation.ToComparisonResultType(),
                     LeftValue = leftConverted,
                     RightValue = rightConverted,
                 });
             }
         }
 
-        return comparisonResults;
+        return results;
     }
 
-    private record class ValidationError
+    private IReadOnlyDictionary<string, IReadOnlyDictionary<string, string>> IndexByNormalizedPk(
+        DataSource dataSource,
+        IReadOnlyCollection<string> primaryKeys)
+    {
+        var dict = new Dictionary<string, IReadOnlyDictionary<string, string>>();
+
+        foreach(var row in dataSource.FieldToValueCollection)
+        {
+            var rawPk = GetPrimaryKeyValue(row, primaryKeys);
+            var pk = Normalizer.Normalize(rawPk);
+            dict.Add(pk, row);
+        }
+
+        return dict;
+    }
+
+    private IReadOnlyDictionary<string, DataType> PredictFieldTypes(DataSource left, DataSource right)
+    {
+        // One value collection per field; no double-counting.
+        var valuesByField = left.FieldToValueCollection
+            .Concat(right.FieldToValueCollection)
+            .SelectMany(row => row)
+            .GroupBy(kvp => kvp.Key)
+            .ToDictionary(g => g.Key, g => g.Select(kvp => kvp.Value).ToList());
+
+        return valuesByField.ToDictionary(kvp => kvp.Key, kvp => DataTypePredictor.Predict(kvp.Value));
+    }
+
+    private static string GetPrimaryKeyValue(IReadOnlyDictionary<string, string> row, IEnumerable<string> primaryKeys) =>
+        string.Join("|", primaryKeys.Select(pk => row[pk]));
+
+    private static void ValidateOrThrow(DataSource dataSource, IReadOnlyCollection<string> primaryKeys)
+    {
+        var errors = Validate(dataSource, primaryKeys);
+        if(!errors.Any()) return;
+
+        var lines = new List<string>
+        {
+            "Could not complete comparison, the following errors occurred when trying to process the data:",
+            $"Data Source {dataSource.Name}:"
+        };
+        lines.AddRange(errors.Select(e => $"  - {e.Error}"));
+        throw new Exception(string.Join(Environment.NewLine, lines));
+    }
+
+    private static List<ValidationError> Validate(DataSource dataSource, IEnumerable<string> primaryKeys)
+    {
+        var pks = primaryKeys.ToArray();
+        var errors = new List<ValidationError>();
+
+        var missingPkRows = dataSource.FieldToValueCollection.Where(row => pks.Any(pk => !row.ContainsKey(pk))).ToList();
+        if(missingPkRows.Count > 0)
+        {
+            errors.Add(new ValidationError
+            {
+                Error = $"One or more rows in {dataSource.Name} are missing required primary key fields: {string.Join(", ", pks)}."
+            });
+        }
+
+        var duplicateKeys = dataSource.FieldToValueCollection
+            .Select(row => GetPrimaryKeyValue(row, pks))
+            .GroupBy(key => key)
+            .Where(g => g.Count() > 1)
+            .Select(g => g.Key)
+            .ToList();
+
+        if(duplicateKeys.Count > 0)
+        {
+            errors.Add(new ValidationError
+            {
+                Error = $"Duplicate primary key combinations found in {dataSource.Name}: {string.Join(", ", duplicateKeys)}."
+            });
+        }
+
+        return errors;
+    }
+
+    private sealed record ValidationError
     {
         public required string Error { get; init; }
     }

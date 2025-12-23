@@ -17,9 +17,15 @@ public sealed class Comparator
     {
         primaryKeys = primaryKeys.ToArray();
 
-        ValidateOrThrow(left, primaryKeys.ToList());
-        ValidateOrThrow(right, primaryKeys.ToList());
+        var leftErrors = Validate(left, primaryKeys.ToList());
+        var rightErrors = Validate(right, primaryKeys.ToList());
 
+        if(leftErrors.Any() || rightErrors.Any())
+        {
+            var errors = leftErrors.Select(le => "Left DataSource: " + le.Error).ToList();
+            errors.AddRange(rightErrors.Select(re => "Right DataSource: " + re.Error));
+            throw new Exception(string.Join(Environment.NewLine, errors));
+        }
         var leftByPk = IndexByNormalizedPk(left, primaryKeys.ToList());
         var rightByPk = IndexByNormalizedPk(right, primaryKeys.ToList());
 
@@ -179,21 +185,7 @@ public sealed class Comparator
     }
 
     private static string GetPrimaryKeyValue(IReadOnlyDictionary<string, string> row, IEnumerable<string> primaryKeys) =>
-        string.Join("|", primaryKeys.Select(pk => row[pk]));
-
-    private static void ValidateOrThrow(DataSource dataSource, IReadOnlyCollection<string> primaryKeys)
-    {
-        var errors = Validate(dataSource, primaryKeys);
-        if(!errors.Any()) return;
-
-        var lines = new List<string>
-        {
-            "Could not complete comparison, the following errors occurred when trying to process the data:",
-            $"Data Source {dataSource.Name}:"
-        };
-        lines.AddRange(errors.Select(e => $"  - {e.Error}"));
-        throw new Exception(string.Join(Environment.NewLine, lines));
-    }
+        string.Join("```", primaryKeys.Select(pk => row[pk]));
 
     private static List<ValidationError> Validate(DataSource dataSource, IEnumerable<string> primaryKeys)
     {

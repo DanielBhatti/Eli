@@ -27,111 +27,122 @@ public static class CalendarManager
         new(1970, 2, 23)
     };
 
-    private static readonly Lazy<ConcurrentDictionary<int, DateOnly>> EasterSundayCache = new(() => new ConcurrentDictionary<int, DateOnly>());
+    private static readonly Lazy<ConcurrentDictionary<int, DateOnly>> EasterSundayCache =
+        new(() => new ConcurrentDictionary<int, DateOnly>());
+
+    public static bool IsNyseOpen(DateOnly date) =>
+        !IsWeekend(date) &&
+        !IsNyseHoliday(date) &&
+        !MiscellaneousNyseClosedDates.Contains(date);
+
+    public static bool IsFederalHoliday(DateOnly date) =>
+        IsNewYearsDay(date) ||
+        IsMartinLutherKingJrDay(date) ||
+        IsPresidentsDay(date) ||
+        IsMemorialDay(date) ||
+        IsJuneteenth(date) ||
+        IsIndependenceDay(date) ||
+        IsLaborDay(date) ||
+        IsColumbusDay(date) ||
+        IsVeteransDay(date) ||
+        IsThanksgivingDay(date) ||
+        IsChristmasDay(date);
+
+    public static bool IsNyseHoliday(DateOnly date) =>
+        IsNewYearsDay(date) ||
+        IsMartinLutherKingJrDay(date) ||
+        IsPresidentsDay(date) ||
+        IsGoodFriday(date) ||
+        IsMemorialDay(date) ||
+        IsJuneteenth(date) ||
+        IsIndependenceDay(date) ||
+        IsLaborDay(date) ||
+        IsThanksgivingDay(date) ||
+        IsChristmasDay(date);
+
+    public static bool IsNewYearsDay(DateOnly date) =>
+        (date.Month == 1 && date.Day == 1 && !IsWeekend(date)) ||
+        (date.Month == 12 && date.Day == 31 && IsFriday(date)) ||
+        (date.Month == 1 && date.Day == 2 && IsMonday(date));
+
+    public static bool IsMartinLutherKingJrDay(DateOnly date) => IsNthMonday(date, month: 1, nth: 3);
+
+    public static bool IsPresidentsDay(DateOnly date) => IsNthMonday(date, month: 2, nth: 3);
+
+    public static bool IsMemorialDay(DateOnly date) => IsLastMondayInMay(date);
+
+    public static bool IsJuneteenth(DateOnly date) => IsObservedFixedHoliday(date, month: 6, day: 19);
+
+    public static bool IsIndependenceDay(DateOnly date) => IsObservedFixedHoliday(date, month: 7, day: 4);
+
+    public static bool IsLaborDay(DateOnly date) => IsNthMonday(date, month: 9, nth: 1);
+
+    public static bool IsColumbusDay(DateOnly date) => IsNthMonday(date, month: 10, nth: 2);
+
+    public static bool IsVeteransDay(DateOnly date) => IsObservedFixedHoliday(date, month: 11, day: 11);
+
+    public static bool IsThanksgivingDay(DateOnly date) => IsNthThursday(date, month: 11, nth: 4);
+
+    public static bool IsChristmasDay(DateOnly date) => IsObservedFixedHoliday(date, month: 12, day: 25);
+
+    public static bool IsGoodFriday(DateOnly date)
+    {
+        var goodFriday = GetEasterSunday(date.Year).AddDays(-2);
+
+        if(date == goodFriday && !IsWeekend(date)) return true;
+        if(date == goodFriday.AddDays(-1) && IsFriday(date)) return true;
+        if(date == goodFriday.AddDays(1) && IsMonday(date)) return true;
+
+        return false;
+    }
+
+    public static DateOnly GetEasterSunday(int year) =>
+    EasterSundayCache.Value.GetOrAdd(year, y =>
+    {
+        var g = y % 19;
+        var c = y / 100;
+        var h = (c - c / 4 - (8 * c + 13) / 25 + 19 * g + 15) % 30;
+        var i = h - h / 28 * (1 - h / 28 * (29 / (h + 1)) * ((21 - g) / 11));
+
+        var day = i - (y + y / 4 + i + 2 - c + c / 4) % 7 + 28;
+        var month = 3;
+
+        if(day > 31)
+        {
+            month++;
+            day -= 31;
+        }
+
+        return new DateOnly(y, month, day);
+    });
+
+    public static bool IsWeekend(DateOnly date) => date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday;
+
+    private static bool IsMonday(DateOnly date) => date.DayOfWeek == DayOfWeek.Monday;
 
     private static bool IsThursday(DateOnly date) => date.DayOfWeek == DayOfWeek.Thursday;
+
     private static bool IsFriday(DateOnly date) => date.DayOfWeek == DayOfWeek.Friday;
-    private static bool IsMonday(DateOnly date) => date.DayOfWeek == DayOfWeek.Monday;
-    private static bool IsWeekend(DateOnly date) => date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday;
 
-    public static bool IsNyseOpen(DateOnly date)
-    {
-        if(IsWeekend(date) || IsObservedNyseHoliday(date) || MiscellaneousNyseClosedDates.Contains(date)) return false;
-        else return true;
-    }
+    private static int NthWeekdayInMonth(DateOnly date) => (date.Day + 6) / 7; // 1..5
 
-    private static bool IsObservedNyseHoliday(DateOnly date)
-    {
-        var nthWeekDay = (int)Math.Ceiling(date.Day / 7.0d);
+    private static bool IsNthMonday(DateOnly date, int month, int nth) =>
+        date.Month == month &&
+        IsMonday(date) &&
+        NthWeekdayInMonth(date) == nth;
 
-        if((date.Month == 12 && date.Day == 31 && IsFriday(date)) ||
-            (date.Month == 1 && date.Day == 1 && !IsWeekend(date)) ||
-            (date.Month == 1 && date.Day == 2 && IsMonday(date))) return true;
+    private static bool IsNthThursday(DateOnly date, int month, int nth) =>
+        date.Month == month &&
+        IsThursday(date) &&
+        NthWeekdayInMonth(date) == nth;
 
-        if(date.Month == 1 && IsMonday(date) && nthWeekDay == 3) return true;
-        if(date.Month == 2 && IsMonday(date) && nthWeekDay == 3) return true;
+    private static bool IsLastMondayInMay(DateOnly date) =>
+        date.Month == 5 &&
+        IsMonday(date) &&
+        date.AddDays(7).Month == 6;
 
-        if((IsGoodFriday(date.AddDays(-1)) && IsFriday(date)) ||
-            (IsGoodFriday(date) && !IsWeekend(date)) ||
-            (IsGoodFriday(date.AddDays(1)) && IsMonday(date))) return true;
-
-        if(date.Month == 5 && IsMonday(date) && date.AddDays(7).Month == 6) return true;
-
-        if((date.Month == 6 && date.Day == 18 && IsFriday(date)) ||
-            (date.Month == 6 && date.Day == 19 && !IsWeekend(date)) ||
-            (date.Month == 6 && date.Day == 20 && IsMonday(date))) return true;
-
-        if((date.Month == 7 && date.Day == 3 && IsFriday(date)) ||
-            (date.Month == 7 && date.Day == 4 && !IsWeekend(date)) ||
-            (date.Month == 7 && date.Day == 5 && IsMonday(date))) return true;
-
-        if(date.Month == 9 && IsMonday(date) && nthWeekDay == 1) return true;
-
-        if(date.Month == 11 && IsThursday(date) && nthWeekDay == 4) return true;
-
-        return (date.Month == 12 && date.Day == 24 && IsFriday(date)) ||
-               (date.Month == 12 && date.Day == 25 && !IsWeekend(date)) ||
-               (date.Month == 12 && date.Day == 26 && IsMonday(date));
-    }
-
-    public static bool IsFederalHoliday(DateOnly date)
-    {
-        var nthWeekDay = (int)Math.Ceiling(date.Day / 7.0d);
-        var dayName = date.DayOfWeek;
-        var isThursday = dayName == DayOfWeek.Thursday;
-        var isFriday = dayName == DayOfWeek.Friday;
-        var isMonday = dayName == DayOfWeek.Monday;
-        var isWeekend = dayName is DayOfWeek.Saturday or DayOfWeek.Sunday;
-
-        if((date.Month == 12 && date.Day == 31 && isFriday) ||
-            (date.Month == 1 && date.Day == 1 && !isWeekend) ||
-            (date.Month == 1 && date.Day == 2 && isMonday)) return true;
-
-        if(date.Month == 1 && isMonday && nthWeekDay == 3) return true;
-        if(date.Month == 2 && isMonday && nthWeekDay == 3) return true;
-        if(date.Month == 5 && isMonday && date.AddDays(7).Month == 6) return true;
-
-        if((date.Month == 6 && date.Day == 18 && isFriday) ||
-            (date.Month == 6 && date.Day == 19 && !isWeekend) ||
-            (date.Month == 6 && date.Day == 20 && isMonday)) return true;
-
-        if((date.Month == 7 && date.Day == 3 && isFriday) ||
-            (date.Month == 7 && date.Day == 4 && !isWeekend) ||
-            (date.Month == 7 && date.Day == 5 && isMonday)) return true;
-
-        if(date.Month == 9 && isMonday && nthWeekDay == 1) return true;
-        if(date.Month == 10 && isMonday && nthWeekDay == 2) return true;
-
-        if((date.Month == 11 && date.Day == 10 && isFriday) ||
-            (date.Month == 11 && date.Day == 11 && !isWeekend) ||
-            (date.Month == 11 && date.Day == 12 && isMonday)) return true;
-
-        if(date.Month == 11 && isThursday && nthWeekDay == 4) return true;
-
-        return (date.Month == 12 && date.Day == 24 && isFriday) ||
-               (date.Month == 12 && date.Day == 25 && !isWeekend) ||
-               (date.Month == 12 && date.Day == 26 && isMonday);
-    }
-
-    public static DateOnly GetEasterSunday(int year)
-    {
-        return EasterSundayCache.Value.GetOrAdd(year, y =>
-        {
-            var g = y % 19;
-            var c = y / 100;
-            var h = (c - c / 4 - (8 * c + 13) / 25 + 19 * g + 15) % 30;
-            var i = h - h / 28 * (1 - h / 28 * (29 / (h + 1)) * ((21 - g) / 11));
-
-            var day = i - (y + y / 4 + i + 2 - c + c / 4) % 7 + 28;
-            var month = 3;
-            if(day > 31)
-            {
-                month++;
-                day -= 31;
-            }
-            return new DateOnly(y, month, day);
-        });
-    }
-
-    public static bool IsGoodFriday(DateOnly date) => date == GetEasterSunday(date.Year).AddDays(-2);
+    private static bool IsObservedFixedHoliday(DateOnly date, int month, int day) =>
+        (date.Month == month && date.Day == day && !IsWeekend(date)) ||
+        (date.Month == month && date.Day == day - 1 && IsFriday(date)) ||
+        (date.Month == month && date.Day == day + 1 && IsMonday(date));
 }

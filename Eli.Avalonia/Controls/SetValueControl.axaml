@@ -29,7 +29,7 @@
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type s:DateOnly}">
-				<local:CalendarDateOnlyPicker Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" SelectedDate="{Binding, Mode=TwoWay, Converter={StaticResource DateOnlyToDateTimeConverter}}"/>
+				<local:CalendarDateOnlyPicker Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" SelectedDateOnly="{Binding, Mode=TwoWay, Converter={StaticResource DateOnlyToDateTimeConverter}}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:DateTime}">

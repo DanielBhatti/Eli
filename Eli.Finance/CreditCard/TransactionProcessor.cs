@@ -1,6 +1,6 @@
 ﻿namespace Eli.Finance.CreditCard;
 
-public interface TransactionProcessor
+public interface TransactionProcessor<T>
 {
-    List<MinDetailTransaction> ParseMinDetailTransactionsFromFile(string filePath);
+    List<T> ParseTransactionsFromFile(string filePath);
 }

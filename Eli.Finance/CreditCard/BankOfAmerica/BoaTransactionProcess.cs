@@ -1,14 +1,14 @@
-﻿using System.Globalization;
+using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
 
-namespace Eli.Finance.CreditCard.Aaa;
+namespace Eli.Finance.CreditCard.BankOfAmerica;
 
-public class AaaTransactionProcessor : TransactionProcessor<AaaTransaction>
+public class BoaTransactionProcessor : TransactionProcessor<BoaTransaction>
 {
-    public List<AaaTransaction> ParseTransactionsFromFile(string filePath)
+    public List<BoaTransaction> ParseTransactionsFromFile(string filePath)
     {
-        var results = new List<AaaTransaction>();
+        var results = new List<BoaTransaction>();
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
             HasHeaderRecord = true,
@@ -25,7 +25,7 @@ public class AaaTransactionProcessor : TransactionProcessor<AaaTransaction>
 
         while(csv.Read())
         {
-            var record = new AaaTransaction(csv.GetField<DateOnly>("TRANS DATE"), csv.GetField<string>("TRANSACTION DESCRIPTION/LOCATION") ?? "", csv.GetField<decimal>("AMOUNT"));
+            var record = new BoaTransaction(csv.GetField<DateOnly>("Date"), csv.GetField<string>("Description") ?? "", csv.GetField<string>("Location") ?? "", csv.GetField<decimal>("Amount"));
             results.Add(record);
         }
 

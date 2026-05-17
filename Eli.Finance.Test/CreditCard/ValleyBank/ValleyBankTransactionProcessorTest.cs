@@ -25,7 +25,7 @@ public class ValleyBankTransactionProcessorTest
             Assert.That(transactions[0].TransactionDescription, Is.EqualTo("PAYMENT THANK YOU"));
             Assert.That(transactions[0].Amount, Is.EqualTo(-154.90m));
             Assert.That(transactions[0].TransactionType, Is.EqualTo(ValleyBankTransactionType.Payment));
-            Assert.That(transactions[1].TransactionDescription, Is.EqualTo("TMOBILE*AUTO PAY 800-937-8997 WA"));
+            Assert.That(transactions[1].TransactionDescription, Is.EqualTo("TMOBILE*AUTO PAY 123-456-7890 WA"));
             Assert.That(transactions[1].Amount, Is.EqualTo(154.93m));
             Assert.That(transactions[1].TransactionType, Is.EqualTo(ValleyBankTransactionType.Purchase));
             Assert.That(transactions[2].Amount, Is.EqualTo(-154.93m));

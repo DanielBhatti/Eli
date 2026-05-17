@@ -6,4 +6,20 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="CreditCard\BankOfAmerica\" />
+    <Folder Include="CreditCard\Citi\" />
+    <Folder Include="CreditCard\Discover\" />
+    <Folder Include="CreditCard\Fidelity\" />
+    <Folder Include="CreditCard\CapitalOne\" />
+    <Folder Include="CreditCard\Macys\" />
+    <Folder Include="CreditCard\UsBank\" />
+    <Folder Include="CreditCard\Td\" />
+    <Folder Include="CreditCard\ValleyBank\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="33.1.0" />
+  </ItemGroup>
+
 </Project>

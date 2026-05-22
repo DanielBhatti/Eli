@@ -1,0 +1,18 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Eli.Avalonia.Test/Eli.Avalonia.Test.csproj" />
+  <Project Path="Eli.Avalonia/Eli.Avalonia.csproj" />
+  <Project Path="Eli.Data.Test/Eli.Data.Test.csproj" />
+  <Project Path="Eli.Data/Eli.Data.csproj" />
+  <Project Path="Eli.Math.Fs.Test/Eli.Math.Fs.Test.fsproj" />
+  <Project Path="Eli.Math.Fs/Eli.Math.Fs.fsproj" />
+  <Project Path="Eli.Math.Test/Eli.Math.Test.csproj" />
+  <Project Path="Eli.Math/Eli.Math.csproj" />
+  <Project Path="Eli.Physics/Eli.Physics.fsproj" />
+  <Project Path="Eli.Test/Eli.Test.csproj" />
+  <Project Path="Eli/Eli.csproj" />
+</Solution>

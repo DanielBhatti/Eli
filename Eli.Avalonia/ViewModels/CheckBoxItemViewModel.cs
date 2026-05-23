@@ -5,38 +5,35 @@ namespace Eli.Avalonia.ViewModels;
 
 public class CheckBoxItemViewModel : ReactiveObject
 {
-    private string _name = "";
     public string Name
     {
-        get => _name;
+        get;
         set
         {
-            _ = this.RaiseAndSetIfChanged(ref _name, value);
+            _ = this.RaiseAndSetIfChanged(ref field, value);
             PropertyChangedCallback(Name, IsChecked, Value);
         }
-    }
+    } = "";
 
-    private bool _isChecked = false;
     public bool IsChecked
     {
-        get => _isChecked;
+        get;
         set
         {
-            _ = this.RaiseAndSetIfChanged(ref _isChecked, value);
+            _ = this.RaiseAndSetIfChanged(ref field, value);
             PropertyChangedCallback(Name, IsChecked, Value);
         }
-    }
+    } = false;
 
-    private object? _value = "";
     public object? Value
     {
-        get => _value;
+        get;
         set
         {
-            _ = this.RaiseAndSetIfChanged(ref _value, value);
+            _ = this.RaiseAndSetIfChanged(ref field, value);
             PropertyChangedCallback(Name, IsChecked, Value);
         }
-    }
+    } = "";
 
     public Action<string, bool, object?> PropertyChangedCallback { get; set; }
     private Action<string, bool, object?> DoNothingAction { get; } = (s, b, o) => { };

@@ -15,12 +15,11 @@ public partial class BindableMultiScatterPlot : BindablePlot
         o => o.ScatterDataCollection,
         (o, v) => o.ScatterDataCollection = v);
 
-    private bool _isXDateTime = false;
     public bool IsXDateTime
     {
-        get => _isXDateTime;
-        set { if(value) _ = Plot.Axes.DateTimeTicksBottom(); _isXDateTime = value; }
-    }
+        get;
+        set { if(value) _ = Plot.Axes.DateTimeTicksBottom(); field = value; }
+    } = false;
     public static readonly DirectProperty<BindableMultiScatterPlot, bool> IsXDateTimeProperty = AvaloniaProperty.RegisterDirect<BindableMultiScatterPlot, bool>(
         nameof(IsXDateTime),
         o => o.IsXDateTime,
@@ -117,6 +116,5 @@ public partial class BindableMultiScatterPlot : BindablePlot
             var maxPoint = Math.Log(ScatterDataCollection.Select(d => d.YData.Max()).Max(), LogBase);
             Plot.Axes.SetLimitsY(0, maxPoint);
         }
-
     }
 }

@@ -15,22 +15,20 @@ public class BindableHistogram : BindablePlot
             o => o.CurveData,
             (o, v) => o.CurveData = v);
 
-    private ICollection<double> _bins = new AvaloniaList<double>();
     public ICollection<double> Bins
     {
-        get => _bins;
-        private set => SetAndRaise(BinsProperty, ref _bins, value);
-    }
+        get;
+        private set => SetAndRaise(BinsProperty, ref field, value);
+    } = new AvaloniaList<double>();
     public static readonly DirectProperty<BindableHistogram, ICollection<double>> BinsProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, ICollection<double>>(
         nameof(Bins),
         o => o.Bins);
 
-    private IEnumerable<double> _counts = new AvaloniaList<double>();
     public IEnumerable<double> Counts
     {
-        get => _counts;
-        private set => SetAndRaise(CountsProperty, ref _counts, value);
-    }
+        get;
+        private set => SetAndRaise(CountsProperty, ref field, value);
+    } = new AvaloniaList<double>();
     public static readonly DirectProperty<BindableHistogram, IEnumerable<double>> CountsProperty = AvaloniaProperty.RegisterDirect<BindableHistogram, IEnumerable<double>>(
         nameof(Counts),
         o => o.Counts);

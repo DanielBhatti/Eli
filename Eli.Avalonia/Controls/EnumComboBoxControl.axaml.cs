@@ -20,24 +20,24 @@ public partial class EnumComboBoxControl : UserControl
                 if(o is not null && v is not null) o.SelectedValue = v;
             },
             defaultBindingMode: BindingMode.TwoWay);
-    private Enum _selectedValue = DummyEnum.DummyValue;
+
     public Enum SelectedValue
     {
-        get => _selectedValue;
-        set => _ = SetAndRaise(SelectedValueProperty, ref _selectedValue, value);
-    }
+        get;
+        set => _ = SetAndRaise(SelectedValueProperty, ref field, value);
+    } = DummyEnum.DummyValue;
 
     public static readonly DirectProperty<EnumComboBoxControl, IEnumerable> ItemsProperty =
         AvaloniaProperty.RegisterDirect<EnumComboBoxControl, IEnumerable>(
             nameof(Items),
             o => o.Items,
             (o, v) => o.Items = v);
-    private IEnumerable _items = null!;
+
     public IEnumerable Items
     {
-        get => _items;
-        set => _ = SetAndRaise(ItemsProperty, ref _items, value);
-    }
+        get;
+        set => _ = SetAndRaise(ItemsProperty, ref field, value);
+    } = null!;
 
     public EnumComboBoxControl() => InitializeComponent();
 

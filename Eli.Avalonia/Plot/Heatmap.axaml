@@ -5,7 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Eli.Avalonia.Plot.HeatmapControl">
 	<UserControl.Resources>
-		<DataTemplate x:Key="RowDataTemplate">
+		<!-- <DataTemplate x:Key="RowDataTemplate">
 			<UniformGrid Columns="{Binding ColumnsCount}" Rows="1">
 				<ItemsControl ItemsSource="{Binding Cells}">
 					<ItemsControl.ItemTemplate>
@@ -16,7 +16,7 @@
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
 			</UniformGrid>
-		</DataTemplate>
+		</DataTemplate> -->
 	</UserControl.Resources>
 
 	<ItemsControl ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType=UserControl}}">

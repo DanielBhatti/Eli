@@ -5,26 +5,21 @@ namespace Eli.Avalonia.ViewModels;
 
 public class NamedObjectViewModel<T> : ReactiveObject
 {
-    private string _name = "";
     public required string Name
     {
-        get => _name;
-        set => this.RaiseAndSetIfChanged(ref _name, value);
-    }
-
-    private string _description = "";
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = "";
     public required string Description
     {
-        get => _description;
-        set => this.RaiseAndSetIfChanged(ref _description, value);
-    }
-
-    private T _value = default!;
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = "";
     public required T Value
     {
-        get => _value;
-        set => this.RaiseAndSetIfChanged(ref _value, value);
-    }
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = default!;
 
     public NamedObjectViewModel() { }
 

@@ -30,12 +30,11 @@ public partial class BindableScatterPlot : BindablePlot
         o => o.YData,
         (o, v) => { o.YData = v; o.RefreshCustom(); });
 
-    private bool _isXDateTime = false;
     public bool IsXDateTime
     {
-        get => _isXDateTime;
-        set { if(value) _ = Plot.Axes.DateTimeTicksBottom(); _isXDateTime = value; }
-    }
+        get;
+        set { if(value) _ = Plot.Axes.DateTimeTicksBottom(); field = value; }
+    } = false;
     public static readonly DirectProperty<BindableScatterPlot, bool> IsXDateTimeProperty = AvaloniaProperty.RegisterDirect<BindableScatterPlot, bool>(
         nameof(IsXDateTime),
         o => o.IsXDateTime,

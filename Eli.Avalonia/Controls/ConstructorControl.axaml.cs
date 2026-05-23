@@ -13,11 +13,10 @@ namespace Eli.Avalonia.Controls;
 
 public partial class ConstructorControl : UserControl
 {
-    private ConstructorInfo? _constructorInfo;
     public ConstructorInfo? ConstructorInfo
     {
-        get => _constructorInfo;
-        set => SetAndRaise(ConstructorInfoProperty, ref _constructorInfo, value);
+        get;
+        set => SetAndRaise(ConstructorInfoProperty, ref field, value);
     }
     public static readonly DirectProperty<ConstructorControl, ConstructorInfo?> ConstructorInfoProperty =
         AvaloniaProperty.RegisterDirect<ConstructorControl, ConstructorInfo?>(nameof(ConstructorInfo), o => o.ConstructorInfo, (o, v) => { o.ConstructorInfo = v; OnConstructorChanged(o, v); });

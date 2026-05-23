@@ -13,12 +13,11 @@ public class BoolToBoolValueConverter : AvaloniaObject, IValueConverter
         (ao, v) => ao.IsNegated = v
         );
 
-    private bool _isNegated = false;
     public bool IsNegated
     {
-        get => _isNegated;
-        set => SetAndRaise(IsNegatedProperty, ref _isNegated, value);
-    }
+        get;
+        set => SetAndRaise(IsNegatedProperty, ref field, value);
+    } = false;
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

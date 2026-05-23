@@ -14,13 +14,12 @@ public partial class PropertyGrid : UserControl
         o => o.Object,
         (o, v) => o.Object = v);
 
-    private object? _object;
     public object? Object
     {
-        get => _object;
+        get;
         set
         {
-            _ = SetAndRaise(ObjectProperty, ref _object, value);
+            _ = SetAndRaise(ObjectProperty, ref field, value);
             LoadObject();
         }
     }
@@ -29,13 +28,13 @@ public partial class PropertyGrid : UserControl
 
     private void LoadObject()
     {
-        if(_object is null) return;
+        if(Object is null) return;
 
         var panel = Content as UniformGrid ?? new UniformGrid { Columns = 2 };
         Content = panel;
         panel.Children.Clear();
 
-        var objectType = _object.GetType();
+        var objectType = Object.GetType();
         var properties = objectType.GetProperties().OrderBy(p => p.Name);
 
         foreach(var property in properties)
@@ -45,11 +44,11 @@ public partial class PropertyGrid : UserControl
 
             var textBox = new TextBox();
 
-            if(_object != null)
+            if(Object != null)
             {
                 var binding = new Binding
                 {
-                    Source = _object,
+                    Source = Object,
                     Path = property.Name,
                     Mode = BindingMode.TwoWay,
                 };

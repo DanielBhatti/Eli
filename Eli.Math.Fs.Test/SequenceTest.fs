@@ -2,6 +2,7 @@ namespace Eli.Math.Fs.Test
 
 open NUnit.Framework
 
+[<TestFixture>]
 module SequenceTest =
     open NUnit.Framework.Legacy
     open Eli.Math.Fs

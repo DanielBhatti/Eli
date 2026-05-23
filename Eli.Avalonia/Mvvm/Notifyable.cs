@@ -6,12 +6,12 @@ namespace Eli.Avalonia.Mvvm;
 public class Notifyable<T> : ReactiveObject
 {
     public Type Type => Value is not null ? Value.GetType() : null!;
-    private T _value = default!;
+
     public T Value
     {
-        get => _value;
-        set => this.RaiseAndSetIfChanged(ref _value, value);
-    }
+        get;
+        set => this.RaiseAndSetIfChanged(ref field, value);
+    } = default!;
 
     public Notifyable() => Value = default!;
 

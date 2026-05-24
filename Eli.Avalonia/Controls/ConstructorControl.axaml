@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:local="clr-namespace:Eli.Avalonia.Controls;assembly=Eli.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Eli.Avalonia.Controls.ConstructorControl">
+             x:Class="Eli.Avalonia.Controls.ConstructorControl"
+			 x:DataType="local:ConstructorControl">
 	<Grid Grid.IsSharedSizeScope="True">
 		<ListBox x:Name="MainListBox" Grid.Row="1" ItemsSource="{Binding Parameters, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:ConstructorControl}}">
 			<ListBox.ItemTemplate>

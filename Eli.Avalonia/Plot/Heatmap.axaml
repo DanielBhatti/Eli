@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:local="using:Eli.Avalonia.Plot"
              x:Class="Eli.Avalonia.Plot.HeatmapControl">
 	<UserControl.Resources>
 		<!-- <DataTemplate x:Key="RowDataTemplate">
@@ -19,7 +20,7 @@
 		</DataTemplate> -->
 	</UserControl.Resources>
 
-	<ItemsControl ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType=UserControl}}">
+	<ItemsControl ItemsSource="{Binding Items, RelativeSource={RelativeSource AncestorType=local:HeatmapControl}}">
 		<ItemsControl.ItemTemplate>
 			<DataTemplate>
 				<ContentControl Content="{Binding ., Converter={StaticResource RowConverter}, ConverterParameter={Binding $parent.Items}}">

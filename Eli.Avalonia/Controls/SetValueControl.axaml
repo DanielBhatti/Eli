@@ -29,11 +29,11 @@
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type s:DateOnly}">
-				<local:CalendarDateOnlyPicker Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" SelectedDateOnly="{Binding, Mode=TwoWay, Converter={StaticResource DateOnlyToDateTimeConverter}}"/>
+				<local:CalendarDateOnlyPicker PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" SelectedDateOnly="{Binding, Mode=TwoWay, Converter={StaticResource DateOnlyToDateTimeConverter}}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:DateTime}">
-				<CalendarDatePicker Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" SelectedDate="{Binding, Mode=TwoWay}" />
+				<CalendarDatePicker PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" SelectedDate="{Binding, Mode=TwoWay}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Boolean}">
@@ -41,51 +41,51 @@
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Byte}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
+				<NumericUpDown PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Int16}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
+				<NumericUpDown PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:UInt16}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
+				<NumericUpDown PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Int32}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
+				<NumericUpDown PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:UInt32}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
+				<NumericUpDown PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Int64}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
+				<NumericUpDown PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:UInt64}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
+				<NumericUpDown PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Single}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
+				<NumericUpDown PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Double}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
+				<NumericUpDown PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Decimal}">
-				<NumericUpDown Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
+				<NumericUpDown PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Value="{Binding $parent.Content}"/>
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:Char}">
-				<TextBox Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Text="{Binding Value, ElementName=MainContentControl, Mode=TwoWay}" />
+				<TextBox PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Text="{Binding Value, ElementName=MainContentControl, Mode=TwoWay}" />
 			</DataTemplate>
 
 			<DataTemplate DataType="{x:Type sys:String}">
-				<TextBox Watermark="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Text="{Binding Value, ElementName=MainContentControl, Mode=TwoWay}"/>
+				<TextBox PlaceholderText="{Binding Watermark, ElementName=MainContentControl, Mode=TwoWay}" Text="{Binding Value, ElementName=MainContentControl, Mode=TwoWay}"/>
 			</DataTemplate>
 		</ContentControl.DataTemplates>
 	</ContentControl>

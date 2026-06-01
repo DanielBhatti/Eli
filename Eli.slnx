@@ -15,4 +15,5 @@
   <Project Path="Eli.Physics/Eli.Physics.fsproj" />
   <Project Path="Eli.Test/Eli.Test.csproj" />
   <Project Path="Eli/Eli.csproj" />
+  <Project Path="Eli.Database/Eli.Database.csproj" />
 </Solution>

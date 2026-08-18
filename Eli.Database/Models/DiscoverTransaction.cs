@@ -13,6 +13,9 @@ public partial class DiscoverTransaction
     [Column("discover_transaction_id")]
     public Guid DiscoverTransactionId { get; set; }
 
+    [Column("import_file_id")]
+    public Guid? ImportFileId { get; set; }
+
     [Column("trans_date")]
     public DateOnly TransDate { get; set; }
 

@@ -26,13 +26,13 @@ public abstract class OptimizationAlgorithm
 
     public (double, double, double, double, double) Optimize(IEnumerable<(double, double)> points, Func<double, double, double, double, double, double, double> f, double parameter0, double parameter1, double parameter2, double parameter3, double parameter4)
     {
-        var parameters = Optimize(points, (double x, double[] p) => f(x, p[0], p[1], p[2], p[3], p[4]), [parameter0, parameter1, parameter2, parameter3]);
+        var parameters = Optimize(points, (double x, double[] p) => f(x, p[0], p[1], p[2], p[3], p[4]), [parameter0, parameter1, parameter2, parameter3, parameter4]);
         return (parameters[0], parameters[1], parameters[2], parameters[3], parameters[4]);
     }
 
     public (double, double, double, double, double, double) Optimize(IEnumerable<(double, double)> points, Func<double, double, double, double, double, double, double, double> f, double parameter0, double parameter1, double parameter2, double parameter3, double parameter4, double parameter5)
     {
-        var parameters = Optimize(points, (double x, double[] p) => f(x, p[0], p[1], p[2], p[3], p[4], p[5]), [parameter0, parameter1, parameter2, parameter3]);
+        var parameters = Optimize(points, (double x, double[] p) => f(x, p[0], p[1], p[2], p[3], p[4], p[5]), [parameter0, parameter1, parameter2, parameter3, parameter4, parameter5]);
         return (parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5]);
     }
 }

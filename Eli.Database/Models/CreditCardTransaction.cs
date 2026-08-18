@@ -23,10 +23,10 @@ public partial class CreditCardTransaction
     public Guid PurchaseChannelId { get; set; }
 
     [Column("country")]
-    public string? Country { get; set; }
+    public string Country { get; set; } = null!;
 
     [Column("state_or_province")]
-    public string? StateOrProvince { get; set; }
+    public string StateOrProvince { get; set; } = null!;
 
     [Column("amount")]
     [Precision(18, 6)]

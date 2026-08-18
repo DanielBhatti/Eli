@@ -13,6 +13,9 @@ public partial class FidelityTransaction
     [Column("fidelity_transaction_id")]
     public Guid FidelityTransactionId { get; set; }
 
+    [Column("import_file_id")]
+    public Guid? ImportFileId { get; set; }
+
     [Column("transaction_type")]
     public string TransactionType { get; set; } = null!;
 

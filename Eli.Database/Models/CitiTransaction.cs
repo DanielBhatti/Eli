@@ -13,6 +13,9 @@ public partial class CitiTransaction
     [Column("citi_transaction_id")]
     public Guid CitiTransactionId { get; set; }
 
+    [Column("import_file_id")]
+    public Guid? ImportFileId { get; set; }
+
     [Column("date")]
     public DateOnly Date { get; set; }
 

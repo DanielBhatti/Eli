@@ -13,6 +13,9 @@ public partial class UsBankTransaction
     [Column("us_bank_transaction_id")]
     public Guid UsBankTransactionId { get; set; }
 
+    [Column("import_file_id")]
+    public Guid? ImportFileId { get; set; }
+
     [Column("post_date")]
     public DateOnly PostDate { get; set; }
 

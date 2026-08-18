@@ -13,6 +13,9 @@ public partial class ValleyBankTransaction
     [Column("valley_bank_transaction_id")]
     public Guid ValleyBankTransactionId { get; set; }
 
+    [Column("import_file_id")]
+    public Guid? ImportFileId { get; set; }
+
     [Column("post_date")]
     public DateOnly PostDate { get; set; }
 

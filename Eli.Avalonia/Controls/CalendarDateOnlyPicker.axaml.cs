@@ -49,10 +49,9 @@ public partial class CalendarDateOnlyPicker : CalendarDatePicker
             try
             {
                 _sync = true;
-                if(base.SelectedDate is DateTime dt)
-                    _ = SetAndRaise(SelectedDateOnlyProperty, ref _selectedDateOnly, new DateOnly(dt.Year, dt.Month, dt.Day));
-                else
-                    _ = SetAndRaise(SelectedDateOnlyProperty, ref _selectedDateOnly, null);
+                _ = base.SelectedDate is DateTime dt
+                    ? SetAndRaise(SelectedDateOnlyProperty, ref _selectedDateOnly, new DateOnly(dt.Year, dt.Month, dt.Day))
+                    : SetAndRaise(SelectedDateOnlyProperty, ref _selectedDateOnly, null);
             }
             finally { _sync = false; }
         };

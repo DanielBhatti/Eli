@@ -1,4 +1,4 @@
-﻿namespace Eli.Math;
+﻿namespace Eli.Math.Optimization;
 
 public enum AlgorithmName
 {

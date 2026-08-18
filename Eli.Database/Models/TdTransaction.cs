@@ -13,6 +13,9 @@ public partial class TdTransaction
     [Column("td_transaction_id")]
     public Guid TdTransactionId { get; set; }
 
+    [Column("import_file_id")]
+    public Guid? ImportFileId { get; set; }
+
     [Column("date")]
     public DateOnly Date { get; set; }
 

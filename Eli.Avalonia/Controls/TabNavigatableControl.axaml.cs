@@ -6,10 +6,7 @@ namespace Eli.Avalonia.Controls;
 
 public partial class TabNavigatableControl : TabControl
 {
-    public TabNavigatableControl()
-    {
-        InitializeComponent();
-    }
+    public TabNavigatableControl() => InitializeComponent();
 
     // see https://github.com/AvaloniaUI/Avalonia/issues/12967
     protected override Type StyleKeyOverride => typeof(TabControl);

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Eli.DataStuctures;
+namespace Eli.DataStructures;
 
 public class SkipListNode<T>(T value, int level) where T : notnull
 {

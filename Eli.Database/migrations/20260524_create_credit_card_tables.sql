@@ -1,3 +1,4 @@
+set role eli_owner;
 begin transaction;
 create table finance.credit_card(
   credit_card_id uuid not null primary key default uuidv7(),

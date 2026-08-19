@@ -1,3 +1,4 @@
+set role eli_owner;
 begin transaction;
 alter table stage_finance.aaa_transaction
 add column file_name text not null;

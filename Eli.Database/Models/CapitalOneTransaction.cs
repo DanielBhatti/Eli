@@ -13,9 +13,6 @@ public partial class CapitalOneTransaction
     [Column("capital_one_transaction_id")]
     public Guid CapitalOneTransactionId { get; set; }
 
-    [Column("import_file_id")]
-    public Guid? ImportFileId { get; set; }
-
     [Column("trans_date")]
     public DateOnly TransDate { get; set; }
 
@@ -31,4 +28,7 @@ public partial class CapitalOneTransaction
 
     [Column("transaction_type")]
     public string TransactionType { get; set; } = null!;
+
+    [Column("file_name")]
+    public string FileName { get; set; } = null!;
 }

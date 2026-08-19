@@ -1,3 +1,4 @@
+set role eli_owner;
 begin transaction;
 ALTER DATABASE eli OWNER TO eli_owner;
 create schema if not exists stage_finance;

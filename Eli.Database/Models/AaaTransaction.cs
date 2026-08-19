@@ -13,9 +13,6 @@ public partial class AaaTransaction
     [Column("aaa_transaction_id")]
     public Guid AaaTransactionId { get; set; }
 
-    [Column("import_file_id")]
-    public Guid? ImportFileId { get; set; }
-
     [Column("trans_date")]
     public DateOnly TransDate { get; set; }
 
@@ -25,4 +22,7 @@ public partial class AaaTransaction
     [Column("amount")]
     [Precision(9, 2)]
     public decimal Amount { get; set; }
+
+    [Column("file_name")]
+    public string FileName { get; set; } = null!;
 }

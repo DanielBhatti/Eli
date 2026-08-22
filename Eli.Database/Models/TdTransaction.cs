@@ -58,4 +58,7 @@ public partial class TdTransaction
 
     [Column("file_name")]
     public string FileName { get; set; } = null!;
+
+    [Column("is_excluded_from_processing")]
+    public bool IsExcludedFromProcessing { get; set; }
 }
